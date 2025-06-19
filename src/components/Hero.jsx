@@ -3,6 +3,13 @@ import heroImg from "../assets/images/Hero-img.png";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 const Hero = () => {
+  const skipToContact = () => {
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  
   return (
     <div className="hero-container">
       {/*<div className="hero-image">
@@ -28,7 +35,7 @@ const Hero = () => {
             </a>
           </div>
 
-          <button>Contact me</button>
+          <button onClick={skipToContact} >Contact me</button>
         </div>
       </div>
     </div>
