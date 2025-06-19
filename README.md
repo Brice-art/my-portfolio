@@ -1,12 +1,28 @@
-# React + Vite
+# 🌐 Personal Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to my personal portfolio website!  
+This is a simple space where I showcase the projects I've built, the skills I'm learning, and my journey from civil engineering to tech.
 
-Currently, two official plugins are available:
+## 🚀 About Me
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+I'm Brice Ali — originally from Rwanda, currently based in Japan.  
+I have a background in civil engineering and a growing passion for web development, problem-solving, and cross-cultural collaboration.
 
-## Expanding the ESLint configuration
+This portfolio highlights some of the projects I’ve created, along with the skills I’ve picked up along the way.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+- HTML5, CSS3, JavaScript
+- React
+
+## 📬 Contact
+
+Want to connect or collaborate? Feel free to reach out:
+
+- 📧 Email: bricealibyilingiro@gmail.com
+- 🌐 [Portfolio Website](https://my-portfolio-hvo72hcm8-brices-projects-0b3a31c8.vercel.app/)
+- 🐙 [GitHub](https://github.com/Brice-art)
+
+---
+
+Thanks for stopping by! 👋
