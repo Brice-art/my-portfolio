@@ -20,7 +20,7 @@ This portfolio highlights some of the projects I’ve created, along with the sk
 Want to connect or collaborate? Feel free to reach out:
 
 - 📧 Email: bricealibyilingiro@gmail.com
-- 🌐 [Portfolio Website](https://my-portfolio-hvo72hcm8-brices-projects-0b3a31c8.vercel.app/)
+- 🌐 [Portfolio Website](https://brice-portfolio-ten-ecru-65.vercel.app/)
 - 🐙 [GitHub](https://github.com/Brice-art)
 
 ---
