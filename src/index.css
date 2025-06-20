@@ -368,6 +368,7 @@ html {
   font-size: 1.3em;
   font-weight: 600;
   color: #0969da;
+  text-align: left; /* align repository titles to the left */
 }
 
 .repository-item p {
@@ -519,6 +520,50 @@ html {
 
 .contact-form button:hover {
   background: #4349d1;
+}
+
+.education-title,
+.experience-title,
+.projects-title,
+.resume-title,
+.contact-title {
+  margin: 0 0 2rem 0; /* Only bottom margin */
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.project-badges {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* align badges to the left */
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+  gap: 0.5rem;
+}
+
+.project-badges img {
+  height: 24px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+.project-features {
+  margin: 0.5rem 0 0.5rem 1rem;
+  padding: 0;
+  list-style: none;
+}
+.project-features li {
+  font-size: 0.98em;
+  margin-bottom: 0.2em;
+}
+
+.contact-cta {
+  margin-top: 1.5rem;
+  font-size: 1.2em;
+  color: #535bf2;
+  text-align: center;
+  font-weight: 600;
 }
 
 @media (max-width: 1100px) {
