@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 const GITHUB_USER = "Brice-art";
-const GITHUB_TOKEN = ""; // <-- set your token here for local testing
 
 const languageColors = {
   JavaScript: "#f7df1e",
