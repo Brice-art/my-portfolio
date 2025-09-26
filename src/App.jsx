@@ -11,6 +11,7 @@ import Repositories from "./components/Repositories";
 import myResume from "/Brice_resume.pdf";
 import Contact from "./components/Contact";
 import Blog from "./components/Blog";
+import ProjectCarousel from "./components/ProjectCarousel";
 
 function App() {
   return (
@@ -41,14 +42,16 @@ function App() {
         </div>
         {/*<Resume />*/}
       </section>
+
       <section id="projects">
         <h1 className="projects-title">Projects | Github Repositories</h1>
-        <Repositories />
+        {/* <Repositories /> */}
+        <ProjectCarousel />
       </section> 
-      <section id="blog">
+      {/* <section id="blog">
         <h1 className="blog-title">Blog</h1>
         <Blog />
-      </section>
+      </section> */}
       <section id="contact">
         <h3 className="contact-title">Get in touch</h3>
         <Contact />

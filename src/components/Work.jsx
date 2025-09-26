@@ -5,11 +5,9 @@ const Work = () => {
     <div>
       <div className="work-container">
         <p className="work-paragraph">
-          While I don't have professional experience yet, I’ve spent over a year
-          building personal projects using JavaScript, React, and other tools,
-          focusing on web development and software fundamentals. I’m passionate
-          about learning, creating, and growing as a developer — and I’m open to
-          new opportunities to apply my skills in real-world projects.
+          I’ve built full-stack applications using JavaScript, React, Node.js, and MongoDB, 
+          focusing on responsive design and backend integration. My projects showcase problem-solving, 
+          clean code, and teamwork readiness.
           <br />
           <br />
           Here are some of the tools and technologies I’ve been working with:

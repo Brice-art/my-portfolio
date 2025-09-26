@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+const GITHUB_USER = "Brice-art";
+const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN; // ✅ Vite way
+
 const languageColors = {
   JavaScript: "#f7df1e",
   TypeScript: "#3178c6",
@@ -63,35 +66,46 @@ const techBadge = (key, dict) => {
   );
 };
 
-export default function Repositories() {
-  const [repos, setRepos] = useState([]);
+const fetchWithAuth = (url) =>
+  fetch(url, {
+    headers: {
+      Authorization: `token ${GITHUB_TOKEN}`,
+    },
+  });
+
+const Repositories = () => {
+  const [repositories, setRepositories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchStarredRepos() {
+    const fetchRepos = async () => {
       try {
-        const response = await fetch("https://api.github.com/users/Brice-art/starred");
+        // 1. Fetch starred repos
+        const response = await fetchWithAuth(
+          `https://api.github.com/users/${GITHUB_USER}/starred`
+        );
         if (!response.ok) throw new Error("Failed to fetch starred repos");
-        const data = await response.json();
+        const starred = await response.json();
 
-        // ⭐ Filter: Only show starred repos that belong to you
-        const myStarred = data.filter(repo => repo.owner.login === "Brice-art");
+        // 2. Keep only the ones owned by GITHUB_USER
+        const ownedStarred = starred.filter(
+          (repo) => repo.owner.login === GITHUB_USER
+        );
 
-        // Enhance each repo with language, React, backend, and DB badges
-        const enhanced = await Promise.all(
-          myStarred.map(async (repo) => {
-            // Languages
+        // 3. Enhance repos with languages + tech badges
+        const enhancedRepos = await Promise.all(
+          ownedStarred.map(async (repo) => {
             let languages = [];
             try {
-              const langRes = await fetch(repo.languages_url);
+              const langRes = await fetchWithAuth(
+                `https://api.github.com/repos/${GITHUB_USER}/${repo.name}/languages`
+              );
               if (langRes.ok) {
                 const langData = await langRes.json();
                 languages = Object.keys(langData);
               }
             } catch {}
 
-            // Try to detect React, backend, DB tech from package.json (if JS project)
             let hasReact = false;
             let backendTech = [];
             let dbTech = [];
@@ -107,8 +121,8 @@ export default function Repositories() {
 
             for (const path of pkgPaths) {
               try {
-                const pkgRes = await fetch(
-                  `https://api.github.com/repos/${repo.owner.login}/${repo.name}/contents/${path}`
+                const pkgRes = await fetchWithAuth(
+                  `https://api.github.com/repos/${GITHUB_USER}/${repo.name}/contents/${path}`
                 );
                 if (pkgRes.ok) {
                   const pkgData = await pkgRes.json();
@@ -116,6 +130,7 @@ export default function Repositories() {
                     const decoded = atob(pkgData.content.replace(/\n/g, ""));
                     const pkgJson = JSON.parse(decoded);
 
+                    // React
                     if (
                       pkgJson.dependencies?.react ||
                       pkgJson.devDependencies?.react ||
@@ -124,70 +139,73 @@ export default function Repositories() {
                       hasReact = true;
                     }
 
+                    // Collect deps
                     const allDeps = {
                       ...(pkgJson.dependencies || {}),
                       ...(pkgJson.devDependencies || {}),
                     };
 
-                    if (allDeps["express"] && !backendTech.includes("express")) backendTech.push("express");
-                    if ((allDeps["node"] || pkgJson.engines?.node) && !backendTech.includes("node")) backendTech.push("node");
-                    if (allDeps["django"] && !backendTech.includes("django")) backendTech.push("django");
-                    if (allDeps["flask"] && !backendTech.includes("flask")) backendTech.push("flask");
-                    if (allDeps["fastapi"] && !backendTech.includes("fastapi")) backendTech.push("fastapi");
+                    if (allDeps["express"]) backendTech.push("express");
+                    if (allDeps["node"] || pkgJson.engines?.node)
+                      backendTech.push("node");
+                    if (allDeps["django"]) backendTech.push("django");
+                    if (allDeps["flask"]) backendTech.push("flask");
+                    if (allDeps["fastapi"]) backendTech.push("fastapi");
 
-                    if (allDeps["mongodb"] && !dbTech.includes("mongodb")) dbTech.push("mongodb");
-                    if (allDeps["pg"] && !dbTech.includes("postgresql")) dbTech.push("postgresql");
-                    if (allDeps["mysql"] && !dbTech.includes("mysql")) dbTech.push("mysql");
-                    if (allDeps["sqlite3"] && !dbTech.includes("sqlite")) dbTech.push("sqlite");
-                    if (allDeps["redis"] && !dbTech.includes("redis")) dbTech.push("redis");
+                    if (allDeps["mongodb"]) dbTech.push("mongodb");
+                    if (allDeps["pg"]) dbTech.push("postgresql");
+                    if (allDeps["mysql"]) dbTech.push("mysql");
+                    if (allDeps["sqlite3"]) dbTech.push("sqlite");
+                    if (allDeps["redis"]) dbTech.push("redis");
                   }
                 }
-              } catch {
-                // ignore missing files
-              }
+              } catch {}
             }
 
             return { ...repo, languages, hasReact, backendTech, dbTech };
           })
         );
 
-        setRepos(enhanced);
+        setRepositories(enhancedRepos);
       } catch (err) {
-        setError(err.message);
+        console.error("Error fetching repositories:", err);
+        setRepositories([]);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
-    fetchStarredRepos();
+    fetchRepos();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <div>Loading repositories...</div>;
 
   return (
     <div className="repository-container">
       <div className="repositories-list">
-        {repos.map((repo) => (
+        {repositories.map((repo) => (
           <div key={repo.id} className="repository-item">
-            <h3>
-              <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-                {repo.full_name}
-              </a>
-            </h3>
+            <h3>{repo.name}</h3>
             <div className="project-badges">
               {repo.hasReact && reactBadge}
-              {repo.languages && repo.languages.map((lang) => languageBadge(lang))}
-              {repo.backendTech && repo.backendTech.map((tech) => techBadge(tech, backendBadges))}
-              {repo.dbTech && repo.dbTech.map((db) => techBadge(db, dbBadges))}
+              {repo.languages.map((lang) => languageBadge(lang))}
+              {repo.backendTech.map((tech) => techBadge(tech, backendBadges))}
+              {repo.dbTech.map((db) => techBadge(db, dbBadges))}
             </div>
-            <p>{repo.description || "No description"}</p>
-            <p className="text-xs text-gray-500">
-              ⭐ {repo.stargazers_count} | 🍴 {repo.forks_count}
-            </p>
+            <p>{repo.description || "No description available."}</p>
+            <a
+              href={repo.html_url}
+              className="repository-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View Repository
+            </a>
           </div>
         ))}
       </div>
     </div>
   );
-}
+};
+
+export default Repositories;
