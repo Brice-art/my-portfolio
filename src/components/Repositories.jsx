@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const GITHUB_USER = "Brice-art";
-const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN; // Use VITE_ prefix for Vite
+const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN; // ✅ Vite way
 
 const languageColors = {
   JavaScript: "#f7df1e",
@@ -13,7 +13,6 @@ const languageColors = {
   Java: "#b07219",
   C: "#555555",
   Cpp: "#f34b7d",
-  // Add more as needed
 };
 
 const languageBadge = (lang) => (
@@ -37,61 +36,19 @@ const reactBadge = (
 );
 
 const backendBadges = {
-  express: {
-    name: "Express",
-    color: "#000000",
-    logo: "express",
-  },
-  node: {
-    name: "Node.js",
-    color: "#339933",
-    logo: "node.js",
-  },
-  django: {
-    name: "Django",
-    color: "#092E20",
-    logo: "django",
-  },
-  flask: {
-    name: "Flask",
-    color: "#000000",
-    logo: "flask",
-  },
-  fastapi: {
-    name: "FastAPI",
-    color: "#009688",
-    logo: "fastapi",
-  },
-  // Add more as needed
+  express: { name: "Express", color: "#000000", logo: "express" },
+  node: { name: "Node.js", color: "#339933", logo: "node.js" },
+  django: { name: "Django", color: "#092E20", logo: "django" },
+  flask: { name: "Flask", color: "#000000", logo: "flask" },
+  fastapi: { name: "FastAPI", color: "#009688", logo: "fastapi" },
 };
 
 const dbBadges = {
-  mongodb: {
-    name: "MongoDB",
-    color: "#47A248",
-    logo: "mongodb",
-  },
-  postgresql: {
-    name: "PostgreSQL",
-    color: "#336791",
-    logo: "postgresql",
-  },
-  mysql: {
-    name: "MySQL",
-    color: "#4479A1",
-    logo: "mysql",
-  },
-  sqlite: {
-    name: "SQLite",
-    color: "#003B57",
-    logo: "sqlite",
-  },
-  redis: {
-    name: "Redis",
-    color: "#DC382D",
-    logo: "redis",
-  },
-  // Add more as needed
+  mongodb: { name: "MongoDB", color: "#47A248", logo: "mongodb" },
+  postgresql: { name: "PostgreSQL", color: "#336791", logo: "postgresql" },
+  mysql: { name: "MySQL", color: "#4479A1", logo: "mysql" },
+  sqlite: { name: "SQLite", color: "#003B57", logo: "sqlite" },
+  redis: { name: "Redis", color: "#DC382D", logo: "redis" },
 };
 
 const techBadge = (key, dict) => {
@@ -123,18 +80,21 @@ const Repositories = () => {
   useEffect(() => {
     const fetchRepos = async () => {
       try {
+        // 1. Fetch starred repos
         const response = await fetchWithAuth(
-          `https://api.github.com/users/${GITHUB_USER}/repos`
+          `https://api.github.com/users/${GITHUB_USER}/starred`
         );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
+        if (!response.ok) throw new Error("Failed to fetch starred repos");
+        const starred = await response.json();
 
-        // Enhance each repo with languages, React, backend, and db badges
+        // 2. Keep only the ones owned by GITHUB_USER
+        const ownedStarred = starred.filter(
+          (repo) => repo.owner.login === GITHUB_USER
+        );
+
+        // 3. Enhance repos with languages + tech badges
         const enhancedRepos = await Promise.all(
-          data.map(async (repo) => {
-            // Fetch languages
+          ownedStarred.map(async (repo) => {
             let languages = [];
             try {
               const langRes = await fetchWithAuth(
@@ -146,7 +106,6 @@ const Repositories = () => {
               }
             } catch {}
 
-            // Check for React, backend, and DB in all package.json locations
             let hasReact = false;
             let backendTech = [];
             let dbTech = [];
@@ -159,6 +118,7 @@ const Repositories = () => {
               "Frontend/package.json",
               "Backend/package.json",
             ];
+
             for (const path of pkgPaths) {
               try {
                 const pkgRes = await fetchWithAuth(
@@ -169,67 +129,56 @@ const Repositories = () => {
                   if (pkgData.content) {
                     const decoded = atob(pkgData.content.replace(/\n/g, ""));
                     const pkgJson = JSON.parse(decoded);
-                    // React detection
+
+                    // React
                     if (
-                      (pkgJson.dependencies && pkgJson.dependencies.react) ||
-                      (pkgJson.devDependencies && pkgJson.devDependencies.react) ||
-                      (pkgJson.peerDependencies && pkgJson.peerDependencies.react)
+                      pkgJson.dependencies?.react ||
+                      pkgJson.devDependencies?.react ||
+                      pkgJson.peerDependencies?.react
                     ) {
                       hasReact = true;
                     }
-                    // Backend/DB detection
+
+                    // Collect deps
                     const allDeps = {
                       ...(pkgJson.dependencies || {}),
                       ...(pkgJson.devDependencies || {}),
                     };
-                    // Backend
-                    if (allDeps["express"] && !backendTech.includes("express"))
-                      backendTech.push("express");
-                    if ((allDeps["node"] || pkgJson.engines?.node) && !backendTech.includes("node"))
+
+                    if (allDeps["express"]) backendTech.push("express");
+                    if (allDeps["node"] || pkgJson.engines?.node)
                       backendTech.push("node");
-                    if (allDeps["django"] && !backendTech.includes("django"))
-                      backendTech.push("django");
-                    if (allDeps["flask"] && !backendTech.includes("flask"))
-                      backendTech.push("flask");
-                    if (allDeps["fastapi"] && !backendTech.includes("fastapi"))
-                      backendTech.push("fastapi");
-                    // Database
-                    if (allDeps["mongodb"] && !dbTech.includes("mongodb")) dbTech.push("mongodb");
-                    if (allDeps["pg"] && !dbTech.includes("postgresql")) dbTech.push("postgresql");
-                    if (allDeps["mysql"] && !dbTech.includes("mysql")) dbTech.push("mysql");
-                    if (allDeps["sqlite3"] && !dbTech.includes("sqlite")) dbTech.push("sqlite");
-                    if (allDeps["redis"] && !dbTech.includes("redis")) dbTech.push("redis");
+                    if (allDeps["django"]) backendTech.push("django");
+                    if (allDeps["flask"]) backendTech.push("flask");
+                    if (allDeps["fastapi"]) backendTech.push("fastapi");
+
+                    if (allDeps["mongodb"]) dbTech.push("mongodb");
+                    if (allDeps["pg"]) dbTech.push("postgresql");
+                    if (allDeps["mysql"]) dbTech.push("mysql");
+                    if (allDeps["sqlite3"]) dbTech.push("sqlite");
+                    if (allDeps["redis"]) dbTech.push("redis");
                   }
                 }
-              } catch {
-                // Ignore errors for missing package.json files
-              }
+              } catch {}
             }
 
-            return {
-              ...repo,
-              languages,
-              hasReact,
-              backendTech,
-              dbTech,
-            };
+            return { ...repo, languages, hasReact, backendTech, dbTech };
           })
         );
 
         setRepositories(enhancedRepos);
-      } catch (error) {
-        console.error("Error fetching repositories:", error);
+      } catch (err) {
+        console.error("Error fetching repositories:", err);
         setRepositories([]);
       } finally {
         setLoading(false);
       }
     };
+
     fetchRepos();
   }, []);
 
-  if (loading) {
-    return <div>Loading repositories...</div>;
-  }
+  if (loading) return <div>Loading repositories...</div>;
 
   return (
     <div className="repository-container">
@@ -240,11 +189,16 @@ const Repositories = () => {
             <div className="project-badges">
               {repo.hasReact && reactBadge}
               {repo.languages.map((lang) => languageBadge(lang))}
-              {repo.backendTech && repo.backendTech.map((tech) => techBadge(tech, backendBadges))}
-              {repo.dbTech && repo.dbTech.map((db) => techBadge(db, dbBadges))}
+              {repo.backendTech.map((tech) => techBadge(tech, backendBadges))}
+              {repo.dbTech.map((db) => techBadge(db, dbBadges))}
             </div>
             <p>{repo.description || "No description available."}</p>
-            <a href={repo.html_url} className="repository-link" target="_blank" rel="noopener noreferrer">
+            <a
+              href={repo.html_url}
+              className="repository-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               View Repository
             </a>
           </div>

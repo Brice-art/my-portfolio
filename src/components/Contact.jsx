@@ -1,36 +1,6 @@
 import React, { useState } from "react";
-import emailjs from "emailjs-com";
-
-const SERVICE_ID = "service_d3wgoqv";
-const TEMPLATE_ID = "template_wagy9ud";
-const PUBLIC_KEY = "r5j0naynvR15Per5v";
 
 const Contact = () => {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [sending, setSending] = useState(false);
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSending(true);
-
-    emailjs
-      .send(SERVICE_ID, TEMPLATE_ID, form, PUBLIC_KEY)
-      .then(
-        () => {
-          alert("Thank you for your message!");
-          setForm({ name: "", email: "", message: "" });
-          setSending(false);
-        },
-        (error) => {
-          alert("Failed to send message. Please try again.");
-          setSending(false);
-        }
-      );
-  };
 
   return (
     <div className="contact-container">
@@ -72,35 +42,7 @@ const Contact = () => {
           </a>
         </div>
       </div>
-      <form className="contact-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          value={form.name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="message"
-          placeholder="Your Message"
-          rows={4}
-          value={form.message}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit" disabled={sending}>
-          {sending ? "Sending..." : "Send Message"}
-        </button>
-      </form>
+      
     </div>
   );
 };

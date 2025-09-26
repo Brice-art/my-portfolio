@@ -13,22 +13,63 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root {
+  /* Dark mode (default) */
+  --background: #1e1e1e;
+  --card-bg: #333333; 
+  --text-color: #f0f0f0; 
+  --accent: #535bf2;
+  --accent-hover: #4349d1;
+  --shadow: rgba(0,0,0,0.3);
+}
+
+/* Light mode */
+[data-theme="light"] {
+  --background: #f9f9f9;
+  --card-bg: #ffffff;
+  --text-color: #282831;
+  --accent: #535bf2;
+  --accent-hover: #4349d1;
+  --shadow: rgba(0,0,0,0.05);
+}
+
+
+.theme-toggle-btn {
+  position: fixed;
+  right: 10px;
+  top: 5px;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  background: var(--accent);
+  color: #fff;
+  transition: background 0.2s;
+}
+.theme-toggle-btn:hover {
+  background: var(--accent-hover);
+}
+
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-  font-feature-settings: 'liga' off, 'calt' off;
-
+  font-family: "Inter", sans-serif;
+  font-feature-settings: "liga" off, "calt" off;
 }
 
-
 body {
+  
+  background-color: var(--background);
+  background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   line-height: 1.5;
-  color: #282831;
-  background: linear-gradient(135deg, #667eea 0%, #71439f 100%);
+  color: var(--text-color);
   padding: 0;
   margin: 0;
   display: flex;
@@ -46,20 +87,21 @@ html {
 
 /* --- NAVBAR --- */
 .navbar {
-  position: relative;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   padding: 1rem 2rem;
   display: flex;
-  justify-content:  space-between;
+  justify-content: space-between;
   flex-wrap: nowrap;
   gap: 2rem;
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
   align-items: center;
-  background-color: #fff;
+  background-color: var(--background);
+  color: var(--text-color);
   border-bottom: solid 1px rgba(0, 0, 0, 0.1);
   z-index: 100;
 }
@@ -68,15 +110,25 @@ html {
   display: flex;
   gap: 2rem;
   font-weight: 500;
-  color: #282831;
+  color: var(--text-color);
   font-size: 1em;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-decoration: none;
   text-align: center;
-  font-family: 'Inter', sans-serif;
-  font-feature-settings: 'liga' off, 'calt' off;
+  font-family: "Inter", sans-serif;
+  font-feature-settings: "liga" off, "calt" off;
+  align-items: center;
+  justify-content: center;
+  position: relative;
   transition: color 0.25s;
+  overflow: visible !important;
+  flex-wrap: wrap !important;
+}
+
+.navbar-item {
+  display: block !important;
+  color: var(--text-color);
 }
 
 .navbar-items .navbar-item {
@@ -99,7 +151,8 @@ html {
   width: 0;
   height: 2px;
   background: #535bf2;
-  transition: width 0.25s cubic-bezier(0.4,0,0.2,1), left 0.25s cubic-bezier(0.4,0,0.2,1);
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateX(-50%);
 }
 
@@ -109,7 +162,7 @@ html {
   transform: none;
 }
 .navbar-items .navbar-item:hover {
-  color: #535bf2;
+  color: var(--accent);
 }
 
 .navbar-logo {
@@ -117,12 +170,12 @@ html {
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  color: #282831;
+  color: var(--text-color);
   font-weight: 500;
   font-size: 1.2em;
   text-transform: uppercase;
-  font-family: 'Inter', sans-serif;
-  font-feature-settings: 'liga' off, 'calt' off;
+  font-family: "Inter", sans-serif;
+  font-feature-settings: "liga" off, "calt" off;
   position: relative;
   border: solid 1px transparent;
   cursor: pointer;
@@ -134,8 +187,8 @@ html {
   padding: 0;
   width: 100%;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-  font-feature-settings: 'liga' off, 'calt' off;
+  font-family: "Inter", sans-serif;
+  font-feature-settings: "liga" off, "calt" off;
 }
 
 .logo-top {
@@ -162,14 +215,14 @@ html {
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: var(--card-bg);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 1rem;
 }
 .navbar-dropdown-item {
   padding: 0.5rem 1rem;
-  color: #282831;
+  color: var(--text-color);
   text-decoration: none;
   font-weight: 500;
   font-size: 1em;
@@ -221,7 +274,10 @@ html {
 .hero-subtitle {
   font-size: 1.2em;
   font-weight: 500;
-  color: antiquewhite;
+  color: #535bf2;
+  margin-top: 0.5rem;
+  text-align: center;
+  font-weight: 500;
 }
 
 .hero-description {
@@ -246,6 +302,11 @@ html {
   align-items: center;
   gap: 1rem;
   margin-top: 1rem;
+
+}
+
+.github-icon {
+  color: var(--text-color);
 }
 
 .hero-buttons button {
@@ -263,23 +324,18 @@ html {
   background-color: #4349d1;
 }
 
+#about {
+  width: 100%;
+  max-width: 1000px;
+}
+
 /* --- EDUCATION & WORK --- */
 .education-container,
 .work-container,
-.resume-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  width: 100%;
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #f9f9f9;
-  font-size: 1.2em;
-  font-weight: 400;
-  border-radius: 12px;
-  margin-bottom: 2rem;
+.resume-container,
+.contact-info,
+.repository-item {
+  padding: 10px;
 }
 
 .education-logos,
@@ -308,14 +364,15 @@ html {
 .education-logo img:hover,
 .work-logo img:hover {
   transform: scale(1.07);
-  box-shadow: 0 4px 16px rgba(83,91,242,0.15);
+  box-shadow: 0 4px 16px rgba(83, 91, 242, 0.15);
 }
 
 .education-paragraph a {
-  color: #0969da;
+  color: var(--text-color);
+  font-weight: bold;
   text-decoration: none;
-  
 }
+
 
 /* --- REPOSITORIES --- */
 .repository-container {
@@ -337,7 +394,7 @@ html {
 
 .repositories-list {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
   width: 100%;
   justify-items: center;
@@ -351,15 +408,15 @@ html {
   width: 100%;
   max-width: 700px;
   padding: 1.5rem 2rem;
-  background-color: #fff;
+  background-color: var(--card-bg);
   border-radius: 8px;
   border: 1px solid #d0d7de;
-  box-shadow: 0 1px 3px rgba(27,31,35,0.04);
+  box-shadow: 0 1px 3px rgba(27, 31, 35, 0.04);
   transition: box-shadow 0.2s;
 }
 
 .repository-item:hover {
-  box-shadow: 0 4px 24px rgba(83,91,242,0.08);
+  box-shadow: 0 4px 24px rgba(83, 91, 242, 0.08);
   border-color: #535bf2;
 }
 
@@ -411,7 +468,6 @@ html {
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  background-color: #fff;
   border-top: solid 1px rgba(0, 0, 0, 0.1);
   width: 100%;
 }
@@ -430,7 +486,7 @@ html {
 .contact-title {
   font-size: 1.5em;
   font-weight: 600;
-  color: #282831;
+  color: var(--text-color);
   margin-top: 2rem;
   margin-bottom: 1rem;
   text-align: center;
@@ -440,15 +496,11 @@ html {
 
 .contact-info {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   margin: 0 auto;
   width: 100%;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(83,91,242,0.07);
+  background: none;
   padding: 2rem 1.5rem;
 }
 
@@ -469,7 +521,7 @@ html {
 }
 
 .contact-link {
-  color: #0969da;
+  color: var(--text-color);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
@@ -494,7 +546,7 @@ html {
   border: 1px solid #d0d7de;
   border-radius: 6px;
   font-size: 1em;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background: #f9f9f9;
   resize: none;
   transition: border 0.2s;
@@ -566,13 +618,63 @@ html {
   font-weight: 600;
 }
 
+/* --- BLOG CAROUSEL --- */
+.blog-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.carousel-btn {
+  background: #222;
+  color: #fff;
+  border: none;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  margin: 0 1rem;
+}
+
+.carousel-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.carousel-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 180px;
+}
+
+.carousel-img {
+  width: 160px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-title {
+  margin-top: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
 @media (max-width: 1100px) {
   .hero-container,
   .education-container,
   .work-container,
   .resume-container,
   .repository-container {
-    max-width: 98vw;
+    max-width: 90vw;
     padding: 1rem;
   }
   .repositories-list {
@@ -585,7 +687,7 @@ html {
     grid-template-columns: 1fr;
   }
   .repository-container {
-    max-width: 100vw;
+    max-width: 98vw;
     padding: 1rem;
   }
   .repository-item {
@@ -597,6 +699,7 @@ html {
 
 @media (max-width: 850px) {
   .navbar {
+    position: fixed;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
@@ -628,16 +731,15 @@ html {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background: #fff;
+    background: var(--card-bg);
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
     z-index: 200;
     padding: 1rem 0;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.5s;
-
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
   }
   .dropdown {
     display: block;
@@ -646,6 +748,10 @@ html {
   .contact-container {
     flex-direction: column;
     align-items: center;
+  }
+  .theme-toggle-btn {
+    position: inherit;
+    
   }
 }
 
@@ -661,6 +767,7 @@ html {
   }
 }
 
+button,
 .resume-download-btn {
   display: inline-block;
   padding: 0.7em 2em;
@@ -672,6 +779,170 @@ html {
   transition: background 0.2s;
   margin-bottom: 1rem;
 }
+
+button,
 .resume-download-btn:hover {
   background: #4349d1;
+}
+
+a,
+.hero-socials a,
+[data-theme='dark'] .hero-socials a,
+[data-theme='dark'] .hero-socials {
+  color: #fff;
+}
+.hero-subtitle,
+.repository-item h3{
+  color: #535bf2; 
+}
+
+.hero-title {
+    color: var(--text-color);
+}
+
+.footer {
+    color: var(--text-color);
+}
+
+.project-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+  gap: 1rem;
+}
+
+.project-carousel .carousel-item {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px var(--shadow);
+  width: 300px;
+  text-align: center;
+}
+
+.project-carousel .carousel-item h3 {
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+.project-carousel .carousel-item p {
+  font-size: 0.95em;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.project-carousel .badge {
+  display: inline-block;
+  background: #535bf2;
+  color: #fff;
+  padding: 0.3em 0.6em;
+  border-radius: 6px;
+  font-size: 0.8em;
+  margin: 0.2em;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  gap: 0.5rem;
+}
+
+.carousel-dots .dot {
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #ccc;
+  transition: color 0.3s;
+}
+
+.carousel-dots .dot.active {
+  color: var(--accent); /* your main theme color */
+}
+
+.project-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.project-carousel .carousel-track {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.project-carousel .carousel-item {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px var(--shadow);
+  width: 300px;
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+/* dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+  gap: 0.5rem;
+}
+
+.carousel-dots .dot {
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #ccc;
+  transition: color 0.3s;
+}
+
+.carousel-dots .dot.active {
+  color: var(--accent);
+}
+
+.project-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.project-carousel .carousel-track {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.project-carousel .carousel-item {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px var(--shadow);
+  width: 300px;
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+  gap: 0.5rem;
+}
+
+.carousel-dots .dot {
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #ccc;
+  transition: color 0.3s;
+}
+
+.carousel-dots .dot.active {
+  color: var(--accent);
 }

@@ -17,7 +17,7 @@ const Hero = () => {
       </div>*/}
       <div className="hero-text">
         <h1 className="hero-title">Brice Ali Byiringiro</h1>
-        <h3 className="hero-subtitle">Javascript Developer | Civil Engineer</h3>
+        <h3 className="hero-subtitle">Full-Stack Developer</h3>
         <p className="hero-description">
           Hello! I'm Brice, a passionate web developer with hands-on experience
           building responsive websites and browser automation tools using
@@ -28,7 +28,7 @@ const Hero = () => {
         <div className="hero-buttons">
           <div className="hero-socials">
             <a href="https://github.com/Brice-art">
-              <FaGithub size={32} color="#181717" />
+              <FaGithub className="github-icon" size={32}/>
             </a>
             <a href="https://www.linkedin.com/in/brice-ali-byiringiro-ab1182254/">
               <FaLinkedin size={32} color="#0A66C2" />
