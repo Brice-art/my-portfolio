@@ -30,6 +30,7 @@ const NavBar = () => {
         <div className="navbar-item about-button" onClick={() => handleNav("about")}>About</div>
         <div className="navbar-item resume-button" onClick={() => handleNav("resume")}>Resume</div>
         <div className="navbar-item projects-button" onClick={() => handleNav("projects")}>Projects</div>
+        <div className="navbar-item blog-button" onClick={() => handleNav("blog")}>Blog</div>
         <div className="navbar-item contact-button" onClick={() => handleNav("contact")}>Contact</div>
       </div>
       <div className="dropdown" onClick={() => setIsActive(!isActive)}>

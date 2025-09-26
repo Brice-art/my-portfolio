@@ -77,6 +77,13 @@ html {
   font-family: 'Inter', sans-serif;
   font-feature-settings: 'liga' off, 'calt' off;
   transition: color 0.25s;
+  overflow: visible !important;
+  flex-wrap: wrap !important;
+}
+
+.navbar-item {
+  display: block !important;
+  color: #000 !important;
 }
 
 .navbar-items .navbar-item {
@@ -564,6 +571,56 @@ html {
   color: #535bf2;
   text-align: center;
   font-weight: 600;
+}
+
+/* --- BLOG CAROUSEL --- */
+.blog-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.carousel-btn {
+  background: #222;
+  color: #fff;
+  border: none;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  margin: 0 1rem;
+}
+
+.carousel-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.carousel-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 180px;
+}
+
+.carousel-img {
+  width: 160px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.carousel-title {
+  margin-top: 0.5rem;
+  font-weight: bold;
+  text-align: center;
 }
 
 @media (max-width: 1100px) {

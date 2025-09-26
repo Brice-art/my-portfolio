@@ -1,6 +1,5 @@
 import { useState } from "react";
 import React from "react";
-import cors from "cors";
 import "./App.css";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
@@ -11,6 +10,7 @@ import Education from "./components/Education";
 import Repositories from "./components/Repositories";
 import myResume from "/Brice_resume.pdf";
 import Contact from "./components/Contact";
+import Blog from "./components/Blog";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
       <NavBar />
       <section id="home">
         <Hero />
-      </section>
+      </section> 
       <section id="about">
         <h1 className="education-title">Education</h1>
         <Education />
@@ -44,6 +44,10 @@ function App() {
       <section id="projects">
         <h1 className="projects-title">Projects | Github Repositories</h1>
         <Repositories />
+      </section> 
+      <section id="blog">
+        <h1 className="blog-title">Blog</h1>
+        <Blog />
       </section>
       <section id="contact">
         <h3 className="contact-title">Get in touch</h3>
