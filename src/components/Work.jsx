@@ -75,7 +75,25 @@ const Work = () => {
             alt="Node.js logo"
           />
         </div>
-
+        <div className="work-logo">
+          <img
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+            alt="Python logo"
+          />
+        </div>
+        <div className="work-logo">
+          <img
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+            alt="MongoDB logo"
+          />
+        </div>
+        {/* flask logo*/}
+        <div className="work-logo">
+          <img
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg"
+            alt="Flask logo"
+          />
+        </div>
       </div>
     </div>
   );
