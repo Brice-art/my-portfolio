@@ -1,5 +1,5 @@
 import React from "react";
-import heroImg from "../assets/images/Hero-img.png";
+import heroImg from "../assets/images/Brice Ali Profile.jpg";
 import { FaGithub, FaLinkedin, FaDownload, FaCalendarAlt } from "react-icons/fa";
 import { HiLocationMarker, HiMail } from "react-icons/hi";
 
@@ -97,11 +97,10 @@ const Hero = () => {
 
         <div className="hero-visual">
           <div className="hero-image">
-            {/* Uncomment when you have a professional headshot */}
-            {/* <img src={heroImg} alt="Brice Ali Byiringiro - Full-Stack Developer" /> */}
-            <div className="placeholder-avatar">
+            <img className="hero-img" src={heroImg} alt="Brice Ali Byiringiro - Full-Stack Developer" height={350} /> 
+            {/* <div className="placeholder-avatar">
               <span className="avatar-initials">BA</span>
-            </div>
+            </div> */}
           </div>
           
           <div className="floating-cards">

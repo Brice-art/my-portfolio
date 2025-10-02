@@ -6,11 +6,10 @@ import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Education from "./components/Education";
 import ProfessionalExperience from "./components/ProfessionalExperience";
-import EnhancedProjects from "./components/EnhancedProjects";
-import Contact from "./components/Contact";
-import myResume from "/Brice_resume.pdf";
+import Projects from "./components/Projects";
+import myResume from "/Brice Ali Byiringiro Resume.pdf";
 
-// Enhanced About Section Component
+// About Section Component
 const About = () => (
   <div className="about-section">
     <div className="about-container">
@@ -57,7 +56,7 @@ const About = () => (
   </div>
 );
 
-// Enhanced Skills Component
+// Skills Section Component
 const Skills = () => {
   const skillCategories = [
     {
@@ -135,7 +134,7 @@ const Skills = () => {
   );
 };
 
-// Enhanced Resume Section
+// Resume Section
 const ResumeSection = () => (
   <div className="resume-section">
     <div className="resume-container">
@@ -184,10 +183,9 @@ const ResumeSection = () => (
   </div>
 );
 
-// Enhanced Contact Section
-const EnhancedContact = () => {
+// Contact Section
+const Contact = () => {
   const handleScheduleCall = () => {
-    // You can replace this with a calendar scheduling link
     window.open('mailto:bricealibyilingiro@gmail.com?subject=Let\'s Schedule a Call&body=Hi Brice, I\'d like to schedule a call to discuss potential opportunities.', '_blank');
   };
 
@@ -321,11 +319,11 @@ function App() {
       </section>
 
       <section id="projects">
-        <EnhancedProjects />
+        <Projects />
       </section> 
 
       <section id="contact">
-        <EnhancedContact />
+        <Contact />
       </section>
 
       <Footer />
