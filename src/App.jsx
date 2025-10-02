@@ -17,7 +17,7 @@ const About = () => (
       <h2 className="section-title">About Me</h2>
       <div className="about-content">
         <div className="about-story">
-          <h3 className="about-subtitle">From Engineering Foundations to Software Solutions</h3>
+          <h3 className="about-subtitle">From Engineering Foundations to Software Development</h3>
           <p className="about-paragraph">
             My journey began in Civil Engineering at Saitama University, where I developed 
             strong problem-solving skills and systematic thinking. The transition to software 
@@ -26,28 +26,30 @@ const About = () => (
           </p>
           <p className="about-paragraph">
             Living in Japan has given me unique perspectives on technology and business culture. 
-            My recent internships at <strong>NEOJAPAN</strong> and <strong>JOUHOU GIKEN</strong> have provided hands-on experience 
-            in both enterprise software development and rapid prototype delivery.
+            My recent intensive internships at <strong>NEOJAPAN</strong> and <strong>JOUHOU GIKEN</strong> 
+            (one week each) provided hands-on experience in rapid learning, team collaboration, 
+            and solving real business problems.
           </p>
           <p className="about-paragraph">
-            What drives me is creating technology that makes people's work more efficient and 
-            enjoyable. Whether it's automating business processes or building user-friendly 
-            web applications, I focus on delivering real value.
+            What drives me is identifying and solving real problems. During the NEOJAPAN internship, 
+            our team built a shift management system based on challenges we personally experienced as 
+            part-time workers. This ability to connect personal insights with technical solutions is 
+            what I bring to every project.
           </p>
         </div>
         
         <div className="about-highlights">
           <div className="highlight-card">
             <h4>Current Focus</h4>
-            <p>Full-time Full-Stack Developer positions</p>
+            <p>Seeking junior Full-Stack Developer positions where I can continue learning and contributing</p>
           </div>
           <div className="highlight-card">
             <h4>Interests</h4>
-            <p>Enterprise software, web applications, business automation</p>
+            <p>Web applications, business automation, solving real-world problems with code</p>
           </div>
           <div className="highlight-card">
             <h4>Languages</h4>
-            <p>English (Fluent), Japanese (Conversational), French (Native)</p>
+            <p>English (Fluent), Japanese (Conversational), Kinyarwanda (Native)</p>
           </div>
         </div>
       </div>
@@ -59,43 +61,43 @@ const About = () => (
 const Skills = () => {
   const skillCategories = [
     {
-      title: "Professional Experience",
+      title: "Internship Experience",
       skills: [
-        { name: "Enterprise Software Development", level: 85 },
-        { name: "No-code/Low-code Platforms", level: 75 },
-        { name: "Agile Development Workflows", level: 80 },
-        { name: "Cross-functional Team Collaboration", level: 90 },
-        { name: "Business Process Automation", level: 80 },
-        { name: "Rapid Prototyping", level: 85 }
+        { name: "No-code Platform Development (AppSuite)", level: 70 },
+        { name: "Business Problem Identification", level: 80 },
+        { name: "Rapid Prototyping", level: 75 },
+        { name: "Team Collaboration (Agile)", level: 80 },
+        { name: "Flask Web Development", level: 70 },
+        { name: "Cloud Deployment Basics (AWS)", level: 60 }
       ]
     },
     {
       title: "Full-Stack Development", 
       skills: [
-        { name: "JavaScript/Node.js", level: 85 },
-        { name: "React.js", level: 80 },
-        { name: "Flask/Python", level: 75 },
-        { name: "MongoDB", level: 70 },
-        { name: "HTML/CSS", level: 90 },
-        { name: "RESTful APIs", level: 80 }
+        { name: "JavaScript/Node.js", level: 75 },
+        { name: "React.js", level: 70 },
+        { name: "Python/Flask", level: 70 },
+        { name: "MongoDB", level: 65 },
+        { name: "HTML/CSS", level: 85 },
+        { name: "RESTful APIs", level: 70 }
       ]
     },
     {
-      title: "Cloud & DevOps",
+      title: "Database & Cloud",
       skills: [
-        { name: "AWS Services", level: 65 },
-        { name: "SQL Databases", level: 70 },
-        { name: "Cloud Deployment", level: 70 },
-        { name: "Version Control (Git)", level: 85 }
+        { name: "SQL", level: 65 },
+        { name: "AWS Basics", level: 60 },
+        { name: "Database Design", level: 65 },
+        { name: "Version Control (Git)", level: 80 }
       ]
     },
     {
-      title: "Enterprise Tools",
+      title: "Soft Skills & Learning",
       skills: [
-        { name: "AppSuite Platform", level: 75 },
-        { name: "desknet's Neo", level: 65 },
-        { name: "Agile Methodologies", level: 80 },
-        { name: "Professional Development Practices", level: 80 }
+        { name: "Rapid Learning Ability", level: 85 },
+        { name: "Problem-Solving Mindset", level: 80 },
+        { name: "Team Collaboration", level: 80 },
+        { name: "Business Understanding", level: 75 }
       ]
     }
   ];
@@ -103,7 +105,8 @@ const Skills = () => {
   return (
     <div className="skills-section">
       <div className="skills-container">
-        <h2 className="section-title">Technical Expertise</h2>
+        <h2 className="section-title">Technical Skills</h2>
+        <p className="section-subtitle">Skills developed through intensive learning programs and self-directed study</p>
         <div className="skills-grid">
           {skillCategories.map((category, index) => (
             <div key={index} className="skill-category">
@@ -141,22 +144,24 @@ const ResumeSection = () => (
         <div className="resume-summary">
           <h3>Professional Summary</h3>
           <p>
-            Enterprise-ready Full-Stack Developer with proven internship experience at 
-            established Japanese companies. Specialized in both no-code/low-code platforms 
-            and traditional full-stack development with Flask, AWS, and React.js.
+            Full-Stack Developer with hands-on experience from intensive internship programs at 
+            established Japanese companies. Demonstrated ability to rapidly learn new technologies, 
+            identify real business problems, and deliver functional solutions. Combines engineering 
+            background with practical software development skills in both no-code platforms and 
+            traditional full-stack development.
           </p>
           <div className="resume-highlights">
             <div className="resume-stat">
               <span className="stat-number">2</span>
-              <span className="stat-label">Professional Internships</span>
+              <span className="stat-label">Intensive Internships</span>
             </div>
             <div className="resume-stat">
-              <span className="stat-number">1000+</span>
-              <span className="stat-label">Users Served</span>
+              <span className="stat-number">1 Week</span>
+              <span className="stat-label">Each Program</span>
             </div>
             <div className="resume-stat">
-              <span className="stat-number">60%</span>
-              <span className="stat-label">Process Improvement</span>
+              <span className="stat-number">2</span>
+              <span className="stat-label">Apps Developed</span>
             </div>
           </div>
         </div>

@@ -36,34 +36,36 @@ const Hero = () => {
           </h2>
           
           <p className="hero-description">
-            I build scalable web applications and enterprise solutions with proven experience 
+            I build scalable web applications and enterprise solutions with hands-on experience 
             in both <strong>no-code platforms</strong> and <strong>full-stack development</strong>. 
-            From Flask + AWS applications to AppSuite business automation, I deliver code that performs.
+            Through intensive internship projects at NEOJAPAN and JOUHOU GIKEN, I've developed practical skills 
+            in rapid prototyping, team collaboration, and solving real business problems.
           </p>
 
           <div className="hero-stats">
             <div className="stat-item">
               <span className="stat-number">2</span>
-              <span className="stat-label">Internships Completed</span>
+              <span className="stat-label">Intensive Internships</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">1000+</span>
-              <span className="stat-label">Users Served</span>
+              <span className="stat-number">1 Week</span>
+              <span className="stat-label">Each Program</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">60%</span>
-              <span className="stat-label">Process Improvement</span>
+              <span className="stat-number">2</span>
+              <span className="stat-label">Production Apps</span>
             </div>
           </div>
 
           <div className="hero-tech-stack">
-            <span className="tech-label">Recent Work:</span>
+            <span className="tech-label">Technologies Used:</span>
             <div className="tech-badges">
               <span className="tech-badge">Flask</span>
               <span className="tech-badge">AWS</span>
               <span className="tech-badge">AppSuite</span>
               <span className="tech-badge">React</span>
               <span className="tech-badge">Node.js</span>
+              <span className="tech-badge">SQL</span>
             </div>
           </div>
 
@@ -108,10 +110,10 @@ const Hero = () => {
                 <div className="company-logo neojapan-logo">NJ</div>
                 <div>
                   <div className="card-company">NEOJAPAN</div>
-                  <div className="card-role">Software Development Intern</div>
+                  <div className="card-role">1 Week Internship</div>
                 </div>
               </div>
-              <div className="card-achievement">Built AppSuite business application</div>
+              <div className="card-achievement">Built shift management system</div>
             </div>
 
             <div className="floating-card card-2">
@@ -119,10 +121,10 @@ const Hero = () => {
                 <div className="company-logo jouhou-logo">JG</div>
                 <div>
                   <div className="card-company">JOUHOU GIKEN</div>
-                  <div className="card-role">Web Development Intern</div>
+                  <div className="card-role">1 Week Internship</div>
                 </div>
               </div>
-              <div className="card-achievement">Flask + AWS full-stack app</div>
+              <div className="card-achievement">Flask + AWS web application</div>
             </div>
           </div>
         </div>
