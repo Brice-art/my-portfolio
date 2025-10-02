@@ -10,7 +10,7 @@ const EnhancedProjects = () => {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
 
-  // Internship projects - completely accurate
+  // Internship projects
   const internshipProjects = [
     {
       id: 'neojapan-shift',
