@@ -1,0 +1,53 @@
+/* Global Theme Variables */
+:root {
+  --bg-primary: #0a0e27;
+  --bg-secondary: #1a1f3a;
+  --bg-tertiary: rgba(99, 102, 241, 0.05);
+  --bg-hover: rgba(99, 102, 241, 0.1);
+  
+  --text-primary: #e8eaed;
+  --text-secondary: #9ca3af;
+  --text-tertiary: #6b7280;
+  
+  --accent-primary: #818cf8;
+  --accent-secondary: #c084fc;
+  --accent-tertiary: #6366f1;
+  
+  --border-light: rgba(99, 102, 241, 0.2);
+  --border-medium: rgba(99, 102, 241, 0.3);
+  --border-dark: rgba(99, 102, 241, 0.5);
+  
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+  --color-success: #22c55e;
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "'Space Mono', 'Courier New', monospace";
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+button {
+  font-family: inherit;
+}

@@ -13,42 +13,20 @@ import myResume from "/Brice Ali Byiringiro Resume.pdf";
 const About = () => (
   <div className="about-section">
     <div className="about-container">
-      <h2 className="section-title">About Me</h2>
+      <h2 className="section-title">About</h2>
       <div className="about-content">
-        <div className="about-story">
-          <h3 className="about-subtitle">From Engineering Foundations to Software Development</h3>
-          <p className="about-paragraph">
-            My journey began in Civil Engineering at Saitama University, where I developed 
-            strong problem-solving skills and systematic thinking. The transition to software 
-            development felt natural—both fields require building robust, scalable systems 
-            that serve people's needs.
-          </p>
-          <p className="about-paragraph">
-            Living in Japan has given me unique perspectives on technology and business culture. 
-            My recent intensive internships at <strong>NEOJAPAN</strong> and <strong>JOUHOU GIKEN</strong> 
-            (one week each) provided hands-on experience in rapid learning, team collaboration, 
-            and solving real business problems.
-          </p>
-          <p className="about-paragraph">
-            What drives me is identifying and solving real problems. During the NEOJAPAN internship, 
-            our team built a shift management system based on challenges we personally experienced as 
-            part-time workers. This ability to connect personal insights with technical solutions is 
-            what I bring to every project.
-          </p>
-        </div>
-        
         <div className="about-highlights">
           <div className="highlight-card">
-            <h4>Current Focus</h4>
-            <p>Seeking junior Full-Stack Developer positions where I can continue learning and contributing</p>
+            <h4>Full-Stack Developer</h4>
+            <p>Building web applications with React, Node.js, Python, and modern cloud technologies.</p>
           </div>
           <div className="highlight-card">
-            <h4>Interests</h4>
-            <p>Web applications, business automation, solving real-world problems with code</p>
+            <h4>Problem Solver</h4>
+            <p>Internships at NEOJAPAN and JOUHOU GIKEN taught me to identify real business problems and deliver rapid solutions.</p>
           </div>
           <div className="highlight-card">
-            <h4>Languages</h4>
-            <p>English (Fluent), Japanese (Conversational), Kinyarwanda (Native)</p>
+            <h4>Always Learning</h4>
+            <p>Based in Tokyo. Seeking full-time opportunities to grow my skills and make an impact.</p>
           </div>
         </div>
       </div>
@@ -58,75 +36,19 @@ const About = () => (
 
 // Skills Section Component
 const Skills = () => {
-  const skillCategories = [
-    {
-      title: "Internship Experience",
-      skills: [
-        { name: "No-code Platform Development (AppSuite)", level: 70 },
-        { name: "Business Problem Identification", level: 80 },
-        { name: "Rapid Prototyping", level: 75 },
-        { name: "Team Collaboration (Agile)", level: 80 },
-        { name: "Flask Web Development", level: 70 },
-        { name: "Cloud Deployment Basics (AWS)", level: 60 }
-      ]
-    },
-    {
-      title: "Full-Stack Development", 
-      skills: [
-        { name: "JavaScript/Node.js", level: 75 },
-        { name: "React.js", level: 70 },
-        { name: "Python/Flask", level: 70 },
-        { name: "MongoDB", level: 65 },
-        { name: "HTML/CSS", level: 85 },
-        { name: "RESTful APIs", level: 70 }
-      ]
-    },
-    {
-      title: "Database & Cloud",
-      skills: [
-        { name: "SQL", level: 65 },
-        { name: "AWS Basics", level: 60 },
-        { name: "Database Design", level: 65 },
-        { name: "Version Control (Git)", level: 80 }
-      ]
-    },
-    {
-      title: "Soft Skills & Learning",
-      skills: [
-        { name: "Rapid Learning Ability", level: 85 },
-        { name: "Problem-Solving Mindset", level: 80 },
-        { name: "Team Collaboration", level: 80 },
-        { name: "Business Understanding", level: 75 }
-      ]
-    }
+  const skills = [
+    "JavaScript", "React", "Node.js", "Python", "Flask",
+    "HTML/CSS", "MongoDB", "SQL", "AWS", "Git",
+    "REST APIs", "Problem Solving", "Rapid Learning", "Team Collaboration"
   ];
 
   return (
     <div className="skills-section">
       <div className="skills-container">
-        <h2 className="section-title">Technical Skills</h2>
-        <p className="section-subtitle">Skills developed through intensive learning programs and self-directed study</p>
-        <div className="skills-grid">
-          {skillCategories.map((category, index) => (
-            <div key={index} className="skill-category">
-              <h3 className="category-title">{category.title}</h3>
-              <div className="skills-list">
-                {category.skills.map((skill, skillIndex) => (
-                  <div key={skillIndex} className="skill-item">
-                    <div className="skill-header">
-                      <span className="skill-name">{skill.name}</span>
-                      <span className="skill-percentage">{skill.level}%</span>
-                    </div>
-                    <div className="skill-progress">
-                      <div 
-                        className="skill-progress-fill" 
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+        <h2 className="section-title">Skills</h2>
+        <div className="skills-tags">
+          {skills.map((skill, index) => (
+            <span key={index} className="skill-tag">{skill}</span>
           ))}
         </div>
       </div>
