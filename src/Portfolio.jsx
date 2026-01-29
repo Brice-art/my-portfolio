@@ -260,7 +260,7 @@ const SkillsSection = () => {
     },
     {
       category: 'Database',
-      skills: ['MySQL', 'MongoDB'],
+      skills: ['MySQL', 'MongoDB', 'PostgreSQL'],
       color: '#8b5cf6'
     },
     {
