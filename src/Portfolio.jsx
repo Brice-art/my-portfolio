@@ -17,6 +17,7 @@ const Portfolio = () => {
       <HeroSection />
       <SkillsSection />
       <ProjectsSection />
+      <BlogSection />
       <ContactSection />
       <Footer />
     </div>
@@ -637,6 +638,562 @@ const ProjectCard = ({ project }) => {
             Internship Project
           </span>
         )}
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// BLOG SECTION
+// ============================================================================
+const BlogSection = () => {
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  const blogPosts = [
+    {
+      id: 1,
+      title: 'From Civil Engineering to Code',
+      date: 'January 2026',
+      readTime: '5 min read',
+      excerpt: 'Why I switched from building physical structures to building software systems, and what civil engineering taught me about problem-solving.',
+      content: `
+I spent years studying civil engineering at Saitama University, learning about structural analysis, load calculations, and constraint-based design. The whole field is about understanding systems under pressure and making sure things don't break.
+
+Turns out, that's exactly what coding is.
+
+The switch happened when I realized I enjoyed the problem-solving part more than the physical construction part. In civil engineering, you're constrained by physics, materials, and budgets. In software, you're constrained by logic, performance, and user needs.
+
+Same game. Different medium.
+
+**What Civil Engineering Taught Me:**
+- Everything is a system with constraints
+- Start with the requirements, work backwards
+- Test your assumptions before building
+- Document everything (or regret it later)
+- Simple solutions are usually better than complex ones
+
+**What I'm Still Learning:**
+- How to write code that others can actually read
+- When to optimize vs. when to ship
+- How to debug when the error message makes no sense
+- Balancing perfectionism with practicality
+
+The biggest mindset shift? In civil engineering, you build once and it lasts decades. In software, you iterate constantly. I'm still adjusting to that speed.
+
+But I'm having more fun solving problems with code than I ever did with concrete.
+      `,
+      tags: ['Career', 'Learning']
+    },
+    {
+      id: 2,
+      title: 'One Week to Build an App: NEOJAPAN Internship',
+      date: 'August 2025',
+      readTime: '4 min read',
+      excerpt: 'What I learned building a shift management system in 7 days with zero experience in the platform.',
+      content: `
+Day 1: "What's AppSuite?"
+Day 7: "Here's a working shift management system."
+
+That was my NEOJAPAN internship in a nutshell.
+
+**The Problem We Solved:**
+As part-time workers, we all hated manual shift scheduling. Workers got unfair hours, managers wasted time juggling spreadsheets, and coverage gaps happened constantly.
+
+We decided to fix it.
+
+**The Constraint:**
+One week. Four people. A no-code platform none of us had used before.
+
+**What We Built:**
+- Automated shift assignment based on availability
+- Fair distribution algorithm (no one gets stuck with all the bad shifts)
+- Coverage validation (system won't let you under-staff)
+- Real-time updates for everyone
+
+**What I Learned:**
+
+*Day 1-2: Panic Learning*
+- Read every AppSuite doc I could find
+- Built toy examples to understand the logic
+- Realized it's not about the tool, it's about the system design
+
+*Day 3-4: Problem Modeling*
+- Mapped the shift scheduling as a constraint satisfaction problem
+- Workers = nodes, shifts = edges, fairness = optimization function
+- This mental model made everything click
+
+*Day 5-7: Build & Debug*
+- Implement core logic
+- Test with real scenarios
+- Fix bugs we didn't anticipate
+- Deploy and demo
+
+**The Real Win:**
+We identified a real problem from our own experience, designed a solution that enforced correctness, and built it fast.
+
+That's the skill I want to bring to every project: see the problem clearly, model it correctly, build it quickly.
+
+**Takeaway:**
+Tools matter less than thinking. We could've built this in React or Python. The platform was just the medium. The problem-solving was the game.
+      `,
+      tags: ['Internship', 'Learning']
+    },
+    {
+      id: 3,
+      title: 'Building NotesApp: My First MERN Stack Project',
+      date: 'November 2025',
+      readTime: '6 min read',
+      excerpt: 'The mistakes I made, the things I learned, and why deploying to production taught me more than any tutorial.',
+      content: `
+NotesApp was supposed to be a simple weekend project. "Just a CRUD app with React and Node.js," I thought.
+
+It took three weeks and taught me more than six months of tutorials.
+
+**What I Wanted to Build:**
+A note-taking app where you can:
+- Create, edit, delete notes
+- Organize by categories
+- Search and filter
+- User authentication
+
+Simple, right?
+
+**What Actually Happened:**
+
+*Week 1: The Easy Part*
+- Set up React frontend: Easy
+- Created Node.js backend: Easy
+- Connected to MongoDB: Easy
+- Basic CRUD operations: Easy
+
+I thought I was done. I was an idiot.
+
+*Week 2: The Reality Check*
+- "Wait, anyone can delete anyone's notes?"
+- Added user authentication (JWT tokens)
+- "Wait, tokens expire and users get logged out mid-note?"
+- Implemented refresh tokens
+- "Wait, the app crashes if MongoDB is down?"
+- Added proper error handling
+
+*Week 3: The Production Hell*
+- Deployed backend to Railway (not as simple as localhost)
+- Deployed frontend to Vercel (environment variables are confusing)
+- CORS issues (of course)
+- Database connection timeouts (why does this work locally but not in prod?)
+
+**What I Learned:**
+
+*Technical:*
+- How JWT authentication actually works (not just copy-paste)
+- Why you need proper error boundaries
+- Database connection pooling matters
+- Environment variables are not optional
+- CORS is everyone's enemy
+
+*Non-Technical:*
+- Building locally ≠ production-ready
+- Users will do things you never expected
+- Documentation is hard but necessary
+- "It works on my machine" is not a valid excuse
+
+**The Best Part:**
+It's live. Real people (okay, just my friends) use it. When something breaks, I have to fix it. That's infinitely more valuable than tutorial hell.
+
+**Current Status:**
+- ~500 lines of backend code
+- ~800 lines of frontend code
+- Hosted on real servers
+- Actually works (most of the time)
+
+**Next Steps:**
+- Add markdown support
+- Implement real-time sync
+- Mobile-responsive design improvements
+- Better search functionality
+
+But honestly? Just having a live app that people can use is already a win.
+
+**Takeaway:**
+Tutorials teach you syntax. Production teaches you systems. Deploy early, deploy often, and learn from real users.
+      `,
+      tags: ['Project', 'MERN', 'Learning']
+    },
+    {
+      id: 4,
+      title: 'Math Problems vs Code Problems: Same Game',
+      date: 'December 2025',
+      readTime: '3 min read',
+      excerpt: 'Why solving a math proof feels exactly like debugging code, and why that makes programming fun for me.',
+      content: `
+Here's what I realized: I love coding for the same reason I love math.
+
+**Math Problem:**
+"Prove that the sum of any two even numbers is even."
+
+**Code Problem:**
+"Why does this function return undefined instead of the user object?"
+
+These feel identical to me.
+
+**The Process:**
+
+*Step 1: Understand the constraints*
+- Math: What are we given? What do we need to prove?
+- Code: What inputs do we have? What output do we expect?
+
+*Step 2: Try the obvious thing*
+- Math: Let n = 2k and m = 2j...
+- Code: Add a console.log to see what's happening...
+
+*Step 3: Hit a wall*
+- Math: Wait, this doesn't work for negative numbers...
+- Code: Oh, the function returns before reaching the user object...
+
+*Step 4: Reframe the problem*
+- Math: What if we think about this differently?
+- Code: What if the issue is earlier in the call stack?
+
+*Step 5: Aha moment*
+- Math: Of course! n + m = 2(k + j), which is even by definition.
+- Code: The async function isn't being awaited. That's why it's undefined.
+
+**The Satisfaction:**
+In both cases, you go from "this makes no sense" to "oh, obviously."
+
+That dopamine hit when things click? That's why I code.
+
+**The Difference:**
+- Math proofs are elegant but abstract
+- Code solutions are messy but real
+- Math has one right answer
+- Code has many working solutions
+
+I prefer code because you can see your solution actually work. You don't just prove correctness—you deploy correctness.
+
+**Why This Matters:**
+A lot of people get into coding because "tech pays well" or "I want to build apps."
+
+I got into coding because I missed the puzzle-solving from math class.
+
+If you're like me—if you enjoyed proofs, logic puzzles, or finding patterns—you'll probably love debugging. It's the same mental game.
+
+**Takeaway:**
+Find what makes you excited about coding. For me, it's not the tech stack or the job market. It's the daily satisfaction of solving puzzles that actually ship.
+
+If your reason is different, that's fine. But know your reason. It'll keep you going when you're stuck in dependency hell at 2 AM.
+      `,
+      tags: ['Mindset', 'Learning']
+    }
+  ];
+
+  return (
+    <section
+      id="blog"
+      style={{
+        minHeight: '100vh',
+        padding: '6rem 2rem',
+        background: 'rgba(15, 23, 42, 0.3)'
+      }}
+    >
+      <div style={{
+        maxWidth: '900px',
+        margin: '0 auto'
+      }}>
+        <h2 style={{
+          fontSize: '2.5rem',
+          fontWeight: '700',
+          marginBottom: '1rem',
+          color: '#e8eaed',
+          textAlign: 'center'
+        }}>
+          Learning Out Loud
+        </h2>
+        <p style={{
+          fontSize: '1rem',
+          color: '#9ca3af',
+          textAlign: 'center',
+          marginBottom: '4rem'
+        }}>
+          Thoughts on learning to code, building projects, and solving problems
+        </p>
+
+        {/* Blog Posts Grid */}
+        {!selectedPost ? (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: '2rem'
+          }}>
+            {blogPosts.map((post) => (
+              <BlogPostCard 
+                key={post.id} 
+                post={post}
+                onClick={() => setSelectedPost(post)}
+              />
+            ))}
+          </div>
+        ) : (
+          <BlogPostFull 
+            post={selectedPost}
+            onBack={() => setSelectedPost(null)}
+          />
+        )}
+      </div>
+    </section>
+  );
+};
+
+const BlogPostCard = ({ post, onClick }) => {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: 'rgba(15, 23, 42, 0.6)',
+        border: '1px solid rgba(20, 184, 166, 0.2)',
+        borderRadius: '12px',
+        padding: '2rem',
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+        borderColor: hovered ? 'rgba(20, 184, 166, 0.5)' : 'rgba(20, 184, 166, 0.2)',
+        boxShadow: hovered ? '0 12px 30px rgba(20, 184, 166, 0.15)' : 'none'
+      }}
+    >
+      {/* Date and read time */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '1rem',
+        fontSize: '0.75rem',
+        color: '#6b7280'
+      }}>
+        <span>{post.date}</span>
+        <span>{post.readTime}</span>
+      </div>
+
+      {/* Title */}
+      <h3 style={{
+        fontSize: '1.25rem',
+        fontWeight: '700',
+        color: '#e8eaed',
+        marginBottom: '0.75rem',
+        lineHeight: '1.4'
+      }}>
+        {post.title}
+      </h3>
+
+      {/* Excerpt */}
+      <p style={{
+        fontSize: '0.875rem',
+        color: '#9ca3af',
+        lineHeight: '1.6',
+        marginBottom: '1rem'
+      }}>
+        {post.excerpt}
+      </p>
+
+      {/* Tags */}
+      <div style={{
+        display: 'flex',
+        gap: '0.5rem',
+        flexWrap: 'wrap'
+      }}>
+        {post.tags.map((tag, i) => (
+          <span
+            key={i}
+            style={{
+              padding: '0.25rem 0.5rem',
+              background: 'rgba(20, 184, 166, 0.1)',
+              border: '1px solid rgba(20, 184, 166, 0.3)',
+              borderRadius: '4px',
+              fontSize: '0.7rem',
+              color: '#14b8a6',
+              fontWeight: '500'
+            }}
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      {/* Read more indicator */}
+      <div style={{
+        marginTop: '1rem',
+        color: '#14b8a6',
+        fontSize: '0.875rem',
+        fontWeight: '600',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem'
+      }}>
+        Read more 
+        <span style={{
+          transform: hovered ? 'translateX(4px)' : 'translateX(0)',
+          transition: 'transform 0.2s ease'
+        }}>
+          →
+        </span>
+      </div>
+    </div>
+  );
+};
+
+const BlogPostFull = ({ post, onBack }) => {
+  return (
+    <div style={{
+      background: 'rgba(15, 23, 42, 0.6)',
+      border: '1px solid rgba(20, 184, 166, 0.2)',
+      borderRadius: '12px',
+      padding: '3rem',
+      maxWidth: '700px',
+      margin: '0 auto'
+    }}>
+      {/* Back button */}
+      <button
+        onClick={onBack}
+        style={{
+          background: 'transparent',
+          border: 'none',
+          color: '#14b8a6',
+          fontSize: '0.875rem',
+          fontWeight: '600',
+          cursor: 'pointer',
+          marginBottom: '2rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem 0',
+          transition: 'all 0.2s ease'
+        }}
+        onMouseEnter={(e) => e.target.style.transform = 'translateX(-4px)'}
+        onMouseLeave={(e) => e.target.style.transform = 'translateX(0)'}
+      >
+        ← Back to posts
+      </button>
+
+      {/* Post header */}
+      <div style={{
+        borderBottom: '1px solid rgba(20, 184, 166, 0.2)',
+        paddingBottom: '2rem',
+        marginBottom: '2rem'
+      }}>
+        <h1 style={{
+          fontSize: '2rem',
+          fontWeight: '700',
+          color: '#e8eaed',
+          marginBottom: '1rem',
+          lineHeight: '1.3'
+        }}>
+          {post.title}
+        </h1>
+
+        <div style={{
+          display: 'flex',
+          gap: '1rem',
+          alignItems: 'center',
+          fontSize: '0.875rem',
+          color: '#6b7280',
+          marginBottom: '1rem'
+        }}>
+          <span>{post.date}</span>
+          <span>•</span>
+          <span>{post.readTime}</span>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          gap: '0.5rem',
+          flexWrap: 'wrap'
+        }}>
+          {post.tags.map((tag, i) => (
+            <span
+              key={i}
+              style={{
+                padding: '0.4rem 0.75rem',
+                background: 'rgba(20, 184, 166, 0.1)',
+                border: '1px solid rgba(20, 184, 166, 0.3)',
+                borderRadius: '4px',
+                fontSize: '0.75rem',
+                color: '#14b8a6',
+                fontWeight: '500'
+              }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Post content */}
+      <div style={{
+        color: '#d1d5db',
+        fontSize: '1rem',
+        lineHeight: '1.8',
+        whiteSpace: 'pre-line'
+      }}>
+        {post.content.split('\n').map((paragraph, i) => {
+          // Handle bold text
+          if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
+            return (
+              <h3 key={i} style={{
+                fontSize: '1.125rem',
+                fontWeight: '700',
+                color: '#e8eaed',
+                marginTop: '2rem',
+                marginBottom: '1rem'
+              }}>
+                {paragraph.replace(/\*\*/g, '')}
+              </h3>
+            );
+          }
+          
+          // Handle italic emphasis
+          if (paragraph.startsWith('*') && paragraph.endsWith('*') && !paragraph.startsWith('**')) {
+            return (
+              <h4 key={i} style={{
+                fontSize: '1rem',
+                fontWeight: '600',
+                color: '#14b8a6',
+                marginTop: '1.5rem',
+                marginBottom: '0.5rem'
+              }}>
+                {paragraph.replace(/\*/g, '')}
+              </h4>
+            );
+          }
+          
+          // Handle list items
+          if (paragraph.trim().startsWith('-')) {
+            return (
+              <div key={i} style={{
+                paddingLeft: '1.5rem',
+                marginBottom: '0.5rem',
+                color: '#9ca3af'
+              }}>
+                {paragraph}
+              </div>
+            );
+          }
+          
+          // Regular paragraphs
+          if (paragraph.trim()) {
+            return (
+              <p key={i} style={{
+                marginBottom: '1rem'
+              }}>
+                {paragraph}
+              </p>
+            );
+          }
+          
+          return null;
+        })}
       </div>
     </div>
   );
