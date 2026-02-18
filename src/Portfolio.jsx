@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// ============================================================================
-// SIMPLE, HONEST PORTFOLIO
-// "Math problems are fun. Coding problems are the same game."
-// ============================================================================
 
 const Portfolio = () => {
   return (
@@ -24,9 +20,6 @@ const Portfolio = () => {
   );
 };
 
-// ============================================================================
-// NAVIGATION
-// ============================================================================
 const Navigation = () => {
   return (
     <nav style={{
@@ -77,9 +70,7 @@ const Navigation = () => {
   );
 };
 
-// ============================================================================
-// HERO SECTION
-// ============================================================================
+
 const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
 
@@ -182,11 +173,9 @@ const HeroSection = () => {
           </div>
           <div>
             <div style={{ fontSize: '2rem', fontWeight: '700', color: '#14b8a6' }}>Apr 2026</div>
-            <div style={{ fontSize: '0.875rem', color: '#9ca3af' }}>Starting Position</div>
           </div>
         </div>
 
-        {/* CTA buttons */}
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
           <a
             href="#work"
@@ -243,9 +232,7 @@ const HeroSection = () => {
   );
 };
 
-// ============================================================================
-// SKILLS SECTION
-// ============================================================================
+
 const SkillsSection = () => {
   const skillGroups = [
     {
@@ -361,25 +348,23 @@ const SkillsSection = () => {
   );
 };
 
-// ============================================================================
-// PROJECTS SECTION
-// ============================================================================
+
 const ProjectsSection = () => {
   const projects = [
     {
-      title: 'NotesApp',
-      description: 'A full-stack note-taking application with real-time updates and user authentication. Built to practice MERN stack development.',
+      title: 'Agakayi',
+      description: 'Agakayi is a simple React-based note app inspired by the traditional Rwandan “agakayi” notebook. While the original was used to track debts, this version is designed for capturing ideas, reminders, and everyday thoughts. Built as part of my journey learning React.',
       tech: ['React', 'Node.js', 'MongoDB'],
       status: 'Live',
       statusColor: '#22c55e',
-      link: 'https://notes-app-frontend-five-rho.vercel.app', // Replace with actual URL
-      github: 'https://github.com/Brice-art/NotesApp',
+      link: 'https://agakayi.xyz', 
+      github: 'https://github.com/Brice-art/Agakayi',
       type: 'personal',
       highlight: 'Live Production App'
     },
     {
       title: 'MyStore',
-      description: 'E-commerce web application with product catalog, shopping cart, and admin panel. Learning PHP backend development and MySQL database design.',
+      description: 'A prototype e-commerce application developed as part of my exploration of PHP backend development and relational database design. The goal was to understand the core mechanics behind online retail systems.',
       tech: ['PHP', 'MySQL', 'HTML/CSS', 'JavaScript'],
       status: 'In Development',
       statusColor: '#f59e0b',
@@ -399,7 +384,7 @@ const ProjectsSection = () => {
       type: 'internship',
       company: 'NEOJAPAN',
       duration: '1 Week',
-      highlight: 'Solved Real Business Problem'
+      highlight: 'Team-work & Rapid learning'
     },
     {
       title: 'Full-Stack Web Application',
@@ -643,56 +628,20 @@ const ProjectCard = ({ project }) => {
   );
 };
 
-// ============================================================================
-// BLOG SECTION
-// ============================================================================
+
 const BlogSection = () => {
   const [selectedPost, setSelectedPost] = useState(null);
 
   const blogPosts = [
     {
       id: 1,
-      title: 'From Civil Engineering to Code',
-      date: 'January 2026',
-      readTime: '5 min read',
-      excerpt: 'Why I switched from building physical structures to building software systems, and what civil engineering taught me about problem-solving.',
-      content: `
-I spent years studying civil engineering at Saitama University, learning about structural analysis, load calculations, and constraint-based design. The whole field is about understanding systems under pressure and making sure things don't break.
-
-Turns out, that's exactly what coding is.
-
-The switch happened when I realized I enjoyed the problem-solving part more than the physical construction part. In civil engineering, you're constrained by physics, materials, and budgets. In software, you're constrained by logic, performance, and user needs.
-
-Same game. Different medium.
-
-**What Civil Engineering Taught Me:**
-- Everything is a system with constraints
-- Start with the requirements, work backwards
-- Test your assumptions before building
-- Document everything (or regret it later)
-- Simple solutions are usually better than complex ones
-
-**What I'm Still Learning:**
-- How to write code that others can actually read
-- When to optimize vs. when to ship
-- How to debug when the error message makes no sense
-- Balancing perfectionism with practicality
-
-The biggest mindset shift? In civil engineering, you build once and it lasts decades. In software, you iterate constantly. I'm still adjusting to that speed.
-
-But I'm having more fun solving problems with code than I ever did with concrete.
-      `,
-      tags: ['Career', 'Learning']
-    },
-    {
-      id: 2,
       title: 'One Week to Build an App: NEOJAPAN Internship',
       date: 'August 2025',
       readTime: '4 min read',
-      excerpt: 'What I learned building a shift management system in 7 days with zero experience in the platform.',
+      excerpt: 'What I learned building a shift management system in 4 days with zero experience in the platform.',
       content: `
 Day 1: "What's AppSuite?"
-Day 7: "Here's a working shift management system."
+Day 5: "Here's a working shift management system."
 
 That was my NEOJAPAN internship in a nutshell.
 
@@ -717,12 +666,12 @@ One week. Four people. A no-code platform none of us had used before.
 - Built toy examples to understand the logic
 - Realized it's not about the tool, it's about the system design
 
-*Day 3-4: Problem Modeling*
+*Day 3: Problem Modeling*
 - Mapped the shift scheduling as a constraint satisfaction problem
 - Workers = nodes, shifts = edges, fairness = optimization function
 - This mental model made everything click
 
-*Day 5-7: Build & Debug*
+*Day 4-5: Build & Debug*
 - Implement core logic
 - Test with real scenarios
 - Fix bugs we didn't anticipate
@@ -737,153 +686,6 @@ That's the skill I want to bring to every project: see the problem clearly, mode
 Tools matter less than thinking. We could've built this in React or Python. The platform was just the medium. The problem-solving was the game.
       `,
       tags: ['Internship', 'Learning']
-    },
-    {
-      id: 3,
-      title: 'Building NotesApp: My First MERN Stack Project',
-      date: 'November 2025',
-      readTime: '6 min read',
-      excerpt: 'The mistakes I made, the things I learned, and why deploying to production taught me more than any tutorial.',
-      content: `
-NotesApp was supposed to be a simple weekend project. "Just a CRUD app with React and Node.js," I thought.
-
-It took three weeks and taught me more than six months of tutorials.
-
-**What I Wanted to Build:**
-A note-taking app where you can:
-- Create, edit, delete notes
-- Organize by categories
-- Search and filter
-- User authentication
-
-Simple, right?
-
-**What Actually Happened:**
-
-*Week 1: The Easy Part*
-- Set up React frontend: Easy
-- Created Node.js backend: Easy
-- Connected to MongoDB: Easy
-- Basic CRUD operations: Easy
-
-I thought I was done. I was an idiot.
-
-*Week 2: The Reality Check*
-- "Wait, anyone can delete anyone's notes?"
-- Added user authentication (JWT tokens)
-- "Wait, tokens expire and users get logged out mid-note?"
-- Implemented refresh tokens
-- "Wait, the app crashes if MongoDB is down?"
-- Added proper error handling
-
-*Week 3: The Production Hell*
-- Deployed backend to Railway (not as simple as localhost)
-- Deployed frontend to Vercel (environment variables are confusing)
-- CORS issues (of course)
-- Database connection timeouts (why does this work locally but not in prod?)
-
-**What I Learned:**
-
-*Technical:*
-- How JWT authentication actually works (not just copy-paste)
-- Why you need proper error boundaries
-- Database connection pooling matters
-- Environment variables are not optional
-- CORS is everyone's enemy
-
-*Non-Technical:*
-- Building locally ≠ production-ready
-- Users will do things you never expected
-- Documentation is hard but necessary
-- "It works on my machine" is not a valid excuse
-
-**The Best Part:**
-It's live. Real people (okay, just my friends) use it. When something breaks, I have to fix it. That's infinitely more valuable than tutorial hell.
-
-**Current Status:**
-- ~500 lines of backend code
-- ~800 lines of frontend code
-- Hosted on real servers
-- Actually works (most of the time)
-
-**Next Steps:**
-- Add markdown support
-- Implement real-time sync
-- Mobile-responsive design improvements
-- Better search functionality
-
-But honestly? Just having a live app that people can use is already a win.
-
-**Takeaway:**
-Tutorials teach you syntax. Production teaches you systems. Deploy early, deploy often, and learn from real users.
-      `,
-      tags: ['Project', 'MERN', 'Learning']
-    },
-    {
-      id: 4,
-      title: 'Math Problems vs Code Problems: Same Game',
-      date: 'December 2025',
-      readTime: '3 min read',
-      excerpt: 'Why solving a math proof feels exactly like debugging code, and why that makes programming fun for me.',
-      content: `
-Here's what I realized: I love coding for the same reason I love math.
-
-**Math Problem:**
-"Prove that the sum of any two even numbers is even."
-
-**Code Problem:**
-"Why does this function return undefined instead of the user object?"
-
-These feel identical to me.
-
-**The Process:**
-
-*Step 1: Understand the constraints*
-- Math: What are we given? What do we need to prove?
-- Code: What inputs do we have? What output do we expect?
-
-*Step 2: Try the obvious thing*
-- Math: Let n = 2k and m = 2j...
-- Code: Add a console.log to see what's happening...
-
-*Step 3: Hit a wall*
-- Math: Wait, this doesn't work for negative numbers...
-- Code: Oh, the function returns before reaching the user object...
-
-*Step 4: Reframe the problem*
-- Math: What if we think about this differently?
-- Code: What if the issue is earlier in the call stack?
-
-*Step 5: Aha moment*
-- Math: Of course! n + m = 2(k + j), which is even by definition.
-- Code: The async function isn't being awaited. That's why it's undefined.
-
-**The Satisfaction:**
-In both cases, you go from "this makes no sense" to "oh, obviously."
-
-That dopamine hit when things click? That's why I code.
-
-**The Difference:**
-- Math proofs are elegant but abstract
-- Code solutions are messy but real
-- Math has one right answer
-- Code has many working solutions
-
-I prefer code because you can see your solution actually work. You don't just prove correctness—you deploy correctness.
-
-**Why This Matters:**
-A lot of people get into coding because "tech pays well" or "I want to build apps."
-
-I got into coding because I missed the puzzle-solving from math class.
-
-If you're like me—if you enjoyed proofs, logic puzzles, or finding patterns—you'll probably love debugging. It's the same mental game.
-
-**Takeaway:**
-Find what makes you excited about coding. For me, it's not the tech stack or the job market. It's the daily satisfaction of solving puzzles that actually ship.
-
-If your reason is different, that's fine. But know your reason. It'll keep you going when you're stuck in dependency hell at 2 AM.
-      `,
-      tags: ['Mindset', 'Learning']
     }
   ];
 
@@ -1199,9 +1001,7 @@ const BlogPostFull = ({ post, onBack }) => {
   );
 };
 
-// ============================================================================
-// CONTACT SECTION
-// ============================================================================
+
 const ContactSection = () => {
   return (
     <section
@@ -1283,10 +1083,6 @@ const ContactSection = () => {
             <div style={{ fontSize: '1rem', color: '#e8eaed', fontWeight: '600' }}>Tokyo, Japan</div>
           </div>
           <div>
-            <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>Start Date</div>
-            <div style={{ fontSize: '1rem', color: '#e8eaed', fontWeight: '600' }}>April 2026</div>
-          </div>
-          <div>
             <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>Languages</div>
             <div style={{ fontSize: '1rem', color: '#e8eaed', fontWeight: '600' }}>EN • JP • RW</div>
           </div>
@@ -1347,9 +1143,7 @@ const ContactCard = ({ icon, label, value, link }) => (
   </a>
 );
 
-// ============================================================================
-// FOOTER
-// ============================================================================
+
 const Footer = () => (
   <footer style={{
     borderTop: '1px solid rgba(20, 184, 166, 0.2)',
@@ -1359,7 +1153,7 @@ const Footer = () => (
     color: '#6b7280',
     background: '#0a0e27'
   }}>
-    <p>Built with React • 2026 Brice Byiringiro</p>
+    <p>©Copyright 2026 Brice Byiringiro</p>
     <p style={{ marginTop: '0.5rem', opacity: 0.7 }}>
       Tokyo, Japan
     </p>
