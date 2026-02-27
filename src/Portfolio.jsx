@@ -131,7 +131,7 @@ const HeroSection = () => {
           marginBottom: '1.5rem',
           letterSpacing: '-0.02em'
         }}>
-          “Full-Stack Developer specializing in Laravel & React. 
+          Full-Stack Developer specializing in Laravel & React. 
         </h1>
 
         <h2 style={{
@@ -141,19 +141,8 @@ const HeroSection = () => {
           lineHeight: '1.4',
           marginBottom: '2rem'
         }}>
-          I build clean, functional web applications and I’m obsessed with growing into systems-level engineering.”
+          I build clean, functional web applications and I’m obsessed with growing into systems-level engineering.
         </h2>
-
-        <p style={{
-          fontSize: '1.125rem',
-          color: '#d1d5db',
-          lineHeight: '1.8',
-          marginBottom: '3rem',
-          maxWidth: '700px'
-        }}>
-          Full-stack developer based in Tokyo. I build web applications with React, Node.js, Python, and PHP. 
-          Started with civil engineering, discovered I prefer building digital systems.
-        </p>
 
         {/* Quick stats */}
         <div style={{
