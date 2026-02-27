@@ -131,7 +131,7 @@ const HeroSection = () => {
           marginBottom: '1.5rem',
           letterSpacing: '-0.02em'
         }}>
-          I've always loved solving <span style={{ color: '#14b8a6' }}>math problems</span>
+          “Full-Stack Developer specializing in Laravel & React. 
         </h1>
 
         <h2 style={{
@@ -141,7 +141,7 @@ const HeroSection = () => {
           lineHeight: '1.4',
           marginBottom: '2rem'
         }}>
-          Turns out coding is the same game with different rules. Pretty fun.
+          I build clean, functional web applications and I’m obsessed with growing into systems-level engineering.”
         </h2>
 
         <p style={{
