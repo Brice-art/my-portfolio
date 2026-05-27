@@ -318,7 +318,7 @@ const HeroSection = () => {
             View Resume
           </a>
           <a
-            href="/cv.pdf"
+            href="/Resume-Brice.pdf"
             download
             style={{
               padding: '1rem 2rem',
