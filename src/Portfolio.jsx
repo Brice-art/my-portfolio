@@ -762,7 +762,7 @@ const ResumeSection = () => {
         <div style={{ marginBottom: '1.25rem' }}>
           <object data="/Resume-Brice.pdf" type="application/pdf" width="100%" height="600">
             <p style={{ color: '#9ca3af' }}>
-              Your browser does not support embedded PDFs. <a href="/cv.pdf" style={{ color: '#14b8a6' }}>Download the CV</a> instead.
+              Your browser does not support embedded PDFs. <a href="/Resume-Brice.pdf" style={{ color: '#14b8a6' }}>Download the CV</a> instead.
             </p>
           </object>
         </div>
