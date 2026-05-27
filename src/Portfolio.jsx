@@ -760,7 +760,7 @@ const ResumeSection = () => {
         </p>
 
         <div style={{ marginBottom: '1.25rem' }}>
-          <object data="/cv.pdf" type="application/pdf" width="100%" height="600">
+          <object data="/Resume-Brice.pdf" type="application/pdf" width="100%" height="600">
             <p style={{ color: '#9ca3af' }}>
               Your browser does not support embedded PDFs. <a href="/cv.pdf" style={{ color: '#14b8a6' }}>Download the CV</a> instead.
             </p>
@@ -768,7 +768,7 @@ const ResumeSection = () => {
         </div>
 
         <div>
-          <a href="/cv.pdf" download style={{ padding: '0.65rem 1.2rem', background: '#14b8a6', color: '#0a0e27', textDecoration: 'none', borderRadius: '8px', fontWeight: '600' }}>
+          <a href="/Resume-Brice.pdf" download style={{ padding: '0.65rem 1.2rem', background: '#14b8a6', color: '#0a0e27', textDecoration: 'none', borderRadius: '8px', fontWeight: '600' }}>
             Download CV
           </a>
         </div>
