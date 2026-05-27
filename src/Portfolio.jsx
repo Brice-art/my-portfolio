@@ -143,22 +143,6 @@ const GlobalStyles = () => (
   `}</style>
 );
 
-// ─── Intersection observer hook ───────────────────────────────────────────────
-function useFadeIn(threshold = 0.15) {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return ref;
-}
-
 // ─── Nav ──────────────────────────────────────────────────────────────────────
 const Nav = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -182,7 +166,7 @@ const Nav = () => {
         BAB
       </span>
       <div style={{ display: "flex", gap: "2.5rem" }}>
-        {[["Work", "#work"], ["Resume", "#resume"], ["About", "#about"], ["Contact", "#contact"]].map(([label, href]) => (
+        {[["Work", "#work"], ["Resume", "#resume"], ["Skills", "#skills"], ["Contact", "#contact"]].map(([label, href]) => (
           <a key={label} href={href} className="nav-link">{label}</a>
         ))}
       </div>
@@ -334,7 +318,7 @@ const HeroSection = () => {
             View Resume
           </a>
           <a
-            href="/Resume-Brice.pdf"
+            href="/cv.pdf"
             download
             style={{
               padding: '1rem 2rem',
@@ -753,123 +737,6 @@ const ProjectCard = ({ project }) => {
 };
 
 
-const BlogSection = () => {
-  const [selectedPost, setSelectedPost] = useState(null);
-
-  const blogPosts = [
-    {
-      id: 1,
-      title: 'One Week to Build an App: NEOJAPAN Internship',
-      date: 'August 2025',
-      readTime: '4 min read',
-      excerpt: 'What I learned building a shift management system in 4 days with zero experience in the platform.',
-      content: `
-Day 1: "What's AppSuite?"
-Day 5: "Here's a working shift management system."
-
-That was my NEOJAPAN internship in a nutshell.
-
-**The Problem We Solved:**
-As part-time workers, we all hated manual shift scheduling. Workers got unfair hours, managers wasted time juggling spreadsheets, and coverage gaps happened constantly.
-
-We decided to fix it.
-
-**The Constraint:**
-One week. Four people. A no-code platform none of us had used before.
-
-**What We Built:**
-- Automated shift assignment based on availability
-- Fair distribution algorithm (no one gets stuck with all the bad shifts)
-- Coverage validation (system won't let you under-staff)
-- Real-time updates for everyone
-
-**What I Learned:**
-
-*Day 1-2: Panic Learning*
-- Read every AppSuite doc I could find
-- Built toy examples to understand the logic
-- Realized it's not about the tool, it's about the system design
-
-*Day 3: Problem Modeling*
-- Mapped the shift scheduling as a constraint satisfaction problem
-- Workers = nodes, shifts = edges, fairness = optimization function
-- This mental model made everything click
-
-*Day 4-5: Build & Debug*
-- Implement core logic
-- Test with real scenarios
-- Fix bugs we didn't anticipate
-- Deploy and demo
-
-**The Real Win:**
-We identified a real problem from our own experience, designed a solution that enforced correctness, and built it fast.
-
-That's the skill I want to bring to every project: see the problem clearly, model it correctly, build it quickly.
-
-**Takeaway:**
-Tools matter less than thinking. We could've built this in React or Python. The platform was just the medium. The problem-solving was the game.
-      `,
-      tags: ['Internship', 'Learning']
-    }
-  ];
-
-  return (
-    <section
-      id="blog"
-      style={{
-        minHeight: '100vh',
-        padding: '6rem 2rem',
-        background: 'rgba(15, 23, 42, 0.3)'
-      }}
-    >
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto'
-      }}>
-        <h2 style={{
-          fontSize: '2.5rem',
-          fontWeight: '700',
-          marginBottom: '1rem',
-          color: '#e8eaed',
-          textAlign: 'center'
-        }}>
-          Learning Out Loud
-        </h2>
-        <p style={{
-          fontSize: '1rem',
-          color: '#9ca3af',
-          textAlign: 'center',
-          marginBottom: '4rem'
-        }}>
-          Thoughts on learning to code, building projects, and solving problems
-        </p>
-
-        {/* Blog Posts Grid */}
-        {!selectedPost ? (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-            gap: '2rem'
-          }}>
-            {blogPosts.map((post) => (
-              <BlogPostCard 
-                key={post.id} 
-                post={post}
-                onClick={() => setSelectedPost(post)}
-              />
-            ))}
-          </div>
-        ) : (
-          <BlogPostFull 
-            post={selectedPost}
-            onBack={() => setSelectedPost(null)}
-          />
-        )}
-      </div>
-    </section>
-  );
-};
-
 const ResumeSection = () => {
   return (
     <section
@@ -886,7 +753,7 @@ const ResumeSection = () => {
         </h2>
 
         <p style={{ color: '#9ca3af', marginBottom: '1rem' }}>
-          Stack: React, Node.js, JavaScript, SQL, PostgreSQL, PHP, Laravel, Flask, Django, DSA in Python
+          Stack: React, Node, JavaScript, SQL, PostgreSQL, PHP, Laravel, Flask, Django, DSA in Python
         </p>
         <p style={{ color: '#9ca3af', marginBottom: '1.5rem' }}>
           Languages: Kinyarwanda; Japanese (BJT 430); English (TOEIC 930)
@@ -910,260 +777,6 @@ const ResumeSection = () => {
   );
 };
 
-const BlogPostCard = ({ post, onClick }) => {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: 'rgba(15, 23, 42, 0.6)',
-        border: '1px solid rgba(20, 184, 166, 0.2)',
-        borderRadius: '12px',
-        padding: '2rem',
-        cursor: 'pointer',
-        transition: 'all 0.3s ease',
-        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
-        borderColor: hovered ? 'rgba(20, 184, 166, 0.5)' : 'rgba(20, 184, 166, 0.2)',
-        boxShadow: hovered ? '0 12px 30px rgba(20, 184, 166, 0.15)' : 'none'
-      }}
-    >
-      {/* Date and read time */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '1rem',
-        fontSize: '0.75rem',
-        color: '#6b7280'
-      }}>
-        <span>{post.date}</span>
-        <span>{post.readTime}</span>
-      </div>
-
-      {/* Title */}
-      <h3 style={{
-        fontSize: '1.25rem',
-        fontWeight: '700',
-        color: '#e8eaed',
-        marginBottom: '0.75rem',
-        lineHeight: '1.4'
-      }}>
-        {post.title}
-      </h3>
-
-      {/* Excerpt */}
-      <p style={{
-        fontSize: '0.875rem',
-        color: '#9ca3af',
-        lineHeight: '1.6',
-        marginBottom: '1rem'
-      }}>
-        {post.excerpt}
-      </p>
-
-      {/* Tags */}
-      <div style={{
-        display: 'flex',
-        gap: '0.5rem',
-        flexWrap: 'wrap'
-      }}>
-        {post.tags.map((tag, i) => (
-          <span
-            key={i}
-            style={{
-              padding: '0.25rem 0.5rem',
-              background: 'rgba(20, 184, 166, 0.1)',
-              border: '1px solid rgba(20, 184, 166, 0.3)',
-              borderRadius: '4px',
-              fontSize: '0.7rem',
-              color: '#14b8a6',
-              fontWeight: '500'
-            }}
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      {/* Read more indicator */}
-      <div style={{
-        marginTop: '1rem',
-        color: '#14b8a6',
-        fontSize: '0.875rem',
-        fontWeight: '600',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem'
-      }}>
-        Read more 
-        <span style={{
-          transform: hovered ? 'translateX(4px)' : 'translateX(0)',
-          transition: 'transform 0.2s ease'
-        }}>
-          →
-        </span>
-      </div>
-    </div>
-  );
-};
-
-const BlogPostFull = ({ post, onBack }) => {
-  return (
-    <div style={{
-      background: 'rgba(15, 23, 42, 0.6)',
-      border: '1px solid rgba(20, 184, 166, 0.2)',
-      borderRadius: '12px',
-      padding: '3rem',
-      maxWidth: '700px',
-      margin: '0 auto'
-    }}>
-      {/* Back button */}
-      <button
-        onClick={onBack}
-        style={{
-          background: 'transparent',
-          border: 'none',
-          color: '#14b8a6',
-          fontSize: '0.875rem',
-          fontWeight: '600',
-          cursor: 'pointer',
-          marginBottom: '2rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          padding: '0.5rem 0',
-          transition: 'all 0.2s ease'
-        }}
-        onMouseEnter={(e) => e.target.style.transform = 'translateX(-4px)'}
-        onMouseLeave={(e) => e.target.style.transform = 'translateX(0)'}
-      >
-        ← Back to posts
-      </button>
-
-      {/* Post header */}
-      <div style={{
-        borderBottom: '1px solid rgba(20, 184, 166, 0.2)',
-        paddingBottom: '2rem',
-        marginBottom: '2rem'
-      }}>
-        <h1 style={{
-          fontSize: '2rem',
-          fontWeight: '700',
-          color: '#e8eaed',
-          marginBottom: '1rem',
-          lineHeight: '1.3'
-        }}>
-          {post.title}
-        </h1>
-
-        <div style={{
-          display: 'flex',
-          gap: '1rem',
-          alignItems: 'center',
-          fontSize: '0.875rem',
-          color: '#6b7280',
-          marginBottom: '1rem'
-        }}>
-          <span>{post.date}</span>
-          <span>•</span>
-          <span>{post.readTime}</span>
-        </div>
-
-        <div style={{
-          display: 'flex',
-          gap: '0.5rem',
-          flexWrap: 'wrap'
-        }}>
-          {post.tags.map((tag, i) => (
-            <span
-              key={i}
-              style={{
-                padding: '0.4rem 0.75rem',
-                background: 'rgba(20, 184, 166, 0.1)',
-                border: '1px solid rgba(20, 184, 166, 0.3)',
-                borderRadius: '4px',
-                fontSize: '0.75rem',
-                color: '#14b8a6',
-                fontWeight: '500'
-              }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Post content */}
-      <div style={{
-        color: '#d1d5db',
-        fontSize: '1rem',
-        lineHeight: '1.8',
-        whiteSpace: 'pre-line'
-      }}>
-        {post.content.split('\n').map((paragraph, i) => {
-          // Handle bold text
-          if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
-            return (
-              <h3 key={i} style={{
-                fontSize: '1.125rem',
-                fontWeight: '700',
-                color: '#e8eaed',
-                marginTop: '2rem',
-                marginBottom: '1rem'
-              }}>
-                {paragraph.replace(/\*\*/g, '')}
-              </h3>
-            );
-          }
-          
-          // Handle italic emphasis
-          if (paragraph.startsWith('*') && paragraph.endsWith('*') && !paragraph.startsWith('**')) {
-            return (
-              <h4 key={i} style={{
-                fontSize: '1rem',
-                fontWeight: '600',
-                color: '#14b8a6',
-                marginTop: '1.5rem',
-                marginBottom: '0.5rem'
-              }}>
-                {paragraph.replace(/\*/g, '')}
-              </h4>
-            );
-          }
-          
-          // Handle list items
-          if (paragraph.trim().startsWith('-')) {
-            return (
-              <div key={i} style={{
-                paddingLeft: '1.5rem',
-                marginBottom: '0.5rem',
-                color: '#9ca3af'
-              }}>
-                {paragraph}
-              </div>
-            );
-          }
-          
-          // Regular paragraphs
-          if (paragraph.trim()) {
-            return (
-              <p key={i} style={{
-                marginBottom: '1rem'
-              }}>
-                {paragraph}
-              </p>
-            );
-          }
-          
-          return null;
-        })}
-      </div>
-    </div>
-  );
-};
 
 
 const ContactSection = () => {
@@ -1244,7 +857,7 @@ const ContactSection = () => {
         }}>
           <div>
             <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>Location</div>
-            <div style={{ fontSize: '1rem', color: '#e8eaed', fontWeight: '600' }}>Tokyo, Japan</div>
+            <div style={{ fontSize: '1rem', color: '#e8eaed', fontWeight: '600' }}>Remote / Rwanda</div>
           </div>
           <div>
             <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>Languages</div>
@@ -1319,9 +932,22 @@ const Footer = () => (
   }}>
     <p>©Copyright 2026 Brice Byiringiro</p>
     <p style={{ marginTop: '0.5rem', opacity: 0.7 }}>
-      Tokyo, Japan
+      Remote / Rwanda
     </p>
   </footer>
+);
+
+const Portfolio = () => (
+  <>
+    <GlobalStyles />
+    <Nav />
+    <HeroSection />
+    <SkillsSection />
+    <ProjectsSection />
+    <ResumeSection />
+    <ContactSection />
+    <Footer />
+  </>
 );
 
 export default Portfolio;
