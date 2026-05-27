@@ -1,71 +1,190 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from "react";
 
+// ─── Fonts loaded via @import in style tag ───────────────────────────────────
+const GlobalStyles = () => (
+  <style>{`
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Syne:wght@400;500;600;700;800&display=swap');
 
-const Portfolio = () => {
-  return (
-    <div style={{
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      background: '#0a0e27',
-      color: '#e8eaed',
-      minHeight: '100vh'
-    }}>
-      <Navigation />
-      <HeroSection />
-      <SkillsSection />
-      <ProjectsSection />
-      <ResumeSection />
-      <BlogSection />
-      <ContactSection />
-      <Footer />
-    </div>
-  );
-};
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-const Navigation = () => {
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #f5f4f0;
+      color: #1a1a18;
+      font-family: 'DM Mono', monospace;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: #1a1a18; color: #f5f4f0; }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.75s cubic-bezier(0.4,0,0.2,1), transform 0.75s cubic-bezier(0.4,0,0.2,1);
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    .fade-in-slow {
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+    .fade-in-slow.visible { opacity: 1; }
+
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+
+    .marquee-track:hover { animation-play-state: paused; }
+
+    .project-card {
+      border-top: 1px solid #1a1a1822;
+      padding: 2.5rem 0;
+      transition: background 0.2s ease;
+      cursor: default;
+    }
+    .project-card:last-child { border-bottom: 1px solid #1a1a1822; }
+
+    .project-card .arrow {
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .project-card:hover .arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .project-card:hover .project-title {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 0.65rem 1.4rem;
+      border: 1px solid #1a1a1855;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      color: #1a1a18;
+      background: transparent;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      cursor: pointer;
+    }
+    .btn-outline:hover {
+      background: #1a1a18;
+      color: #f5f4f0;
+      border-color: #1a1a18;
+    }
+
+    .btn-solid {
+      display: inline-block;
+      padding: 0.65rem 1.4rem;
+      border: 1px solid #1a1a18;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      color: #f5f4f0;
+      background: #1a1a18;
+      transition: background 0.15s ease, color 0.15s ease;
+      cursor: pointer;
+    }
+    .btn-solid:hover {
+      background: #333;
+    }
+
+    .nav-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      color: #1a1a1888;
+      transition: color 0.15s ease;
+    }
+    .nav-link:hover { color: #1a1a18; }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.05em;
+      color: #1a1a1866;
+      border: 1px solid #1a1a1822;
+      padding: 0.2rem 0.55rem;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: #1a1a1833;
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50%       { opacity: 0.9; transform: scaleY(1.15); }
+    }
+
+    @media (max-width: 640px) {
+      .hero-name { font-size: 2.4rem !important; }
+      .hero-sub  { font-size: 0.75rem !important; }
+      .section-title { font-size: 2rem !important; }
+    }
+  `}</style>
+);
+
+// ─── Intersection observer hook ───────────────────────────────────────────────
+function useFadeIn(threshold = 0.15) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); obs.disconnect(); } },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return ref;
+}
+
+// ─── Nav ──────────────────────────────────────────────────────────────────────
+const Nav = () => {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+
   return (
     <nav style={{
-      position: 'sticky',
-      top: 0,
-      background: 'rgba(10, 14, 39, 0.95)',
-      backdropFilter: 'blur(10px)',
-      borderBottom: '1px solid rgba(20, 184, 166, 0.2)',
-      padding: '1rem 2rem',
-      zIndex: 100
+      position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+      padding: "1.4rem 2.5rem",
+      display: "flex", alignItems: "center", justifyContent: "space-between",
+      background: scrolled ? "rgba(245,244,240,0.92)" : "transparent",
+      backdropFilter: scrolled ? "blur(12px)" : "none",
+      borderBottom: scrolled ? "1px solid #1a1a1814" : "1px solid transparent",
+      transition: "background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease"
     }}>
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
-        <div style={{
-          fontSize: '1.25rem',
-          fontWeight: '700',
-          color: '#14b8a6'
-        }}>
-          Brice.Dev
-        </div>
-        
-        <div style={{ display: 'flex', gap: '2rem' }}>
-          {['Skills', 'Work', 'Resume', 'Contact'].map(item => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              style={{
-                color: '#9ca3af',
-                textDecoration: 'none',
-                fontSize: '0.875rem',
-                fontWeight: '500',
-                transition: 'color 0.2s ease'
-              }}
-              onMouseEnter={(e) => e.target.style.color = '#14b8a6'}
-              onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
-            >
-              {item}
-            </a>
-          ))}
-        </div>
+      <span style={{ fontFamily: "'Syne', sans-serif", fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.12em", color: "#1a1a18" }}>
+        BAB
+      </span>
+      <div style={{ display: "flex", gap: "2.5rem" }}>
+        {[["Work", "#work"], ["Resume", "#resume"], ["About", "#about"], ["Contact", "#contact"]].map(([label, href]) => (
+          <a key={label} href={href} className="nav-link">{label}</a>
+        ))}
       </div>
     </nav>
   );
