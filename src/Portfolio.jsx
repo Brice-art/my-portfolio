@@ -13,6 +13,7 @@ const Portfolio = () => {
       <HeroSection />
       <SkillsSection />
       <ProjectsSection />
+      <ResumeSection />
       <BlogSection />
       <ContactSection />
       <Footer />
@@ -47,7 +48,7 @@ const Navigation = () => {
         </div>
         
         <div style={{ display: 'flex', gap: '2rem' }}>
-          {['Skills', 'Work', 'Contact'].map(item => (
+          {['Skills', 'Work', 'Resume', 'Contact'].map(item => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
@@ -101,14 +102,14 @@ const HeroSection = () => {
         pointerEvents: 'none'
       }} />
 
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto',
-        position: 'relative',
-        opacity: mounted ? 1 : 0,
-        transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-        transition: 'all 0.8s ease'
-      }}>
+        <div style={{
+          maxWidth: '900px',
+          margin: '0 auto',
+          position: 'relative',
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+          transition: 'all 0.8s ease'
+        }}>
         <div style={{
           display: 'inline-block',
           background: 'rgba(20, 184, 166, 0.1)',
@@ -121,7 +122,7 @@ const HeroSection = () => {
           marginBottom: '2rem',
           letterSpacing: '0.05em'
         }}>
-          BASED IN TOKYO, JAPAN
+          SOFTWARE ENGINEERING
         </div>
 
         <h1 style={{
@@ -191,6 +192,47 @@ const HeroSection = () => {
             See My Work
           </a>
           <a
+            href="#resume"
+            style={{
+              padding: '1rem 2rem',
+              background: 'transparent',
+              color: '#e8eaed',
+              textDecoration: 'none',
+              borderRadius: '8px',
+              fontWeight: '600',
+              fontSize: '0.875rem',
+              border: '1px solid rgba(226, 232, 237, 0.12)',
+              transition: 'all 0.2s ease',
+              display: 'inline-block'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(226,232,237,0.04)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'transparent';
+            }}
+          >
+            View Resume
+          </a>
+          <a
+            href="/Resume-Brice.pdf"
+            download
+            style={{
+              padding: '1rem 2rem',
+              background: 'transparent',
+              color: '#9ca3af',
+              textDecoration: 'none',
+              borderRadius: '8px',
+              fontWeight: '600',
+              fontSize: '0.875rem',
+              border: '1px solid rgba(156,163,175,0.12)',
+              transition: 'all 0.2s ease',
+              display: 'inline-block'
+            }}
+          >
+            Download CV
+          </a>
+          <a
             href="#contact"
             style={{
               padding: '1rem 2rem',
@@ -226,22 +268,22 @@ const SkillsSection = () => {
   const skillGroups = [
     {
       category: 'Frontend',
-      skills: ['React', 'JavaScript', 'HTML/CSS'],
+      skills: ['React', 'JavaScript'],
       color: '#14b8a6'
     },
     {
       category: 'Backend',
-      skills: ['Node.js', 'Python', 'PHP'],
+      skills: ['Node.js', 'PHP', 'Laravel', 'Flask', 'Django'],
       color: '#06b6d4'
     },
     {
-      category: 'Database',
-      skills: ['MySQL', 'MongoDB', 'PostgreSQL'],
+      category: 'Database / SQL',
+      skills: ['SQL', 'PostgreSQL'],
       color: '#8b5cf6'
     },
     {
-      category: 'Tools',
-      skills: ['Git', 'GitHub', 'AWS'],
+      category: 'Algorithms',
+      skills: ['DSA in Python'],
       color: '#f59e0b'
     }
   ];
@@ -342,51 +384,25 @@ const ProjectsSection = () => {
   const projects = [
     {
       title: 'Agakayi',
-      description: 'Agakayi is a simple React-based note app inspired by the traditional Rwandan “agakayi” notebook. While the original was used to track debts, this version is designed for capturing ideas, reminders, and everyday thoughts. Built as part of my journey learning React.',
-      tech: ['React', 'Node.js', 'MongoDB'],
+      description: 'A personal React app inspired by the traditional Rwandan "agakayi" notebook. Built to practice React and backend integration.',
+      tech: ['React', 'Node.js', 'PostgreSQL'],
       status: 'Live',
       statusColor: '#22c55e',
-      link: 'https://agakayi.xyz', 
+      link: 'https://agakayi.xyz',
       github: 'https://github.com/Brice-art/Agakayi',
       type: 'personal',
-      highlight: 'Live Production App'
+      highlight: 'Personal production project'
     },
     {
-      title: 'MyStore',
-      description: 'A prototype e-commerce application developed as part of my exploration of PHP backend development and relational database design. The goal was to understand the core mechanics behind online retail systems.',
-      tech: ['PHP', 'MySQL', 'HTML/CSS', 'JavaScript'],
-      status: 'In Development',
-      statusColor: '#f59e0b',
+      title: 'Personal Portfolio',
+      description: 'This portfolio website — a lightweight React site focused on clarity and readable code.',
+      tech: ['React', 'CSS'],
+      status: 'Live',
+      statusColor: '#22c55e',
       link: null,
-      github: 'https://github.com/Brice-art/ecommerce-site-php-mysql',
+      github: 'https://github.com/Brice-art',
       type: 'personal',
-      highlight: 'Full E-commerce System'
-    },
-    {
-      title: 'Shift Management System',
-      description: 'Automated shift scheduling system solving real problems from part-time work. Built during one-week intensive internship using no-code platform.',
-      tech: ['AppSuite', 'desknet\'s Neo'],
-      status: 'Completed',
-      statusColor: '#14b8a6',
-      link: null,
-      github: null,
-      type: 'internship',
-      company: 'NEOJAPAN',
-      duration: '1 Week',
-      highlight: 'Team-work & Rapid learning'
-    },
-    {
-      title: 'Full-Stack Web Application',
-      description: 'Complete web application built from scratch during intensive internship. Learned Flask framework, AWS deployment, and SQL integration in one week.',
-      tech: ['Flask', 'Python', 'AWS', 'SQL'],
-      status: 'Completed',
-      statusColor: '#14b8a6',
-      link: null,
-      github: null,
-      type: 'internship',
-      company: 'JOUHOU GIKEN',
-      duration: '1 Week',
-      highlight: 'Rapid Learning & Deployment'
+      highlight: 'Portfolio'
     }
   ];
 
@@ -735,6 +751,46 @@ Tools matter less than thinking. We could've built this in React or Python. The 
   );
 };
 
+const ResumeSection = () => {
+  return (
+    <section
+      id="resume"
+      style={{
+        minHeight: '80vh',
+        padding: '6rem 2rem',
+        background: 'rgba(15, 23, 42, 0.18)'
+      }}
+    >
+      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+        <h2 style={{ fontSize: '2.25rem', fontWeight: '700', color: '#e8eaed', marginBottom: '1rem' }}>
+          Resume
+        </h2>
+
+        <p style={{ color: '#9ca3af', marginBottom: '1rem' }}>
+          Stack: React, Node.js, JavaScript, SQL, PostgreSQL, PHP, Laravel, Flask, Django, DSA in Python
+        </p>
+        <p style={{ color: '#9ca3af', marginBottom: '1.5rem' }}>
+          Languages: Kinyarwanda; Japanese (BJT 430); English (TOEIC 930)
+        </p>
+
+        <div style={{ marginBottom: '1.25rem' }}>
+          <object data="/cv.pdf" type="application/pdf" width="100%" height="600">
+            <p style={{ color: '#9ca3af' }}>
+              Your browser does not support embedded PDFs. <a href="/cv.pdf" style={{ color: '#14b8a6' }}>Download the CV</a> instead.
+            </p>
+          </object>
+        </div>
+
+        <div>
+          <a href="/cv.pdf" download style={{ padding: '0.65rem 1.2rem', background: '#14b8a6', color: '#0a0e27', textDecoration: 'none', borderRadius: '8px', fontWeight: '600' }}>
+            Download CV
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const BlogPostCard = ({ post, onClick }) => {
   const [hovered, setHovered] = useState(false);
 
@@ -1021,13 +1077,13 @@ const ContactSection = () => {
             Let's Work Together
           </h2>
           <p style={{
-            fontSize: '1.125rem',
-            color: '#9ca3af',
-            maxWidth: '600px',
-            margin: '0 auto'
-          }}>
-            Starting April 2026 in Tokyo. Looking for opportunities to build, learn, and grow.
-          </p>
+              fontSize: '1.125rem',
+              color: '#9ca3af',
+              maxWidth: '600px',
+              margin: '0 auto'
+            }}>
+              Open to conversations about backend development, learning, and collaboration.
+            </p>
         </div>
 
         <div style={{
@@ -1073,7 +1129,7 @@ const ContactSection = () => {
           </div>
           <div>
             <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>Languages</div>
-            <div style={{ fontSize: '1rem', color: '#e8eaed', fontWeight: '600' }}>EN • JP • RW</div>
+            <div style={{ fontSize: '1rem', color: '#e8eaed', fontWeight: '600' }}>Kinyarwanda; Japanese (BJT 430); English (TOEIC 930)</div>
           </div>
           <div>
             <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>Work Style</div>
