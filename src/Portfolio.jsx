@@ -194,7 +194,7 @@ const Nav = () => {
       borderBottom: scrolled ? "1px solid #1a1a1812" : "1px solid transparent",
       transition: "background 0.3s, border-color 0.3s, backdrop-filter 0.3s"
     }}>
-      <span style={{ fontFamily: "'Syne',sans-serif", fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.13em", color: "#1a1a18" }}>
+      <span style={{ fontFamily: "'Syne',sans-serif", fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.15em", color: "#1a1a18" }}>
         BAB
       </span>
       <div style={{ display: "flex", gap: "2.5rem" }}>
@@ -237,7 +237,7 @@ const Hero = () => {
         }}
       >
         Brice Byiringiro<br />
-        <em style={{ fontStyle: "italic", fontWeight: 300 }}>Full-stack Developer</em>
+        <em style={{ fontStyle: "italic", fontWeight: 200, fontSize: "clamp(2.5rem, 7vw, 5.4rem)" }}>Full-stack Developer</em>
       </h1>
 
       <div style={{
