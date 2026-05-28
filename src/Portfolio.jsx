@@ -393,7 +393,7 @@ const projects = [
   }
 ];
 
-const ScreenshotPlaceholder = ({ index }) => (
+const ScreenshotPlaceholder = ({ title }) => (
   <div className="screenshot-placeholder">
     <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.6rem", letterSpacing: "0.12em", color: "#1a1a1833" }}>
       {title}
@@ -401,12 +401,12 @@ const ScreenshotPlaceholder = ({ index }) => (
   </div>
 );
 
-const ProjectImage = ({ src, alt, index }) => {
+const ProjectImage = ({ src, alt, title }) => {
   const [err, setErr] = useState(false);
   return (
     <div className="screenshot-frame">
       {err || !src
-        ? <ScreenshotPlaceholder index={index} />
+        ? <ScreenshotPlaceholder title={title} />
         : <img src={src} alt={alt} onError={() => setErr(true)} />
       }
     </div>
@@ -437,7 +437,7 @@ const Work = () => {
         <div>
           {projects.map((p, i) => (
             <div key={p.index} className={`project-row${i % 2 === 1 ? " reverse" : ""}`}>
-              <ProjectImage src={p.screenshot} alt={p.title} index={p.index} />
+              <ProjectImage src={p.screenshot} alt={p.title} title={p.title} />
               <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "1.25rem" }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: "1rem" }}>
                   <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.08em", color: "#1a1a1838" }}>{p.index}</span>
