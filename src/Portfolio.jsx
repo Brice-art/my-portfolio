@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 
-// ─── Fonts loaded via @import in style tag ───────────────────────────────────
 const GlobalStyles = () => (
   <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Syne:wght@400;500;600;700;800&display=swap');
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -25,54 +23,83 @@ const GlobalStyles = () => (
     }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    .fade-in-slow {
-      opacity: 0;
-      transition: opacity 1.2s ease;
-    }
-    .fade-in-slow.visible { opacity: 1; }
-
     @keyframes marquee {
       0%   { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
-
     .marquee-track {
       display: flex;
       width: max-content;
-      animation: marquee 28s linear infinite;
+      animation: marquee 30s linear infinite;
     }
-
     .marquee-track:hover { animation-play-state: paused; }
 
-    .project-card {
-      border-top: 1px solid #1a1a1822;
-      padding: 2.5rem 0;
-      transition: background 0.2s ease;
-      cursor: default;
+    .project-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      padding: 4rem 0;
+      border-top: 1px solid #1a1a1818;
     }
-    .project-card:last-child { border-bottom: 1px solid #1a1a1822; }
+    .project-row:last-child { border-bottom: 1px solid #1a1a1818; }
+    .project-row.reverse { direction: rtl; }
+    .project-row.reverse > * { direction: ltr; }
 
-    .project-card .arrow {
-      opacity: 0;
-      transform: translateX(-6px);
-      transition: opacity 0.2s ease, transform 0.2s ease;
+    @media (max-width: 768px) {
+      .project-row { grid-template-columns: 1fr; gap: 2rem; direction: ltr !important; }
+      .project-row > * { direction: ltr !important; }
     }
-    .project-card:hover .arrow {
-      opacity: 1;
-      transform: translateX(0);
+
+    .screenshot-frame {
+      position: relative;
+      overflow: hidden;
+      background: #e8e7e3;
+      border: 1px solid #1a1a1812;
+      aspect-ratio: 16/10;
     }
-    .project-card:hover .project-title {
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 4px;
+    .screenshot-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
     }
+    .screenshot-frame:hover img { transform: scale(1.03); }
+
+    .screenshot-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ebe9e4;
+    }
+
+    .btn-solid {
+      display: inline-block;
+      padding: 0.6rem 1.3rem;
+      border: 1px solid #1a1a18;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      color: #f5f4f0;
+      background: #1a1a18;
+      transition: background 0.15s ease;
+      cursor: pointer;
+    }
+    .btn-solid:hover { background: #333; }
 
     .btn-outline {
       display: inline-block;
-      padding: 0.65rem 1.4rem;
-      border: 1px solid #1a1a1855;
+      padding: 0.6rem 1.3rem;
+      border: 1px solid #1a1a1844;
       font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 400;
       letter-spacing: 0.06em;
       text-decoration: none;
@@ -81,69 +108,74 @@ const GlobalStyles = () => (
       transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
       cursor: pointer;
     }
-    .btn-outline:hover {
-      background: #1a1a18;
-      color: #f5f4f0;
-      border-color: #1a1a18;
-    }
-
-    .btn-solid {
-      display: inline-block;
-      padding: 0.65rem 1.4rem;
-      border: 1px solid #1a1a18;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      text-decoration: none;
-      color: #f5f4f0;
-      background: #1a1a18;
-      transition: background 0.15s ease, color 0.15s ease;
-      cursor: pointer;
-    }
-    .btn-solid:hover {
-      background: #333;
-    }
+    .btn-outline:hover { background: #1a1a18; color: #f5f4f0; border-color: #1a1a18; }
 
     .nav-link {
       font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       letter-spacing: 0.08em;
       text-decoration: none;
-      color: #1a1a1888;
+      color: #1a1a1877;
       transition: color 0.15s ease;
     }
     .nav-link:hover { color: #1a1a18; }
 
     .tag {
       font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       letter-spacing: 0.05em;
       color: #1a1a1866;
-      border: 1px solid #1a1a1822;
-      padding: 0.2rem 0.55rem;
+      border: 1px solid #1a1a181a;
+      padding: 0.18rem 0.5rem;
     }
 
     .scroll-line {
       width: 1px;
-      height: 60px;
+      height: 56px;
       background: #1a1a1833;
       animation: scrollPulse 2s ease-in-out infinite;
     }
     @keyframes scrollPulse {
       0%, 100% { opacity: 0.3; transform: scaleY(1); }
-      50%       { opacity: 0.9; transform: scaleY(1.15); }
+      50%       { opacity: 0.9; transform: scaleY(1.12); }
     }
 
+    .contact-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      padding: 0.65rem 1.4rem;
+      border: 1px solid #f5f4f033;
+      color: #f5f4f0;
+      text-decoration: none;
+      background: transparent;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      display: inline-block;
+    }
+    .contact-link:hover { background: #f5f4f011; border-color: #f5f4f055; }
+
     @media (max-width: 640px) {
-      .hero-name { font-size: 2.4rem !important; }
-      .hero-sub  { font-size: 0.75rem !important; }
-      .section-title { font-size: 2rem !important; }
+      .hero-name { font-size: 2.6rem !important; }
+      .hero-btns { flex-direction: column; }
     }
   `}</style>
 );
 
-// ─── Nav ──────────────────────────────────────────────────────────────────────
+function useFadeIn(threshold = 0.12) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { el.classList.add("visible"); obs.disconnect(); } },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return ref;
+}
+
 const Nav = () => {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -155,324 +187,281 @@ const Nav = () => {
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      padding: "1.4rem 2.5rem",
+      padding: "1.3rem 2.5rem",
       display: "flex", alignItems: "center", justifyContent: "space-between",
-      background: scrolled ? "rgba(245,244,240,0.92)" : "transparent",
-      backdropFilter: scrolled ? "blur(12px)" : "none",
-      borderBottom: scrolled ? "1px solid #1a1a1814" : "1px solid transparent",
-      transition: "background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease"
+      background: scrolled ? "rgba(245,244,240,0.93)" : "transparent",
+      backdropFilter: scrolled ? "blur(14px)" : "none",
+      borderBottom: scrolled ? "1px solid #1a1a1812" : "1px solid transparent",
+      transition: "background 0.3s, border-color 0.3s, backdrop-filter 0.3s"
     }}>
-      <span style={{ fontFamily: "'Syne', sans-serif", fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.12em", color: "#1a1a18" }}>
+      <span style={{ fontFamily: "'Syne',sans-serif", fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.13em", color: "#1a1a18" }}>
         BAB
       </span>
       <div style={{ display: "flex", gap: "2.5rem" }}>
-        {[["Work", "#work"], ["Resume", "#resume"], ["Skills", "#skills"], ["Contact", "#contact"]].map(([label, href]) => (
-          <a key={label} href={href} className="nav-link">{label}</a>
+        {[["Work", "#work"], ["About", "#about"], ["Resume", "#resume"], ["Contact", "#contact"]].map(([l, h]) => (
+          <a key={l} href={h} className="nav-link">{l}</a>
         ))}
       </div>
     </nav>
   );
 };
 
+const Hero = () => {
+  const [vis, setVis] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setVis(true), 100); return () => clearTimeout(t); }, []);
 
-const HeroSection = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const fade = (delay) => ({
+    opacity: vis ? 1 : 0,
+    transform: vis ? "none" : "translateY(16px)",
+    transition: `opacity 0.8s ease ${delay}s, transform 0.8s ease ${delay}s`
+  });
 
   return (
     <section style={{
-      minHeight: '90vh',
-      display: 'flex',
-      alignItems: 'center',
-      padding: '4rem 2rem',
-      position: 'relative'
+      minHeight: "100vh",
+      display: "flex", flexDirection: "column", justifyContent: "center",
+      padding: "0 2.5rem", maxWidth: "860px", margin: "0 auto", position: "relative"
     }}>
-      {/* Background pattern */}
+      <div style={{ ...fade(0.1), fontFamily: "'DM Mono',monospace", fontSize: "0.62rem", letterSpacing: "0.14em", color: "#1a1a1852", marginBottom: "3.5rem" }}>
+        RWANDA → JAPAN — SOFTWARE ENGINEERING
+      </div>
+
+      <h1
+        className="hero-name"
+        style={{
+          fontFamily: "'Cormorant Garamond',serif",
+          fontSize: "clamp(2.8rem, 7vw, 5.5rem)",
+          fontWeight: 300, lineHeight: 1.06, letterSpacing: "-0.01em",
+          color: "#1a1a18", marginBottom: "2rem",
+          ...fade(0.25)
+        }}
+      >
+        Byiringiro<br />
+        <em style={{ fontStyle: "italic", fontWeight: 300 }}>Brice Ali</em>
+      </h1>
+
       <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundImage: `
-          linear-gradient(rgba(20, 184, 166, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(20, 184, 166, 0.03) 1px, transparent 1px)
-        `,
-        backgroundSize: '50px 50px',
-        pointerEvents: 'none'
-      }} />
+        fontFamily: "'DM Mono',monospace", fontSize: "0.7rem",
+        letterSpacing: "0.06em", color: "#1a1a1870", marginBottom: "1.75rem",
+        ...fade(0.42)
+      }}>
+        Backend Development&nbsp;&nbsp;·&nbsp;&nbsp;Python&nbsp;&nbsp;·&nbsp;&nbsp;Systems Thinking
+      </div>
 
+      <p style={{
+        fontFamily: "'Cormorant Garamond',serif",
+        fontSize: "1.1rem", fontWeight: 400, color: "#1a1a1890",
+        maxWidth: "440px", lineHeight: 1.65, marginBottom: "3rem",
+        ...fade(0.52)
+      }}>
+        Engineering background. Transitioning into software through consistent building and learning.
+      </p>
+
+      <div className="hero-btns" style={{ display: "flex", gap: "0.9rem", flexWrap: "wrap", ...fade(0.66) }}>
+        <a href="https://github.com/Brice-art" target="_blank" rel="noopener noreferrer" className="btn-solid">GitHub ↗</a>
+        <a href="#contact" className="btn-outline">Contact</a>
+        <a href="/Resume-Brice.pdf" download className="btn-outline">Download CV</a>
+      </div>
+
+      <div style={{
+        position: "absolute", bottom: "2.5rem", left: "2.5rem",
+        display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem",
+        opacity: vis ? 0.45 : 0, transition: "opacity 1s ease 1.3s"
+      }}>
+        <div className="scroll-line" />
+        <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.52rem", letterSpacing: "0.12em", color: "#1a1a1866", writingMode: "vertical-rl" }}>scroll</span>
+      </div>
+
+      <div style={{
+        position: "absolute", bottom: "2.5rem", right: "2.5rem",
+        fontFamily: "'DM Mono',monospace", fontSize: "0.58rem",
+        letterSpacing: "0.1em", color: "#1a1a1830",
+        opacity: vis ? 1 : 0, transition: "opacity 1s ease 1.3s"
+      }}>
+        2026
+      </div>
+    </section>
+  );
+};
+
+const Currently = () => {
+  const ref = useFadeIn();
+  return (
+    <div ref={ref} className="fade-in" style={{ maxWidth: "860px", margin: "0 auto", padding: "0 2.5rem 5rem" }}>
+      <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.68rem", letterSpacing: "0.07em", color: "#1a1a1852", lineHeight: 2 }}>
+        Currently — learning backend architecture, cleaner Python design, and REST API patterns.
+      </p>
+    </div>
+  );
+};
+
+const About = () => {
+  const ref = useFadeIn();
+  return (
+    <section id="about" style={{ padding: "7rem 2.5rem", background: "#eeecea" }}>
+      <div ref={ref} className="fade-in" style={{ maxWidth: "860px", margin: "0 auto" }}>
         <div style={{
-          maxWidth: '900px',
-          margin: '0 auto',
-          position: 'relative',
-          opacity: mounted ? 1 : 0,
-          transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'all 0.8s ease'
+          display: "grid",
+          gridTemplateColumns: "clamp(90px,18%,160px) 1fr",
+          gap: "clamp(2rem,6vw,5rem)",
+          alignItems: "start"
         }}>
-        <div style={{
-          display: 'inline-block',
-          background: 'rgba(20, 184, 166, 0.1)',
-          border: '1px solid rgba(20, 184, 166, 0.3)',
-          padding: '0.5rem 1rem',
-          borderRadius: '20px',
-          fontSize: '0.75rem',
-          fontWeight: '600',
-          color: '#14b8a6',
-          marginBottom: '2rem',
-          letterSpacing: '0.05em'
-        }}>
-          SOFTWARE ENGINEERING
-        </div>
-
-        <h1 style={{
-          fontSize: '4rem',
-          fontWeight: '700',
-          lineHeight: '1.1',
-          marginBottom: '1.5rem',
-          letterSpacing: '-0.02em'
-        }}>
-          Full-Stack Developer specializing in Laravel & React. 
-        </h1>
-
-        <h2 style={{
-          fontSize: '2rem',
-          fontWeight: '500',
-          color: '#9ca3af',
-          lineHeight: '1.4',
-          marginBottom: '2rem'
-        }}>
-          I build clean, functional web applications and I’m obsessed with growing into systems-level engineering.
-        </h2>
-
-        {/* Quick stats */}
-        <div style={{
-          display: 'flex',
-          gap: '3rem',
-          marginBottom: '3rem',
-          paddingBottom: '2rem',
-          borderBottom: '1px solid rgba(20, 184, 166, 0.1)'
-        }}>
+          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.14em", color: "#1a1a1850", paddingTop: "0.35rem" }}>
+            00 / ABOUT
+          </span>
           <div>
-            <div style={{ fontSize: '2rem', fontWeight: '700', color: '#14b8a6' }}>2</div>
-            <div style={{ fontSize: '0.875rem', color: '#9ca3af' }}>Intensive Internships</div>
+            <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "clamp(1.8rem,4vw,2.75rem)", fontWeight: 300, lineHeight: 1.3, color: "#1a1a18", marginBottom: "2rem" }}>
+              From civil structures<br /><em>to software systems.</em>
+            </h2>
+            <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.76rem", lineHeight: 2, color: "#1a1a1883", marginBottom: "1.25rem" }}>
+              Originally from Rwanda. Studied civil engineering in Japan. Somewhere in that process I got more interested in how software systems are designed than how bridges are.
+            </p>
+            <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.76rem", lineHeight: 2, color: "#1a1a1883", marginBottom: "1.25rem" }}>
+              I've been building my way in — backend APIs, databases, OOP patterns, and full-stack projects. Most of my learning comes from building actual things and understanding why they break.
+            </p>
+            <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.76rem", lineHeight: 2, color: "#1a1a1883" }}>
+              English · Japanese (BJT 430, JLPT N2) · Kinyarwanda. Starting a software engineering role in Tokyo in April 2026.
+            </p>
           </div>
-          <div>
-            <div style={{ fontSize: '2rem', fontWeight: '700', color: '#14b8a6' }}>4</div>
-            <div style={{ fontSize: '0.875rem', color: '#9ca3af' }}>Projects Built</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '2rem', fontWeight: '700', color: '#14b8a6' }}>Apr 2026</div>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-          <a
-            href="#work"
-            style={{
-              padding: '1rem 2rem',
-              background: '#14b8a6',
-              color: '#0a0e27',
-              textDecoration: 'none',
-              borderRadius: '8px',
-              fontWeight: '600',
-              fontSize: '0.875rem',
-              transition: 'all 0.2s ease',
-              display: 'inline-block'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = '#0d9488';
-              e.target.style.transform = 'translateY(-2px)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = '#14b8a6';
-              e.target.style.transform = 'translateY(0)';
-            }}
-          >
-            See My Work
-          </a>
-          <a
-            href="#resume"
-            style={{
-              padding: '1rem 2rem',
-              background: 'transparent',
-              color: '#e8eaed',
-              textDecoration: 'none',
-              borderRadius: '8px',
-              fontWeight: '600',
-              fontSize: '0.875rem',
-              border: '1px solid rgba(226, 232, 237, 0.12)',
-              transition: 'all 0.2s ease',
-              display: 'inline-block'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(226,232,237,0.04)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'transparent';
-            }}
-          >
-            View Resume
-          </a>
-          <a
-            href="/Resume-Brice.pdf"
-            download
-            style={{
-              padding: '1rem 2rem',
-              background: 'transparent',
-              color: '#9ca3af',
-              textDecoration: 'none',
-              borderRadius: '8px',
-              fontWeight: '600',
-              fontSize: '0.875rem',
-              border: '1px solid rgba(156,163,175,0.12)',
-              transition: 'all 0.2s ease',
-              display: 'inline-block'
-            }}
-          >
-            Download CV
-          </a>
-          <a
-            href="#contact"
-            style={{
-              padding: '1rem 2rem',
-              background: 'transparent',
-              color: '#14b8a6',
-              textDecoration: 'none',
-              borderRadius: '8px',
-              fontWeight: '600',
-              fontSize: '0.875rem',
-              border: '1px solid rgba(20, 184, 166, 0.5)',
-              transition: 'all 0.2s ease',
-              display: 'inline-block'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(20, 184, 166, 0.1)';
-              e.target.style.borderColor = '#14b8a6';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'transparent';
-              e.target.style.borderColor = 'rgba(20, 184, 166, 0.5)';
-            }}
-          >
-            Get In Touch
-          </a>
         </div>
       </div>
     </section>
   );
 };
 
+const skills = [
+  "Python", "Node.js", "PHP / Laravel", "REST APIs", "SQL / PostgreSQL",
+  "MongoDB", "React", "JavaScript", "Git", "OOP", "DSA", "MVC Pattern",
+  "JWT Auth", "Express.js", "Linux CLI"
+];
 
-const SkillsSection = () => {
-  const skillGroups = [
-    {
-      category: 'Frontend',
-      skills: ['React', 'JavaScript'],
-      color: '#14b8a6'
-    },
-    {
-      category: 'Backend',
-      skills: ['Node.js', 'PHP', 'Laravel', 'Flask', 'Django'],
-      color: '#06b6d4'
-    },
-    {
-      category: 'Database / SQL',
-      skills: ['SQL', 'PostgreSQL'],
-      color: '#8b5cf6'
-    },
-    {
-      category: 'Algorithms',
-      skills: ['DSA in Python'],
-      color: '#f59e0b'
-    }
-  ];
-
+const Skills = () => {
+  const doubled = [...skills, ...skills];
   return (
-    <section
-      id="skills"
-      style={{
-        minHeight: '60vh',
-        padding: '6rem 2rem',
-        background: 'rgba(15, 23, 42, 0.3)'
-      }}
-    >
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto'
-      }}>
-        <h2 style={{
-          fontSize: '2.5rem',
-          fontWeight: '700',
-          marginBottom: '1rem',
-          color: '#e8eaed',
-          textAlign: 'center'
-        }}>
-          Tools I Use
-        </h2>
-        <p style={{
-          fontSize: '1rem',
-          color: '#9ca3af',
-          textAlign: 'center',
-          marginBottom: '4rem'
-        }}>
-          The tech stack I work with to solve problems
-        </p>
+    <section style={{ padding: "5rem 0", borderTop: "1px solid #1a1a180f", borderBottom: "1px solid #1a1a180f", overflow: "hidden" }}>
+      <div className="marquee-track">
+        {doubled.map((s, i) => (
+          <span key={i} style={{
+            fontFamily: "'DM Mono',monospace",
+            fontSize: "0.68rem",
+            letterSpacing: "0.1em",
+            color: i % 2 === 0 ? "#1a1a18" : "#1a1a1850",
+            whiteSpace: "nowrap",
+            padding: "0 2.2rem"
+          }}>
+            {s}&nbsp;&nbsp;&nbsp;—
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+};
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '1.5rem'
-        }}>
-          {skillGroups.map((group, idx) => (
-            <div
-              key={idx}
-              style={{
-                background: 'rgba(15, 23, 42, 0.6)',
-                border: `1px solid ${group.color}33`,
-                borderRadius: '12px',
-                padding: '2rem',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = `${group.color}88`;
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow = `0 12px 30px ${group.color}22`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = `${group.color}33`;
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-            >
-              <h3 style={{
-                fontSize: '1.125rem',
-                fontWeight: '600',
-                color: group.color,
-                marginBottom: '1rem'
-              }}>
-                {group.category}
-              </h3>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.5rem'
-              }}>
-                {group.skills.map((skill, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      fontSize: '0.875rem',
-                      color: '#d1d5db',
-                      fontWeight: '500'
-                    }}
-                  >
-                    • {skill}
-                  </div>
-                ))}
+const projects = [
+  {
+    index: "01",
+    title: "Agakayi Notes App",
+    url: "https://agakayi.xyz",
+    github: "https://github.com/Brice-art/Agakayi",
+    screenshot: "/screenshots/agakayi.png",
+    stack: ["React", "Node.js", "Express.js", "MongoDB", "JWT"],
+    description:
+      "Full-stack note management app on the MERN stack. The backend handles JWT-based auth, RESTful routing, and CRUD via MongoDB. Frontend communicates through a clean API layer — no page reloads, real-time updates.",
+    focus: "Backend architecture · API integration · secure auth flow"
+  },
+  {
+    index: "02",
+    title: "Rshift Chrome Extension",
+    url: null,
+    github: "https://github.com/Brice-art",
+    screenshot: "/screenshots/rshift.png",
+    stack: ["JavaScript", "DOM API", "Google Calendar API", "OAuth 2.0", "Chrome Extensions"],
+    description:
+      "Extracts shift data from a rendered scheduling page using DOM manipulation, then exports it to Google Calendar via OAuth-authenticated API calls. One-click, zero manual entry.",
+    focus: "DOM parsing · OAuth flow · browser extension architecture"
+  },
+  {
+    index: "03",
+    title: "MyStore E-Commerce (Raw PHP)",
+    url: null,
+    github: "https://github.com/Brice-art",
+    screenshot: "/screenshots/myStore.png",
+    stack: ["PHP", "MySQL", "MVC Pattern", "OOP", "SQL"],
+    description:
+      "E-commerce platform built with raw PHP and no framework — intentionally. Admin dashboard, cart, user/admin auth, product search. The constraint forces deep understanding of MVC, OOP, and SQL without abstraction layers.",
+    focus: "MVC from scratch · OOP depth · raw SQL without ORMs"
+  }
+];
+
+const ScreenshotPlaceholder = ({ index }) => (
+  <div className="screenshot-placeholder">
+    <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.6rem", letterSpacing: "0.12em", color: "#1a1a1833" }}>
+      {index} / screenshot
+    </span>
+  </div>
+);
+
+const ProjectImage = ({ src, alt, index }) => {
+  const [err, setErr] = useState(false);
+  return (
+    <div className="screenshot-frame">
+      {err || !src
+        ? <ScreenshotPlaceholder index={index} />
+        : <img src={src} alt={alt} onError={() => setErr(true)} />
+      }
+    </div>
+  );
+};
+
+const Work = () => {
+  const ref = useFadeIn();
+  return (
+    <section id="work" style={{ padding: "7rem 2.5rem" }}>
+      <div ref={ref} className="fade-in" style={{ maxWidth: "860px", margin: "0 auto" }}>
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "4rem" }}>
+          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.14em", color: "#1a1a1850" }}>
+            01 / SELECTED WORK
+          </span>
+          <a
+            href="https://github.com/Brice-art"
+            target="_blank" rel="noopener noreferrer"
+            style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.63rem", letterSpacing: "0.05em", color: "#1a1a1860", textDecoration: "none", borderBottom: "1px solid #1a1a1830", paddingBottom: "2px", transition: "color 0.15s" }}
+            onMouseEnter={e => e.currentTarget.style.color = "#1a1a18"}
+            onMouseLeave={e => e.currentTarget.style.color = "#1a1a1860"}
+          >
+            All on GitHub ↗
+          </a>
+        </div>
+
+        <div>
+          {projects.map((p, i) => (
+            <div key={p.index} className={`project-row${i % 2 === 1 ? " reverse" : ""}`}>
+              <ProjectImage src={p.screenshot} alt={p.title} index={p.index} />
+              <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "1.25rem" }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "1rem" }}>
+                  <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.08em", color: "#1a1a1838" }}>{p.index}</span>
+                  <h3 style={{ fontFamily: "'Syne',sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "#1a1a18", letterSpacing: "-0.01em" }}>
+                    {p.title}
+                  </h3>
+                </div>
+                <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.72rem", lineHeight: 1.9, color: "#1a1a1877" }}>
+                  {p.description}
+                </p>
+                <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.62rem", letterSpacing: "0.04em", color: "#1a1a1850" }}>
+                  Focus: {p.focus}
+                </p>
+                <div style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap" }}>
+                  {p.stack.map(t => <span key={t} className="tag">{t}</span>)}
+                </div>
+                <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", paddingTop: "0.25rem" }}>
+                  {p.url && (
+                    <a href={p.url} target="_blank" rel="noopener noreferrer" className="btn-solid">Live ↗</a>
+                  )}
+                  {p.github && (
+                    <a href={p.github} target="_blank" rel="noopener noreferrer" className="btn-outline">GitHub ↗</a>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -482,472 +471,109 @@ const SkillsSection = () => {
   );
 };
 
-
-const ProjectsSection = () => {
-  const projects = [
-    {
-      title: 'Agakayi',
-      description: 'A personal React app inspired by the traditional Rwandan "agakayi" notebook. Built to practice React and backend integration.',
-      tech: ['React', 'Node.js', 'PostgreSQL'],
-      status: 'Live',
-      statusColor: '#22c55e',
-      link: 'https://agakayi.xyz',
-      github: 'https://github.com/Brice-art/Agakayi',
-      type: 'personal',
-      highlight: 'Personal production project'
-    },
-    {
-      title: 'Personal Portfolio',
-      description: 'This portfolio website — a lightweight React site focused on clarity and readable code.',
-      tech: ['React', 'CSS'],
-      status: 'Live',
-      statusColor: '#22c55e',
-      link: null,
-      github: 'https://github.com/Brice-art',
-      type: 'personal',
-      highlight: 'Portfolio'
-    }
-  ];
-
+const Resume = () => {
+  const ref = useFadeIn();
   return (
-    <section
-      id="work"
-      style={{
-        minHeight: '100vh',
-        padding: '6rem 2rem',
-        background: '#0a0e27'
-      }}
-    >
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto'
-      }}>
-        <h2 style={{
-          fontSize: '2.5rem',
-          fontWeight: '700',
-          marginBottom: '1rem',
-          color: '#e8eaed',
-          textAlign: 'center'
-        }}>
-          What I've Built
-        </h2>
-        <p style={{
-          fontSize: '1rem',
-          color: '#9ca3af',
-          textAlign: 'center',
-          marginBottom: '4rem'
-        }}>
-          Personal projects and internship work
-        </p>
-
+    <section id="resume" style={{ padding: "7rem 2.5rem", background: "#eeecea" }}>
+      <div ref={ref} className="fade-in" style={{ maxWidth: "860px", margin: "0 auto" }}>
         <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '2rem'
+          display: "grid",
+          gridTemplateColumns: "clamp(90px,18%,160px) 1fr",
+          gap: "clamp(2rem,6vw,5rem)",
+          alignItems: "start"
         }}>
-          {projects.map((project, idx) => (
-            <ProjectCard key={idx} project={project} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const ProjectCard = ({ project }) => {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: 'rgba(15, 23, 42, 0.6)',
-        border: '1px solid rgba(20, 184, 166, 0.2)',
-        borderRadius: '12px',
-        padding: '2rem',
-        transition: 'all 0.3s ease',
-        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
-        borderColor: hovered ? 'rgba(20, 184, 166, 0.5)' : 'rgba(20, 184, 166, 0.2)',
-        boxShadow: hovered ? '0 12px 30px rgba(20, 184, 166, 0.15)' : 'none'
-      }}
-    >
-      {/* Header */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        marginBottom: '1rem',
-        flexWrap: 'wrap',
-        gap: '1rem'
-      }}>
-        <div>
-          <h3 style={{
-            fontSize: '1.5rem',
-            fontWeight: '700',
-            color: '#e8eaed',
-            marginBottom: '0.5rem'
-          }}>
-            {project.title}
-          </h3>
-          {project.company && (
-            <div style={{
-              fontSize: '0.875rem',
-              color: '#14b8a6',
-              fontWeight: '600'
-            }}>
-              {project.company} • {project.duration}
+          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.14em", color: "#1a1a1850", paddingTop: "0.35rem" }}>
+            02 / RESUME
+          </span>
+          <div>
+            <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "clamp(1.8rem,4vw,2.75rem)", fontWeight: 300, lineHeight: 1.3, color: "#1a1a18", marginBottom: "2rem" }}>
+              Qualifications &<br /><em>background.</em>
+            </h2>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: "2.5rem" }}>
+              {[
+                ["Languages", "EN · JP (BJT 430) · RW"],
+                ["Certifications", "TOEIC 930 · JLPT N2"],
+                ["Background", "Civil Eng → Software"],
+                ["Location", "Tokyo, Japan (Apr 2026)"]
+              ].map(([label, val]) => (
+                <div key={label}>
+                  <div style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.1em", color: "#1a1a1850", marginBottom: "0.3rem" }}>{label}</div>
+                  <div style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.73rem", color: "#1a1a18" }}>{val}</div>
+                </div>
+              ))}
             </div>
-          )}
-        </div>
-        <div style={{
-          display: 'inline-block',
-          padding: '0.4rem 0.75rem',
-          background: `${project.statusColor}22`,
-          border: `1px solid ${project.statusColor}`,
-          borderRadius: '6px',
-          fontSize: '0.75rem',
-          fontWeight: '600',
-          color: project.statusColor,
-          letterSpacing: '0.05em'
-        }}>
-          {project.status}
+            <div style={{ border: "1px solid #1a1a1815", marginBottom: "1.5rem", background: "#f0ede8" }}>
+              <object data="/Resume-Brice.pdf" type="application/pdf" width="100%" height="520">
+                <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.72rem", color: "#1a1a1866", padding: "2rem" }}>
+                  PDF preview unavailable.{" "}
+                  <a href="/Resume-Brice.pdf" style={{ color: "#1a1a18", textDecoration: "underline" }}>Download directly.</a>
+                </p>
+              </object>
+            </div>
+            <a href="/Resume-Brice.pdf" download className="btn-solid">Download CV</a>
+          </div>
         </div>
       </div>
-
-      {/* Description */}
-      <p style={{
-        fontSize: '1rem',
-        color: '#d1d5db',
-        lineHeight: '1.6',
-        marginBottom: '1.5rem'
-      }}>
-        {project.description}
-      </p>
-
-      {/* Highlight */}
-      {project.highlight && (
-        <div style={{
-          padding: '0.75rem 1rem',
-          background: 'rgba(20, 184, 166, 0.1)',
-          border: '1px solid rgba(20, 184, 166, 0.3)',
-          borderRadius: '8px',
-          marginBottom: '1.5rem',
-          fontSize: '0.875rem',
-          color: '#14b8a6',
-          fontWeight: '500'
-        }}>
-          ⚡ {project.highlight}
-        </div>
-      )}
-
-      {/* Tech Stack */}
-      <div style={{
-        display: 'flex',
-        gap: '0.5rem',
-        flexWrap: 'wrap',
-        marginBottom: '1.5rem'
-      }}>
-        {project.tech.map((tech, i) => (
-          <span
-            key={i}
-            style={{
-              padding: '0.4rem 0.75rem',
-              background: 'rgba(100, 116, 139, 0.2)',
-              border: '1px solid rgba(100, 116, 139, 0.4)',
-              borderRadius: '4px',
-              fontSize: '0.75rem',
-              color: '#cbd5e1',
-              fontWeight: '500'
-            }}
-          >
-            {tech}
-          </span>
-        ))}
-      </div>
-
-      {/* Links */}
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-        {project.link && (
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              padding: '0.6rem 1.25rem',
-              background: '#14b8a6',
-              color: '#0a0e27',
-              textDecoration: 'none',
-              borderRadius: '6px',
-              fontSize: '0.875rem',
-              fontWeight: '600',
-              transition: 'all 0.2s ease',
-              display: 'inline-block'
-            }}
-            onMouseEnter={(e) => e.target.style.background = '#0d9488'}
-            onMouseLeave={(e) => e.target.style.background = '#14b8a6'}
-          >
-            View Live →
-          </a>
-        )}
-        {project.github && (
-          <a
-            href={project.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              padding: '0.6rem 1.25rem',
-              background: 'transparent',
-              color: '#14b8a6',
-              textDecoration: 'none',
-              borderRadius: '6px',
-              fontSize: '0.875rem',
-              fontWeight: '600',
-              border: '1px solid rgba(20, 184, 166, 0.5)',
-              transition: 'all 0.2s ease',
-              display: 'inline-block'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(20, 184, 166, 0.1)';
-              e.target.style.borderColor = '#14b8a6';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'transparent';
-              e.target.style.borderColor = 'rgba(20, 184, 166, 0.5)';
-            }}
-          >
-            GitHub →
-          </a>
-        )}
-        {project.type === 'internship' && (
-          <span style={{
-            padding: '0.6rem 1.25rem',
-            background: 'rgba(100, 116, 139, 0.2)',
-            color: '#94a3b8',
-            borderRadius: '6px',
-            fontSize: '0.875rem',
-            fontWeight: '600'
-          }}>
-            Internship Project
-          </span>
-        )}
-      </div>
-    </div>
+    </section>
   );
 };
 
-
-const ResumeSection = () => {
+const Contact = () => {
+  const ref = useFadeIn();
   return (
-    <section
-      id="resume"
-      style={{
-        minHeight: '80vh',
-        padding: '6rem 2rem',
-        background: 'rgba(15, 23, 42, 0.18)'
-      }}
-    >
-      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-        <h2 style={{ fontSize: '2.25rem', fontWeight: '700', color: '#e8eaed', marginBottom: '1rem' }}>
-          Resume
+    <section id="contact" style={{ padding: "8rem 2.5rem 6rem", background: "#1a1a18" }}>
+      <div ref={ref} className="fade-in" style={{ maxWidth: "860px", margin: "0 auto" }}>
+        <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.14em", color: "#f5f4f038", marginBottom: "3rem" }}>
+          03 / CONTACT
+        </p>
+        <h2 style={{
+          fontFamily: "'Cormorant Garamond',serif",
+          fontSize: "clamp(2.5rem,6vw,4.5rem)",
+          fontWeight: 300, lineHeight: 1.1,
+          color: "#f5f4f0", marginBottom: "1.5rem"
+        }}>
+          Still learning.<br />
+          <em>Still building.</em>
         </h2>
-
-        <p style={{ color: '#9ca3af', marginBottom: '1rem' }}>
-          Stack: React, Node, JavaScript, SQL, PostgreSQL, PHP, Laravel, Flask, Django, DSA in Python
+        <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.73rem", lineHeight: 2, color: "#f5f4f060", maxWidth: "400px", marginBottom: "3.5rem" }}>
+          Starting April 2026 in Tokyo. Open to conversations about backend development, learning, or anything interesting.
         </p>
-        <p style={{ color: '#9ca3af', marginBottom: '1.5rem' }}>
-          Languages: Kinyarwanda; Japanese (BJT 430); English (TOEIC 930)
-        </p>
-
-        <div style={{ marginBottom: '1.25rem' }}>
-          <object data="/Resume-Brice.pdf" type="application/pdf" width="100%" height="600">
-            <p style={{ color: '#9ca3af' }}>
-              Your browser does not support embedded PDFs. <a href="/Resume-Brice.pdf" style={{ color: '#14b8a6' }}>Download the CV</a> instead.
-            </p>
-          </object>
+        <div style={{ display: "flex", gap: "0.9rem", flexWrap: "wrap", marginBottom: "5.5rem" }}>
+          <a href="mailto:bricealibyilingiro@gmail.com" className="contact-link">Email ↗</a>
+          <a href="https://github.com/Brice-art" target="_blank" rel="noopener noreferrer" className="contact-link">GitHub ↗</a>
+          <a href="https://www.linkedin.com/in/brice-ali-byiringiro-ab1182254/" target="_blank" rel="noopener noreferrer" className="contact-link">LinkedIn ↗</a>
         </div>
-
-        <div>
-          <a href="/Resume-Brice.pdf" download style={{ padding: '0.65rem 1.2rem', background: '#14b8a6', color: '#0a0e27', textDecoration: 'none', borderRadius: '8px', fontWeight: '600' }}>
-            Download CV
-          </a>
+        <div style={{
+          borderTop: "1px solid #f5f4f012",
+          paddingTop: "2rem",
+          display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem"
+        }}>
+          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.1em", color: "#f5f4f030" }}>
+            BYIRINGIRO BRICE ALI — TOKYO, JAPAN
+          </span>
+          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.1em", color: "#f5f4f030" }}>
+            © 2026
+          </span>
         </div>
       </div>
     </section>
   );
 };
 
-
-
-const ContactSection = () => {
+export default function Portfolio() {
   return (
-    <section
-      id="contact"
-      style={{
-        minHeight: '70vh',
-        padding: '6rem 2rem',
-        background: 'rgba(15, 23, 42, 0.3)',
-        display: 'flex',
-        alignItems: 'center'
-      }}
-    >
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto',
-        width: '100%'
-      }}>
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '4rem'
-        }}>
-          <h2 style={{
-            fontSize: '2.5rem',
-            fontWeight: '700',
-            marginBottom: '1rem',
-            color: '#e8eaed'
-          }}>
-            Let's Work Together
-          </h2>
-          <p style={{
-              fontSize: '1.125rem',
-              color: '#9ca3af',
-              maxWidth: '600px',
-              margin: '0 auto'
-            }}>
-              Open to conversations about backend development, learning, and collaboration.
-            </p>
-        </div>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '2rem',
-          marginBottom: '3rem'
-        }}>
-          <ContactCard
-            icon="📧"
-            label="Email"
-            value="bricealibyilingiro@gmail.com"
-            link="mailto:bricealibyilingiro@gmail.com"
-          />
-          <ContactCard
-            icon="💻"
-            label="GitHub"
-            value="github.com/Brice-art"
-            link="https://github.com/Brice-art"
-          />
-          <ContactCard
-            icon="💼"
-            label="LinkedIn"
-            value="Connect on LinkedIn"
-            link="https://www.linkedin.com/in/brice-ali-byiringiro-ab1182254/"
-          />
-        </div>
-
-        {/* Quick Facts */}
-        <div style={{
-          background: 'rgba(15, 23, 42, 0.6)',
-          border: '1px solid rgba(20, 184, 166, 0.2)',
-          borderRadius: '12px',
-          padding: '2rem',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: '2rem',
-          textAlign: 'center'
-        }}>
-          <div>
-            <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>Location</div>
-            <div style={{ fontSize: '1rem', color: '#e8eaed', fontWeight: '600' }}>Remote / Rwanda</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>Languages</div>
-            <div style={{ fontSize: '1rem', color: '#e8eaed', fontWeight: '600' }}>Kinyarwanda; Japanese (BJT 430); English (TOEIC 930)</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>Work Style</div>
-            <div style={{ fontSize: '1rem', color: '#e8eaed', fontWeight: '600' }}>Remote OK</div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <>
+      <GlobalStyles />
+      <Nav />
+      <main>
+        <Hero />
+        <Currently />
+        <About />
+        <Skills />
+        <Work />
+        <Resume />
+        <Contact />
+      </main>
+    </>
   );
-};
-
-const ContactCard = ({ icon, label, value, link }) => (
-  <a
-    href={link}
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{
-      display: 'block',
-      padding: '2rem',
-      background: 'rgba(15, 23, 42, 0.6)',
-      border: '1px solid rgba(20, 184, 166, 0.2)',
-      borderRadius: '12px',
-      textDecoration: 'none',
-      transition: 'all 0.3s ease',
-      textAlign: 'center'
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = 'translateY(-4px)';
-      e.currentTarget.style.borderColor = 'rgba(20, 184, 166, 0.5)';
-      e.currentTarget.style.boxShadow = '0 12px 30px rgba(20, 184, 166, 0.2)';
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = 'translateY(0)';
-      e.currentTarget.style.borderColor = 'rgba(20, 184, 166, 0.2)';
-      e.currentTarget.style.boxShadow = 'none';
-    }}
-  >
-    <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>{icon}</div>
-    <div style={{
-      fontSize: '0.75rem',
-      color: '#6b7280',
-      textTransform: 'uppercase',
-      letterSpacing: '0.05em',
-      marginBottom: '0.5rem'
-    }}>
-      {label}
-    </div>
-    <div style={{
-      fontSize: '0.875rem',
-      color: '#14b8a6',
-      fontWeight: '600',
-      wordBreak: 'break-word'
-    }}>
-      {value}
-    </div>
-  </a>
-);
-
-
-const Footer = () => (
-  <footer style={{
-    borderTop: '1px solid rgba(20, 184, 166, 0.2)',
-    padding: '2rem',
-    textAlign: 'center',
-    fontSize: '0.875rem',
-    color: '#6b7280',
-    background: '#0a0e27'
-  }}>
-    <p>©Copyright 2026 Brice Byiringiro</p>
-    <p style={{ marginTop: '0.5rem', opacity: 0.7 }}>
-      Remote / Rwanda
-    </p>
-  </footer>
-);
-
-const Portfolio = () => (
-  <>
-    <GlobalStyles />
-    <Nav />
-    <HeroSection />
-    <SkillsSection />
-    <ProjectsSection />
-    <ResumeSection />
-    <ContactSection />
-    <Footer />
-  </>
-);
-
-export default Portfolio;
+}
