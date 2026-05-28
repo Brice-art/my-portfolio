@@ -236,8 +236,8 @@ const Hero = () => {
           ...fade(0.25)
         }}
       >
-        Byiringiro<br />
-        <em style={{ fontStyle: "italic", fontWeight: 300 }}>Brice Ali</em>
+        Brice Byiringiro<br />
+        <em style={{ fontStyle: "italic", fontWeight: 300, fontSize: "2rem", }}>Full-stack Developer</em>
       </h1>
 
       <div style={{
@@ -245,7 +245,7 @@ const Hero = () => {
         letterSpacing: "0.06em", color: "#1a1a1870", marginBottom: "1.75rem",
         ...fade(0.42)
       }}>
-        Backend Development&nbsp;&nbsp;·&nbsp;&nbsp;Python&nbsp;&nbsp;·&nbsp;&nbsp;Systems Thinking
+        Full-stack Development&nbsp;&nbsp;·&nbsp;&nbsp;Python&nbsp;&nbsp;·&nbsp;&nbsp;Systems Thinking
       </div>
 
       <p style={{
@@ -317,10 +317,10 @@ const About = () => {
               Originally from Rwanda. Studied civil engineering in Japan. Somewhere in that process I got more interested in how software systems are designed than how bridges are.
             </p>
             <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.76rem", lineHeight: 2, color: "#1a1a1883", marginBottom: "1.25rem" }}>
-              I've been building my way in — backend APIs, databases, OOP patterns, and full-stack projects. Most of my learning comes from building actual things and understanding why they break.
+              I've been building my way in backend APIs, databases, OOP patterns, and full-stack projects. Most of my learning comes from building actual things and understanding why they break.
             </p>
             <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.76rem", lineHeight: 2, color: "#1a1a1883" }}>
-              English · Japanese (BJT 430, JLPT N2) · Kinyarwanda. Starting a software engineering role in Tokyo in April 2026.
+              English ( Fluent ) · Japanese ( Fluent, BJT 430 ) · Kinyarwanda.
             </p>
           </div>
         </div>
@@ -366,7 +366,7 @@ const projects = [
     screenshot: "/screenshots/agakayi.png",
     stack: ["React", "Node.js", "Express.js", "MongoDB", "JWT"],
     description:
-      "Full-stack note management app on the MERN stack. The backend handles JWT-based auth, RESTful routing, and CRUD via MongoDB. Frontend communicates through a clean API layer — no page reloads, real-time updates.",
+      "Full-stack note management app on the MERN stack. The backend handles JWT-based auth, RESTful routing, and CRUD via MongoDB. Frontend communicates through a clean API layer; no page reloads, real-time updates.",
     focus: "Backend architecture · API integration · secure auth flow"
   },
   {
@@ -388,7 +388,7 @@ const projects = [
     screenshot: "/screenshots/myStore.png",
     stack: ["PHP", "MySQL", "MVC Pattern", "OOP", "SQL"],
     description:
-      "E-commerce platform built with raw PHP and no framework — intentionally. Admin dashboard, cart, user/admin auth, product search. The constraint forces deep understanding of MVC, OOP, and SQL without abstraction layers.",
+      "E-commerce platform built with raw PHP and no framework, intentionally. Admin dashboard, cart, user/admin auth, product search. The constraint forces deep understanding of MVC, OOP, and SQL without abstraction layers.",
     focus: "MVC from scratch · OOP depth · raw SQL without ORMs"
   }
 ];
@@ -396,7 +396,7 @@ const projects = [
 const ScreenshotPlaceholder = ({ index }) => (
   <div className="screenshot-placeholder">
     <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.6rem", letterSpacing: "0.12em", color: "#1a1a1833" }}>
-      {index} / screenshot
+      {title}
     </span>
   </div>
 );
@@ -491,10 +491,10 @@ const Resume = () => {
             </h2>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: "2.5rem" }}>
               {[
-                ["Languages", "EN · JP (BJT 430) · RW"],
-                ["Certifications", "TOEIC 930 · JLPT N2"],
-                ["Background", "Civil Eng → Software"],
-                ["Location", "Tokyo, Japan (Apr 2026)"]
+                ["Languages", "EN · JP · RW"],
+                ["Certifications", "TOEIC 930 · BJT 430"],
+                ["Background", "Associate's in Civil Engineering, Japan"],
+                ["Location", "Kigali, Rwanda ・ Tokyo, Japan"]
               ].map(([label, val]) => (
                 <div key={label}>
                   <div style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.1em", color: "#1a1a1850", marginBottom: "0.3rem" }}>{label}</div>
@@ -536,12 +536,12 @@ const Contact = () => {
           <em>Still building.</em>
         </h2>
         <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.73rem", lineHeight: 2, color: "#f5f4f060", maxWidth: "400px", marginBottom: "3.5rem" }}>
-          Starting April 2026 in Tokyo. Open to conversations about backend development, learning, or anything interesting.
+          Open to conversations about backend development, learning, or anything interesting.
         </p>
         <div style={{ display: "flex", gap: "0.9rem", flexWrap: "wrap", marginBottom: "5.5rem" }}>
           <a href="mailto:bricealibyilingiro@gmail.com" className="contact-link">Email ↗</a>
           <a href="https://github.com/Brice-art" target="_blank" rel="noopener noreferrer" className="contact-link">GitHub ↗</a>
-          <a href="https://www.linkedin.com/in/brice-ali-byiringiro-ab1182254/" target="_blank" rel="noopener noreferrer" className="contact-link">LinkedIn ↗</a>
+          <a href="https://www.linkedin.com/in/briceali/" target="_blank" rel="noopener noreferrer" className="contact-link">LinkedIn ↗</a>
         </div>
         <div style={{
           borderTop: "1px solid #f5f4f012",
@@ -549,7 +549,7 @@ const Contact = () => {
           display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem"
         }}>
           <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.1em", color: "#f5f4f030" }}>
-            BYIRINGIRO BRICE ALI — TOKYO, JAPAN
+            BYIRINGIRO BRICE ALI — KIGALI, RWANDA
           </span>
           <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.1em", color: "#f5f4f030" }}>
             © 2026
