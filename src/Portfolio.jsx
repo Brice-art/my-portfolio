@@ -237,7 +237,7 @@ const Hero = () => {
         }}
       >
         Brice Byiringiro<br />
-        <em style={{ fontStyle: "italic", fontWeight: 200, fontSize: "clamp(2.5rem, 7vw, 5.4rem)" }}>Full-stack Developer</em>
+        <em style={{ fontStyle: "italic", fontWeight: 200, fontSize: "clamp(2.0rem, 7vw, 5.4rem)" }}>Full-stack Developer</em>
       </h1>
 
       <div style={{
