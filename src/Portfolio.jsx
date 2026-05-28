@@ -486,7 +486,7 @@ const Resume = () => {
             02 / RESUME
           </span>
           <div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "clamp(1.8rem,4vw,2.75rem)", fontWeight: 300, lineHeight: 1.3, color: "#1a1a18", marginBottom: "2rem" }}>
+            <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "clamp(1.8rem,4vw,2.65rem)", fontWeight: 300, lineHeight: 1.3, color: "#1a1a18", marginBottom: "2rem" }}>
               Qualifications &<br /><em>background.</em>
             </h2>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: "2.5rem" }}>
