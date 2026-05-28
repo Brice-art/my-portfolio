@@ -237,7 +237,7 @@ const Hero = () => {
         }}
       >
         Brice Byiringiro<br />
-        <em style={{ fontStyle: "italic", fontWeight: 300, fontSize: "2rem", }}>Full-stack Developer</em>
+        <em style={{ fontStyle: "italic", fontWeight: 300 }}>Full-stack Developer</em>
       </h1>
 
       <div style={{
@@ -260,7 +260,7 @@ const Hero = () => {
       <div className="hero-btns" style={{ display: "flex", gap: "0.9rem", flexWrap: "wrap", ...fade(0.66) }}>
         <a href="https://github.com/Brice-art" target="_blank" rel="noopener noreferrer" className="btn-solid">GitHub ↗</a>
         <a href="#contact" className="btn-outline">Contact</a>
-        <a href="/Resume-Brice.pdf" download className="btn-outline">Download CV</a>
+        <a href="/Brice_Byiringiro_Resume.pdf" download className="btn-outline">Download CV</a>
       </div>
 
       <div style={{
@@ -503,14 +503,14 @@ const Resume = () => {
               ))}
             </div>
             <div style={{ border: "1px solid #1a1a1815", marginBottom: "1.5rem", background: "#f0ede8" }}>
-              <object data="/Resume-Brice.pdf" type="application/pdf" width="100%" height="520">
+              <object data="/Brice_Byiringiro_Resume.pdf" type="application/pdf" width="100%" height="520">
                 <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.72rem", color: "#1a1a1866", padding: "2rem" }}>
                   PDF preview unavailable.{" "}
-                  <a href="/Resume-Brice.pdf" style={{ color: "#1a1a18", textDecoration: "underline" }}>Download directly.</a>
+                  <a href="/Brice_Byiringiro_Resume.pdf" style={{ color: "#1a1a18", textDecoration: "underline" }}>Download directly.</a>
                 </p>
               </object>
             </div>
-            <a href="/Resume-Brice.pdf" download className="btn-solid">Download CV</a>
+            <a href="/Brice_Byiringiro_Resume.pdf" download className="btn-solid">Download CV</a>
           </div>
         </div>
       </div>
