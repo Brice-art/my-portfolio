@@ -1,327 +1,986 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, createContext, useContext } from "react";
+import { TbSchoolFilled } from "react-icons/tb";
+import { TbBriefcaseFilled } from "react-icons/tb";
+import { TbCode } from "react-icons/tb";
+import { TbDatabase } from "react-icons/tb";
+import { TbTools } from "react-icons/tb";
+import { TbDownload } from "react-icons/tb";
+import { IoLanguage } from "react-icons/io5";
+import { FaBriefcase } from "react-icons/fa";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { FiTarget } from "react-icons/fi";
+import { FaDownload } from "react-icons/fa";
 
+/* ─────────────────────────────────────────────
+   TRANSLATIONS
+───────────────────────────────────────────── */
+const COPY = {
+  en: {
+    navHome: "Home",
+    navAbout: "About",
+    navProjects: "Projects",
+    navSkills: "Skills",
+    navContact: "Contact",
+    downloadCV: "Download CV",
+    heroGreeting: "Hello, I'm Brice Ali",
+    heroHeadline: "I'm",
+    heroWords: ["Byiringiro.", "a developer."],
+    heroSub: "I solve the problem first.\nThen I vibe code the solution.",
+    heroCTA: "View My Work →",
+    heroContact: "Contact Me",
+    heroConnect: "Let's connect",
+    stat1v: "7",
+    stat1s: "+",
+    stat1l: "Years in Japan",
+    stat2v: "3",
+    stat2s: "",
+    stat2l: "Languages Spoken",
+    stat3v: "930",
+    stat3s: "",
+    stat3l: "TOEIC Score",
+    stat4v: "430",
+    stat4s: "",
+    stat4l: "BJT Japanese Score",
+    aboutLabel: "About Me",
+    aboutHeadline: "A problem solver\nwho loves",
+    aboutAccent: "building.",
+    aboutP1:
+      "Studied civil engineering in Japan, then got more interested in how software systems are designed than how bridges are. I've been building my way in with JavaScript, React, Node.js, Python, and databases.",
+    aboutP2:
+      "Most of my learning comes from shipping real projects and understanding why they break.",
+    aboutCTA: "See My Projects →",
+    infoEduTitle: "Education",
+    infoEduBody:
+      "Associate's in Civil Engineering, Japan. Transitioning into software through consistent building.",
+    infoLangTitle: "Languages",
+    infoLangBody:
+      "English (Fluent) · Japanese (Fluent, BJT 430) · Kinyarwanda (Native)",
+    infoFocusTitle: "Focus",
+    infoFocusBody:
+      "Backend APIs, databases, OOP patterns, and efficient full-stack web applications.",
+    infoBgTitle: "Background",
+    infoBgBody:
+      "Originally from Rwanda. Lived and studied in Japan for 7+ years.",
+    skillsLabel: "SKILLS",
+    skillsHeadline: "What I work with",
+    skillsSub:
+      "Stack I use to ship full-stack apps — from APIs and auth to clean UI.",
+    skillFrontend: "Frontend",
+    skillBackend: "Backend",
+    skillData: "Data & Tools",
+    projLabel: "FEATURED PROJECTS",
+    projHeadline: "Things I've built",
+    projSub:
+      "Real projects — APIs, auth, browser extensions, and full-stack apps.",
+    projMoreGH: "More on GitHub",
+    projLive: "Live",
+    projInProgress: "In Progress",
+    projLiveDemo: "Live Demo",
+    projSource: "Source Code",
+    proj: [
+      {
+        title: "Huye Finds",
+        subtitle: "Discover the best places around UR Huye",
+        description:
+          "A platform that helps students find affordable local spots, restaurants, and services near Huye University. Mobile-first design with real-time search, location filtering, and student-focused UX.",
+        highlight: "Built for a real community",
+      },
+      {
+        title: "Agakayi Notes",
+        subtitle: "Full-stack note management on the MERN stack.",
+        description:
+          "JWT auth, RESTful routing, CRUD via MongoDB, clean API layer, and no page reloads. Inspired by the traditional Rwandan agakayi notebook. Emphasis on backend architecture and secure session handling.",
+        highlight: "Production · live at agakayi.xyz",
+      },
+      {
+        title: "Rshift Chrome Extension",
+        subtitle: "Shift scheduling → Google Calendar. One click.",
+        description:
+          "Extracts shift data from a scheduling page via DOM manipulation, then exports to Google Calendar with OAuth. One-click, zero manual entry. Handles auth, API communication, and event creation end to end.",
+        highlight: "Solves a real daily workflow problem",
+      },
+      {
+        title: "MyStore E-Commerce",
+        subtitle: "E-commerce built with raw PHP, no framework on purpose.",
+        description:
+          "Admin dashboard, cart, user/admin auth, and product search. The constraint forces deep understanding of MVC, OOP, and SQL without abstraction layers. Every routing, DB query, and auth check written by hand.",
+        highlight: "MVC and OOP from scratch",
+      },
+    ],
+    contactLabel: "CONTACT",
+    contactHeadline: "Let's build something.",
+    contactSub:
+      "Open to conversations about backend development, full-stack work, or anything interesting.",
+    contactEmail: "✉ Email Me",
+    contactFooter: "Byiringiro Brice — KIGALI · TOKYO",
+  },
+  jp: {
+    navHome: "ホーム",
+    navAbout: "自己紹介",
+    navProjects: "プロジェクト",
+    navSkills: "スキル",
+    navContact: "連絡先",
+    downloadCV: "履歴書",
+    heroGreeting: "こんにちは、ブリスです",
+    heroHeadline: "I'm",
+    heroWords: ["Brice Byiringiro.", "a Software Engineer."],
+    heroSub:
+      "土木工学のバックグラウンドを持ち、バックエンドAPI・データベース・フルスタックプロジェクトを実際に構築しながら学んでいます。",
+    heroCTA: "制作物を見る →",
+    heroContact: "連絡する",
+    heroConnect: "つながりましょう",
+    stat1v: "7",
+    stat1s: "+",
+    stat1l: "日本在住年数",
+    stat2v: "3",
+    stat2s: "",
+    stat2l: "話せる言語",
+    stat3v: "930",
+    stat3s: "",
+    stat3l: "TOEICスコア",
+    stat4v: "430",
+    stat4s: "",
+    stat4l: "BJT日本語スコア",
+    aboutLabel: "自己紹介",
+    aboutHeadline: "課題解決が好きな\nエンジニア、",
+    aboutAccent: "作ることを愛する。",
+    aboutP1:
+      "日本で土木工学を学んだあと、橋よりもソフトウェアシステムの設計に興味を持つようになりました。JavaScript・React・Node.js・Python・データベースを使いながら、実際に構築して力をつけています。",
+    aboutP2:
+      "学びのほとんどは、実際にプロダクトをリリースして、なぜ壊れるかを理解することから来ています。",
+    aboutCTA: "プロジェクトを見る →",
+    infoEduTitle: "学歴",
+    infoEduBody: "日本の高専で土木工学で卒業。現在はソフトウェア開発に転向中。",
+    infoLangTitle: "言語",
+    infoLangBody:
+      "英語（流暢・TOEIC 930）· 日本語（流暢・BJT 430）· キニャルワンダ語（母国語）",
+    infoFocusTitle: "フォーカス",
+    infoFocusBody:
+      "バックエンドAPI・データベース・OOPパターン・効率的なフルスタックWebアプリ。",
+    infoBgTitle: "バックグラウンド",
+    infoBgBody: "ルワンダ出身。7年以上日本で生活・学習。",
+    skillsLabel: "スキル",
+    skillsHeadline: "使用技術",
+    skillsSub:
+      "APIからUIまで、フルスタックアプリを構築するために使用するスタック。",
+    skillFrontend: "フロントエンド",
+    skillBackend: "バックエンド",
+    skillData: "データ & ツール",
+    projLabel: "主なプロジェクト",
+    projHeadline: "制作物",
+    projSub:
+      "API・認証・ブラウザ拡張機能・フルスタックアプリなど、実際のプロジェクト。",
+    projMoreGH: "GitHubでもっと見る",
+    projLive: "公開中",
+    projInProgress: "開発中",
+    projLiveDemo: "デモを見る",
+    projSource: "ソースコード",
+    proj: [
+      {
+        title: "Huye Finds",
+        subtitle: "Discover the best places around UR Huye",
+        description:
+          "学生がフエ大学周辺のリーズナブルな飲食店・サービスを見つけられるプラットフォーム。リアルタイム検索・位置フィルター・学生向けUXを実装したモバイルファーストな設計。",
+        highlight: "実コミュニティのために構築",
+      },
+      {
+        title: "Agakayi ノートアプリ",
+        subtitle: "MERNスタックで構築したフルスタックのノート管理アプリ。",
+        description:
+          "JWT認証・RESTfulルーティング・MongoDBによるCRUD——ページリロードなしのクリーンなAPIレイヤー。ルワンダの伝統的なノート「agakayi」に着想を得た設計。バックエンドアーキテクチャとセキュアなセッション管理に重点を置いています。",
+        highlight: "本番環境 · agakayi.xyzで公開中",
+      },
+      {
+        title: "Rshift Chrome拡張機能",
+        subtitle: "シフトスケジュール → Googleカレンダー。ワンクリックで。",
+        description:
+          "日本でアルバイトをしていた時に開発した。自分のスケジュールをすべてGoogleカレンダーで管理したいと思ったきっかけから開発した。　DOMを解析してシフトデータを抽出し、OAuthでGoogleカレンダーにエクスポート。ワンクリックで手動入力ゼロ。認証・API通信・イベント作成をエンドツーエンドで処理。",
+        highlight: "日常のワークフローを自動化",
+      },
+      {
+        title: "ECサイト（生PHP）",
+        subtitle: "フレームワークなしのPHPで構築。",
+        description:
+          "管理ダッシュボード・カート・ユーザー/管理者認証・商品検索を実装。フレームワークを使わない制約により、MVC・OOP・SQLの深い理解を促進。ルーティング・DBクエリ・認証処理をすべて手書き。",
+        highlight: "MVCとOOPをゼロから実装",
+      },
+    ],
+    contactLabel: "連絡先",
+    contactHeadline: "一緒に作りましょう。",
+    contactSub:
+      "バックエンド開発・フルスタック業務・その他何でも、気軽にご連絡ください。",
+    contactEmail: "✉ メールする",
+    contactFooter: "ブリス — キガリ · 東京",
+  },
+};
+
+/* ─────────────────────────────────────────────
+   LANGUAGE CONTEXT
+───────────────────────────────────────────── */
+const LangCtx = createContext({ lang: "en", t: COPY.en });
+const useLang = () => useContext(LangCtx);
+
+/* ─────────────────────────────────────────────
+   GLOBAL STYLES
+───────────────────────────────────────────── */
 const GlobalStyles = () => (
   <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Syne:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
+    :root {
+      --green:       #16a34a;
+      --green-light: #22c55e;
+      --green-dim:   #dcfce7;
+      --green-mid:   #bbf7d0;
+      --bg:          #ffffff;
+      --bg2:         #f9fafb;
+      --bg3:         #f3f4f6;
+      --border:      #e5e7eb;
+      --text:        #0f172a;
+      --text2:       #374151;
+      --text3:       #6b7280;
+      --text4:       #9ca3af;
+    }
+
     body {
-      background: #f5f4f0;
-      color: #1a1a18;
-      font-family: 'DM Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    ::selection { background: #1a1a18; color: #f5f4f0; }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.75s cubic-bezier(0.4,0,0.2,1), transform 0.75s cubic-bezier(0.4,0,0.2,1);
-    }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
-
-    @keyframes marquee {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    .marquee-track {
-      display: flex;
-      width: max-content;
-      animation: marquee 30s linear infinite;
-    }
-    .marquee-track:hover { animation-play-state: paused; }
-
-    .project-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-      padding: 4rem 0;
-      border-top: 1px solid #1a1a1818;
-    }
-    .project-row:last-child { border-bottom: 1px solid #1a1a1818; }
-    .project-row.reverse { direction: rtl; }
-    .project-row.reverse > * { direction: ltr; }
-
-    @media (max-width: 768px) {
-      .project-row { grid-template-columns: 1fr; gap: 2rem; direction: ltr !important; }
-      .project-row > * { direction: ltr !important; }
-    }
-
-    .screenshot-frame {
-      position: relative;
-      overflow: hidden;
-      background: #e8e7e3;
-      border: 1px solid #1a1a1812;
-      aspect-ratio: 16/10;
-    }
-    .screenshot-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top;
-      display: block;
-      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
-    }
-    .screenshot-frame:hover img { transform: scale(1.03); }
-
-    .screenshot-placeholder {
-      width: 100%;
-      height: 100%;
-      min-height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #ebe9e4;
-    }
-
-    .btn-solid {
-      display: inline-block;
-      padding: 0.6rem 1.3rem;
-      border: 1px solid #1a1a18;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      text-decoration: none;
-      color: #f5f4f0;
-      background: #1a1a18;
-      transition: background 0.15s ease;
-      cursor: pointer;
-    }
-    .btn-solid:hover { background: #333; }
-
-    .btn-outline {
-      display: inline-block;
-      padding: 0.6rem 1.3rem;
-      border: 1px solid #1a1a1844;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      text-decoration: none;
-      color: #1a1a18;
-      background: transparent;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-      cursor: pointer;
-    }
-    .btn-outline:hover { background: #1a1a18; color: #f5f4f0; border-color: #1a1a18; }
+    ::selection { background: var(--green-dim); color: var(--green); }
 
     .nav-link {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      text-decoration: none;
-      color: #1a1a1877;
-      transition: color 0.15s ease;
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--text3); text-decoration: none;
+      transition: color 0.15s; position: relative;
     }
-    .nav-link:hover { color: #1a1a18; }
-
-    .tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.05em;
-      color: #1a1a1866;
-      border: 1px solid #1a1a181a;
-      padding: 0.18rem 0.5rem;
+    .nav-link:hover { color: var(--text); }
+    .nav-link.active { color: var(--text); }
+    .nav-link.active::after {
+      content: ''; position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 2px; background: var(--green); border-radius: 1px;
     }
 
-    .scroll-line {
-      width: 1px;
-      height: 56px;
-      background: #1a1a1833;
-      animation: scrollPulse 2s ease-in-out infinite;
+    /* Language toggle */
+    .lang-toggle {
+      display: flex; align-items: center;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2px; gap: 0;
     }
-    @keyframes scrollPulse {
-      0%, 100% { opacity: 0.3; transform: scaleY(1); }
-      50%       { opacity: 0.9; transform: scaleY(1.12); }
+    .lang-btn {
+      padding: 0.25rem 0.65rem;
+      border-radius: 16px; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem; font-weight: 600;
+      transition: background 0.15s, color 0.15s;
+      background: transparent; color: var(--text3);
+    }
+    .lang-btn.active {
+      background: var(--green); color: #fff;
     }
 
-    .contact-link {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.06em;
-      padding: 0.65rem 1.4rem;
-      border: 1px solid #f5f4f033;
-      color: #f5f4f0;
-      text-decoration: none;
-      background: transparent;
-      transition: background 0.15s ease, border-color 0.15s ease;
-      display: inline-block;
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem; background: var(--green); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600;
+      text-decoration: none; border: none; border-radius: 8px; cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
     }
-    .contact-link:hover { background: #f5f4f011; border-color: #f5f4f055; }
+    .btn-primary:hover { background: #15803d; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(22,163,74,0.3); }
+    .btn-primary:active { transform: translateY(0); }
 
-    @media (max-width: 640px) {
-      .hero-name { font-size: 2.6rem !important; }
-      .hero-btns { flex-direction: column; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem; background: transparent; color: var(--text2);
+      font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500;
+      text-decoration: none; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--text3); color: var(--text); background: var(--bg3); }
+
+    .btn-live {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.4rem; background: var(--green); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600;
+      text-decoration: none; border-radius: 8px; cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+    }
+    .btn-live:hover { background: #15803d; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(22,163,74,0.35); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.4rem; background: transparent; color: var(--text2);
+      font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500;
+      text-decoration: none; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--text3); background: var(--bg3); color: var(--text); }
+
+    .skill-tag {
+      display: inline-block; padding: 0.3rem 0.75rem;
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 20px;
+      font-size: 0.78rem; font-weight: 500; color: var(--text2);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .skill-tag:hover { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+
+    .live-dot {
+      display: inline-block; width: 8px; height: 8px;
+      background: var(--green-light); border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
+      50%       { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.65s cubic-bezier(0.4,0,0.2,1), transform 0.65s cubic-bezier(0.4,0,0.2,1);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    .cursor {
+      display: inline-block; width: 3px; height: 0.85em;
+      background: var(--green); margin-left: 2px; vertical-align: middle;
+      animation: blink 1.1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* Laptop */
+    .laptop-wrap { position: relative; width: 100%; max-width: 540px; }
+    .laptop-body {
+      background: #1e293b; border-radius: 12px 12px 0 0; padding: 12px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .laptop-notch { width: 60px; height: 8px; background: #0f172a; border-radius: 4px; margin: 0 auto 10px; }
+    .laptop-screen { background: #0f172a; border-radius: 6px; overflow: hidden; aspect-ratio: 16/10; position: relative; }
+    .laptop-base { background: linear-gradient(180deg, #cbd5e1 0%, #94a3b8 100%); height: 14px; border-radius: 0 0 4px 4px; }
+    .laptop-foot { background: #94a3b8; height: 6px; width: 50%; margin: 0 auto; border-radius: 0 0 8px 8px; }
+
+    /* Phone */
+    .phone-wrap { position: absolute; bottom: -20px; right: -30px; width: 28%; z-index: 10; }
+    .phone-body { background: #1e293b; border-radius: 20px; padding: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
+    .phone-notch { width: 40%; height: 6px; background: #0f172a; border-radius: 3px; margin: 0 auto 6px; }
+    .phone-screen { background: #0f172a; border-radius: 14px; overflow: hidden; aspect-ratio: 9/19; }
+
+    /* Code */
+    .code-kw  { color: #c678dd; }
+    .code-fn  { color: #61afef; }
+    .code-str { color: #98c379; }
+    .code-num { color: #d19a66; }
+    .code-cm  { color: #5c6370; font-style: italic; }
+    .code-var { color: #e06c75; }
+
+    .stat-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.5rem; text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
+
+    .info-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.25rem 1.5rem; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .info-card:hover { border-color: var(--green-mid); box-shadow: 0 4px 16px rgba(22,163,74,0.08); }
+
+    .skill-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 14px;
+      padding: 1.75rem; transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .skill-card:hover { border-color: var(--green-mid); box-shadow: 0 8px 24px rgba(22,163,74,0.09); }
+
+    .project-section {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden; margin-bottom: 1.5rem;
+      transition: box-shadow 0.2s;
+    }
+    .project-section:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.07); }
+
+    .social-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 50%; text-decoration: none; color: var(--text3);
+      transition: border-color 0.15s, color 0.15s, background 0.15s; font-size: 1rem;
+    }
+    .social-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+
+    .contact-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.85rem 1.75rem; border: 1.5px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.9); font-family: 'Inter', sans-serif;
+      font-size: 0.875rem; font-weight: 500; text-decoration: none; border-radius: 8px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .contact-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
+    .contact-btn.primary { background: var(--green); border-color: var(--green); color: #fff; font-weight: 600; }
+    .contact-btn.primary:hover { background: #15803d; border-color: #15803d; }
+
+    @media (max-width: 768px) {
+      .phone-wrap { display: none; }
+      .hero-grid, .project-grid, .about-grid { grid-template-columns: 1fr !important; }
+      .stats-grid { grid-template-columns: 1fr 1fr !important; }
+      .skills-grid { grid-template-columns: 1fr !important; }
     }
   `}</style>
 );
 
-function useFadeIn(threshold = 0.12) {
+/* ─────────────────────────────────────────────
+   UTILITIES
+───────────────────────────────────────────── */
+function useReveal(threshold = 0.12) {
   const ref = useRef(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { el.classList.add("visible"); obs.disconnect(); } },
-      { threshold }
+      ([e]) => {
+        if (e.isIntersecting) {
+          el.classList.add("visible");
+          obs.disconnect();
+        }
+      },
+      { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, [threshold]);
+  }, []);
   return ref;
 }
 
-const Nav = () => {
+function useCountUp(target, duration = 1800, start = false) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    let startTime = null;
+    const step = (ts) => {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * target));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [start, target, duration]);
+  return count;
+}
+
+/* ─────────────────────────────────────────────
+   NAV
+───────────────────────────────────────────── */
+const Nav = ({ lang, setLang }) => {
+  const { t } = useLang();
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40);
+    const fn = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
+  const links = [
+    [t.navHome, "#home"],
+    [t.navAbout, "#about"],
+    [t.navSkills, "#skills"],
+    [t.navProjects, "#projects"],
+    [t.navContact, "#contact"],
+  ];
+
   return (
-    <nav style={{
-      position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      padding: "1.3rem 2.5rem",
-      display: "flex", alignItems: "center", justifyContent: "space-between",
-      background: scrolled ? "rgba(245,244,240,0.93)" : "transparent",
-      backdropFilter: scrolled ? "blur(14px)" : "none",
-      borderBottom: scrolled ? "1px solid #1a1a1812" : "1px solid transparent",
-      transition: "background 0.3s, border-color 0.3s, backdrop-filter 0.3s"
-    }}>
-      <span style={{ fontFamily: "'Syne',sans-serif", fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.15em", color: "#1a1a18" }}>
-        BAB
-      </span>
-      <div style={{ display: "flex", gap: "2.5rem" }}>
-        {[["Work", "#work"], ["About", "#about"], ["Resume", "#resume"], ["Contact", "#contact"]].map(([l, h]) => (
-          <a key={l} href={h} className="nav-link">{l}</a>
+    <nav
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        padding: "0 2rem",
+        height: "64px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        background: scrolled ? "rgba(255,255,255,0.92)" : "transparent",
+        backdropFilter: scrolled ? "blur(16px)" : "none",
+        borderBottom: scrolled
+          ? "1px solid rgba(229,231,235,0.8)"
+          : "1px solid transparent",
+        transition: "background 0.3s, border-color 0.3s, backdrop-filter 0.3s",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+        <div
+          style={{
+            width: 34,
+            height: 34,
+            background: "var(--green)",
+            borderRadius: 8,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: 800,
+            fontSize: "0.9rem",
+            color: "#fff",
+            fontFamily: "'Inter', sans-serif",
+          }}
+        >
+          B
+        </div>
+        <span
+          style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text)" }}
+        >
+          Brice
+        </span>
+      </div>
+
+      <div style={{ display: "flex", gap: "2rem" }}>
+        {links.map(([label, href]) => (
+          <a key={href} href={href} className="nav-link">
+            {label}
+          </a>
         ))}
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+        {/* Real working language toggle */}
+        <div className="lang-toggle">
+          <button
+            className={`lang-btn${lang === "en" ? " active" : ""}`}
+            onClick={() => setLang("en")}
+          >
+            EN
+          </button>
+          <button
+            className={`lang-btn${lang === "jp" ? " active" : ""}`}
+            onClick={() => setLang("jp")}
+          >
+            JP
+          </button>
+        </div>
+        <a
+          href="/Resume-Brice.pdf"
+          download
+          className="btn-primary"
+          style={{ padding: "0.5rem 1rem", fontSize: "0.8rem" }}
+        >
+          <TbDownload /> {t.downloadCV}
+        </a>
       </div>
     </nav>
   );
 };
 
+/* ─────────────────────────────────────────────
+   HERO
+───────────────────────────────────────────── */
 const Hero = () => {
-  const [vis, setVis] = useState(false);
-  useEffect(() => { const t = setTimeout(() => setVis(true), 100); return () => clearTimeout(t); }, []);
+  const { t } = useLang();
+  const [mounted, setMounted] = useState(false);
+  const [wordIdx, setWordIdx] = useState(0);
+  const [displayed, setDisplayed] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
-  const fade = (delay) => ({
-    opacity: vis ? 1 : 0,
-    transform: vis ? "none" : "translateY(16px)",
-    transition: `opacity 0.8s ease ${delay}s, transform 0.8s ease ${delay}s`
+  useEffect(() => {
+    setTimeout(() => setMounted(true), 80);
+  }, []);
+
+  // Reset typing when language changes
+  useEffect(() => {
+    setDisplayed("");
+    setDeleting(false);
+    setWordIdx(0);
+  }, [t]);
+
+  useEffect(() => {
+    const word = t.heroWords[wordIdx];
+    let timeout;
+    if (!deleting && displayed.length < word.length) {
+      timeout = setTimeout(
+        () => setDisplayed(word.slice(0, displayed.length + 1)),
+        70,
+      );
+    } else if (!deleting && displayed.length === word.length) {
+      timeout = setTimeout(() => setDeleting(true), 1800);
+    } else if (deleting && displayed.length > 0) {
+      timeout = setTimeout(
+        () => setDisplayed(word.slice(0, displayed.length - 1)),
+        40,
+      );
+    } else if (deleting && displayed.length === 0) {
+      setDeleting(false);
+      setWordIdx((i) => (i + 1) % t.heroWords.length);
+    }
+    return () => clearTimeout(timeout);
+  }, [displayed, deleting, wordIdx, t]);
+
+  const fadeStyle = (delay) => ({
+    opacity: mounted ? 1 : 0,
+    transform: mounted ? "none" : "translateY(20px)",
+    transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
   });
 
+  const headlineParts = t.heroHeadline.split("\n");
+
   return (
-    <section style={{
-      minHeight: "100vh",
-      display: "flex", flexDirection: "column", justifyContent: "center",
-      padding: "0 2.5rem", maxWidth: "860px", margin: "0 auto", position: "relative"
-    }}>
-      <div style={{ ...fade(0.1), fontFamily: "'DM Mono',monospace", fontSize: "0.62rem", letterSpacing: "0.14em", color: "#1a1a1852", marginBottom: "3.5rem" }}>
-        RWANDA → JAPAN — SOFTWARE ENGINEERING
-      </div>
-
-      <h1
-        className="hero-name"
-        style={{
-          fontFamily: "'Cormorant Garamond',serif",
-          fontSize: "clamp(2.8rem, 7vw, 5.5rem)",
-          fontWeight: 300, lineHeight: 1.06, letterSpacing: "-0.01em",
-          color: "#1a1a18", marginBottom: "2rem",
-          ...fade(0.25)
-        }}
-      >
-        Brice Byiringiro<br />
-        <em style={{ fontStyle: "italic", fontWeight: 200, fontSize: "clamp(1.5rem, 4vw, 3.2rem)" }}>Full-stack Developer</em>
-      </h1>
-
-      <div style={{
-        fontFamily: "'DM Mono',monospace", fontSize: "0.7rem",
-        letterSpacing: "0.06em", color: "#1a1a1870", marginBottom: "1.75rem",
-        ...fade(0.42)
-      }}>
-        Full-stack Development&nbsp;&nbsp;·&nbsp;&nbsp;Python&nbsp;&nbsp;·&nbsp;&nbsp;Systems Thinking
-      </div>
-
-      <p style={{
-        fontFamily: "'Cormorant Garamond',serif",
-        fontSize: "1.1rem", fontWeight: 400, color: "#1a1a1890",
-        maxWidth: "440px", lineHeight: 1.65, marginBottom: "3rem",
-        ...fade(0.52)
-      }}>
-        Engineering background. Transitioning into software through consistent building and learning.
-      </p>
-
-      <div className="hero-btns" style={{ display: "flex", gap: "0.9rem", flexWrap: "wrap", ...fade(0.66) }}>
-        <a href="https://github.com/Brice-art" target="_blank" rel="noopener noreferrer" className="btn-solid">GitHub ↗</a>
-        <a href="#contact" className="btn-outline">Contact</a>
-        <a href="/Brice-Resume.pdf" download className="btn-outline">Download CV</a>
-      </div>
-
-      <div style={{
-        position: "absolute", bottom: "2.5rem", left: "2.5rem",
-        display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem",
-        opacity: vis ? 0.45 : 0, transition: "opacity 1s ease 1.3s"
-      }}>
-        <div className="scroll-line" />
-        <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.52rem", letterSpacing: "0.12em", color: "#1a1a1866", writingMode: "vertical-rl" }}>scroll</span>
-      </div>
-
-      <div style={{
-        position: "absolute", bottom: "2.5rem", right: "2.5rem",
-        fontFamily: "'DM Mono',monospace", fontSize: "0.58rem",
-        letterSpacing: "0.1em", color: "#1a1a1830",
-        opacity: vis ? 1 : 0, transition: "opacity 1s ease 1.3s"
-      }}>
-        2026
-      </div>
-    </section>
-  );
-};
-
-const Currently = () => {
-  const ref = useFadeIn();
-  return (
-    <div ref={ref} className="fade-in" style={{ maxWidth: "860px", margin: "0 auto", padding: "0 2.5rem 5rem" }}>
-      <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.68rem", letterSpacing: "0.07em", color: "#1a1a1852", lineHeight: 2 }}>
-        Currently — learning backend architecture, cleaner Python design, and REST API patterns.
-      </p>
-    </div>
-  );
-};
-
-const About = () => {
-  const ref = useFadeIn();
-  return (
-    <section id="about" style={{ padding: "7rem 2.5rem", background: "#eeecea" }}>
-      <div ref={ref} className="fade-in" style={{ maxWidth: "860px", margin: "0 auto" }}>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "clamp(90px,18%,160px) 1fr",
-          gap: "clamp(2rem,6vw,5rem)",
-          alignItems: "start"
-        }}>
-          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.14em", color: "#1a1a1850", paddingTop: "0.35rem" }}>
-            00 / ABOUT
-          </span>
+    <section
+      id="home"
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        padding: "80px 2rem 0",
+        background:
+          "linear-gradient(160deg, #ffffff 0%, #f0fdf4 50%, #ffffff 100%)",
+      }}
+    >
+      <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%" }}>
+        <div
+          className="hero-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "4rem",
+            alignItems: "center",
+          }}
+        >
+          {/* Left */}
           <div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "clamp(1.8rem,4vw,2.75rem)", fontWeight: 300, lineHeight: 1.3, color: "#1a1a18", marginBottom: "2rem" }}>
-              From civil structures<br /><em>to software systems.</em>
-            </h2>
-            <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.76rem", lineHeight: 2, color: "#1a1a1883", marginBottom: "1.25rem" }}>
-              Originally from Rwanda. Studied civil engineering in Japan. Somewhere in that process I got more interested in how software systems are designed than how bridges are.
+            <h1
+              style={{
+                ...fadeStyle(0.2),
+                fontSize: "clamp(2.2rem, 4.5vw, 3.5rem)",
+                fontWeight: 800,
+                lineHeight: 1.1,
+                letterSpacing: "-0.025em",
+                color: "var(--text)",
+                marginBottom: "1.25rem",
+              }}
+            >
+              {headlineParts.map((line, i) => (
+                <span key={i}>
+                  {line}
+                  {i < headlineParts.length - 1 && <br />}
+                </span>
+              ))}{" "}
+              <span
+                style={{
+                  color: "var(--green)",
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {displayed}
+                <span className="cursor" />
+              </span>
+            </h1>
+
+            <p
+              style={{
+                ...fadeStyle(0.32),
+                fontSize: "1.05rem",
+                color: "var(--text3)",
+                lineHeight: 1.7,
+                maxWidth: 420,
+                marginBottom: "2.25rem",
+              }}
+            >
+              {t.heroSub}
             </p>
-            <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.76rem", lineHeight: 2, color: "#1a1a1883", marginBottom: "1.25rem" }}>
-              I've been building my way in backend APIs, databases, OOP patterns, and full-stack projects. Most of my learning comes from building actual things and understanding why they break.
-            </p>
-            <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.76rem", lineHeight: 2, color: "#1a1a1883" }}>
-              English ( Fluent ) · Japanese ( Fluent, BJT 430 ) · Kinyarwanda.
-            </p>
+
+            <div
+              style={{
+                ...fadeStyle(0.42),
+                display: "flex",
+                gap: "0.75rem",
+                flexWrap: "wrap",
+                marginBottom: "2.5rem",
+              }}
+            >
+              <a href="#projects" className="btn-primary">
+                {t.heroCTA}
+              </a>
+              <a href="#contact" className="btn-secondary">
+                {t.heroContact}
+              </a>
+            </div>
+
+            <div
+              style={{
+                ...fadeStyle(0.52),
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "0.8rem",
+                  color: "var(--text4)",
+                  fontWeight: 500,
+                }}
+              >
+                {t.heroConnect}
+              </span>
+              <a
+                href="https://github.com/Brice-art"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-btn"
+                title="GitHub"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
+                </svg>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/briceali/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-btn"
+                title="LinkedIn"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                </svg>
+              </a>
+              <a
+                href="mailto:bricealibyilingiro@gmail.com"
+                className="social-btn"
+                title="Email"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          {/* Right — CSS Laptop */}
+          <div style={{ ...fadeStyle(0.35), position: "relative" }}>
+            <div className="laptop-wrap">
+              <div className="laptop-body">
+                <div className="laptop-notch" />
+                <div className="laptop-screen">
+                  <div
+                    style={{
+                      padding: "1rem",
+                      height: "100%",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        marginBottom: "12px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: "50%",
+                          background: "#ff5f57",
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: "50%",
+                          background: "#febc2e",
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: "50%",
+                          background: "#28c840",
+                        }}
+                      />
+                      <div
+                        style={{
+                          flex: 1,
+                          background: "#1e293b",
+                          borderRadius: 4,
+                          padding: "2px 8px",
+                          marginLeft: 6,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: "'JetBrains Mono', monospace",
+                            fontSize: "0.6rem",
+                            color: "#475569",
+                          }}
+                        >
+                          notes.controller.js
+                        </span>
+                      </div>
+                    </div>
+                    <pre
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: "0.68rem",
+                        lineHeight: 1.7,
+                        color: "#abb2bf",
+                      }}
+                    >
+                      <code>
+                        {`  `}
+                        <span className="code-kw">const</span>
+                        {` `}
+                        <span className="code-fn">createNote</span>
+                        {` = `}
+                        <span className="code-kw">async</span>
+                        {` (`}
+                        <span className="code-var">req</span>
+                        {`, `}
+                        <span className="code-var">res</span>
+                        {`) => {`}
+                        {"\n"}
+                        {`    `}
+                        <span className="code-kw">const</span>
+                        {` { title, content } = `}
+                        <span className="code-var">req</span>
+                        {`.body;`}
+                        {"\n"}
+                        {`    `}
+                        <span className="code-kw">const</span>
+                        {` note = `}
+                        <span className="code-kw">await</span>
+                        {` `}
+                        <span className="code-fn">Note</span>
+                        {`.`}
+                        <span className="code-fn">create</span>
+                        {`({`}
+                        {"\n"}
+                        {`      title, content,`}
+                        {"\n"}
+                        {`      userId: `}
+                        <span className="code-var">req</span>
+                        {`.user.`}
+                        <span className="code-var">id</span>
+                        {`,`}
+                        {"\n"}
+                        {`    });`}
+                        {"\n"}
+                        {`    `}
+                        <span className="code-var">res</span>
+                        {`.`}
+                        <span className="code-fn">status</span>
+                        {`(`}
+                        <span className="code-num">201</span>
+                        {`).`}
+                        <span className="code-fn">json</span>
+                        {`(note);`}
+                        {"\n"}
+                        {`  };`}
+                        {"\n\n"}
+                        {`  `}
+                        <span className="code-cm">
+                          // JWT auth · MongoDB · REST API
+                        </span>
+                      </code>
+                    </pre>
+                  </div>
+                </div>
+              </div>
+              <div className="laptop-base" />
+              <div className="laptop-foot" />
+              <div className="phone-wrap">
+                <div className="phone-body">
+                  <div className="phone-notch" />
+                  <div className="phone-screen">
+                    <div
+                      style={{
+                        padding: "6px",
+                        height: "100%",
+                        background: "#0f172a",
+                      }}
+                    >
+                      <div
+                        style={{
+                          background: "#1e293b",
+                          borderRadius: 6,
+                          padding: "6px",
+                          marginBottom: 4,
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: "0.45rem",
+                            color: "#22c55e",
+                            fontFamily: "monospace",
+                            fontWeight: 600,
+                          }}
+                        >
+                          agakayi.xyz
+                        </div>
+                      </div>
+                      {[1, 2, 3, 4].map((i) => (
+                        <div
+                          key={i}
+                          style={{
+                            background: "#1e293b",
+                            borderRadius: 4,
+                            padding: "4px 6px",
+                            marginBottom: 3,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 4,
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: 4,
+                              height: 4,
+                              borderRadius: "50%",
+                              background:
+                                i === 1
+                                  ? "#22c55e"
+                                  : i === 2
+                                    ? "#61afef"
+                                    : "#c678dd",
+                            }}
+                          />
+                          <div
+                            style={{
+                              height: 3,
+                              background: "#334155",
+                              borderRadius: 2,
+                              flex: 1,
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -329,139 +988,342 @@ const About = () => {
   );
 };
 
-const skills = [
-  "Python", "Node.js", "PHP / Laravel", "REST APIs", "SQL / PostgreSQL",
-  "MongoDB", "React", "JavaScript", "Git", "OOP", "DSA", "MVC Pattern",
-  "JWT Auth", "Express.js", "Linux CLI"
-];
-
-const Skills = () => {
-  const doubled = [...skills, ...skills];
+/* ─────────────────────────────────────────────
+   STATS
+───────────────────────────────────────────── */
+const StatItem = ({ value, suffix, label, started }) => {
+  const num = parseInt(value, 10);
+  const count = useCountUp(num, 1600, started);
   return (
-    <section style={{ padding: "5rem 0", borderTop: "1px solid #1a1a180f", borderBottom: "1px solid #1a1a180f", overflow: "hidden" }}>
-      <div className="marquee-track">
-        {doubled.map((s, i) => (
-          <span key={i} style={{
-            fontFamily: "'DM Mono',monospace",
-            fontSize: "0.68rem",
-            letterSpacing: "0.1em",
-            color: i % 2 === 0 ? "#1a1a18" : "#1a1a1850",
-            whiteSpace: "nowrap",
-            padding: "0 2.2rem"
-          }}>
-            {s}&nbsp;&nbsp;&nbsp;—
+    <div className="stat-card">
+      <div
+        style={{
+          fontSize: "2.25rem",
+          fontWeight: 800,
+          color: "var(--text)",
+          letterSpacing: "-0.03em",
+          lineHeight: 1,
+        }}
+      >
+        {count}
+        {suffix}
+      </div>
+      <div
+        style={{
+          fontSize: "0.8rem",
+          color: "var(--text3)",
+          marginTop: "0.4rem",
+          fontWeight: 500,
+        }}
+      >
+        {label}
+      </div>
+    </div>
+  );
+};
+
+const Stats = () => {
+  const { t } = useLang();
+  const ref = useRef(null);
+  const [started, setStarted] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setStarted(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div ref={ref} style={{ padding: "4rem 2rem", background: "var(--bg)" }}>
+      <div
+        className="stats-grid"
+        style={{
+          maxWidth: 1100,
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "1rem",
+        }}
+      >
+        <StatItem
+          value={t.stat1v}
+          suffix={t.stat1s}
+          label={t.stat1l}
+          started={started}
+        />
+        <StatItem
+          value={t.stat2v}
+          suffix={t.stat2s}
+          label={t.stat2l}
+          started={started}
+        />
+        <StatItem
+          value={t.stat3v}
+          suffix={t.stat3s}
+          label={t.stat3l}
+          started={started}
+        />
+        <StatItem
+          value={t.stat4v}
+          suffix={t.stat4s}
+          label={t.stat4l}
+          started={started}
+        />
+      </div>
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────────────
+   ABOUT
+───────────────────────────────────────────── */
+const About = () => {
+  const { t } = useLang();
+  const ref = useReveal();
+  const headlineParts = t.aboutHeadline.split("\n");
+  const infoCards = [
+    { icon: <TbSchoolFilled />, title: t.infoEduTitle, body: t.infoEduBody },
+    { icon: <IoLanguage />, title: t.infoLangTitle, body: t.infoLangBody },
+    { icon: <FiTarget />, title: t.infoFocusTitle, body: t.infoFocusBody },
+    { icon: <FaMapMarkerAlt />, title: t.infoBgTitle, body: t.infoBgBody },
+  ];
+  return (
+    <section
+      id="about"
+      style={{ padding: "6rem 2rem", background: "var(--bg2)" }}
+    >
+      <div
+        ref={ref}
+        className="reveal"
+        style={{ maxWidth: 1100, margin: "0 auto" }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            marginBottom: "0.75rem",
+          }}
+        >
+          <div className="live-dot" style={{ background: "var(--green)" }} />
+          <span
+            style={{
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              color: "var(--green)",
+              textTransform: "uppercase",
+            }}
+          >
+            {t.aboutLabel}
           </span>
-        ))}
+        </div>
+        <div
+          className="about-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "4rem",
+            alignItems: "start",
+          }}
+        >
+          <div>
+            <h2
+              style={{
+                fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)",
+                fontWeight: 800,
+                lineHeight: 1.15,
+                letterSpacing: "-0.025em",
+                color: "var(--text)",
+                marginBottom: "1.25rem",
+              }}
+            >
+              {headlineParts.map((line, i) => (
+                <span key={i}>
+                  {line}
+                  {i < headlineParts.length - 1 && <br />}
+                </span>
+              ))}{" "}
+              <span style={{ color: "var(--green)" }}>{t.aboutAccent}</span>
+            </h2>
+            <p
+              style={{
+                fontSize: "0.95rem",
+                color: "var(--text3)",
+                lineHeight: 1.75,
+                marginBottom: "1rem",
+              }}
+            >
+              {t.aboutP1}
+            </p>
+            <p
+              style={{
+                fontSize: "0.95rem",
+                color: "var(--text3)",
+                lineHeight: 1.75,
+                marginBottom: "2rem",
+              }}
+            >
+              {t.aboutP2}
+            </p>
+            <a href="#projects" className="btn-primary">
+              {t.aboutCTA}
+            </a>
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "1rem",
+            }}
+          >
+            {infoCards.map(({ icon, title, body }) => (
+              <div key={title} className="info-card">
+                <div style={{ fontSize: "1.4rem", marginBottom: "0.6rem" }}>
+                  {icon}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    color: "var(--text)",
+                    marginBottom: "0.4rem",
+                  }}
+                >
+                  {title}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.8rem",
+                    color: "var(--text3)",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {body}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
 };
 
-const projects = [
-  {
-    index: "01",
-    title: "Agakayi Notes App",
-    url: "https://agakayi.xyz",
-    github: "https://github.com/Brice-art/Agakayi",
-    screenshot: "/screenshots/agakayi.png",
-    stack: ["React", "Node.js", "Express.js", "MongoDB", "JWT"],
-    description:
-      "Full-stack note management app on the MERN stack. The backend handles JWT-based auth, RESTful routing, and CRUD via MongoDB. Frontend communicates through a clean API layer; no page reloads, real-time updates.",
-    focus: "Backend architecture · API integration · secure auth flow"
-  },
-  {
-    index: "02",
-    title: "Rshift Chrome Extension",
-    url: null,
-    github: "https://github.com/Brice-art",
-    screenshot: "/screenshots/rshift.png",
-    stack: ["JavaScript", "DOM API", "Google Calendar API", "OAuth 2.0", "Chrome Extensions"],
-    description:
-      "Extracts shift data from a rendered scheduling page using DOM manipulation, then exports it to Google Calendar via OAuth-authenticated API calls. One-click, zero manual entry.",
-    focus: "DOM parsing · OAuth flow · browser extension architecture"
-  },
-  {
-    index: "03",
-    title: "MyStore E-Commerce (Raw PHP)",
-    url: null,
-    github: "https://github.com/Brice-art",
-    screenshot: "/screenshots/myStore.png",
-    stack: ["PHP", "MySQL", "MVC Pattern", "OOP", "SQL"],
-    description:
-      "E-commerce platform built with raw PHP and no framework, intentionally. Admin dashboard, cart, user/admin auth, product search. The constraint forces deep understanding of MVC, OOP, and SQL without abstraction layers.",
-    focus: "MVC from scratch · OOP depth · raw SQL without ORMs"
-  }
-];
-
-const ScreenshotPlaceholder = ({ title }) => (
-  <div className="screenshot-placeholder">
-    <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.6rem", letterSpacing: "0.12em", color: "#1a1a1833" }}>
-      {title}
-    </span>
-  </div>
-);
-
-const ProjectImage = ({ src, alt, title }) => {
-  const [err, setErr] = useState(false);
+/* ─────────────────────────────────────────────
+   SKILLS
+───────────────────────────────────────────── */
+const Skills = () => {
+  const { t } = useLang();
+  const ref = useReveal();
+  const groups = [
+    {
+      title: t.skillFrontend,
+      items: ["React", "JavaScript", "HTML / CSS", "Tailwind-style UI"],
+    },
+    {
+      title: t.skillBackend,
+      items: [
+        "Node.js",
+        "Express.js",
+        "Python",
+        "PHP / Laravel",
+        "REST APIs",
+        "JWT Auth",
+      ],
+    },
+    {
+      title: t.skillData,
+      items: [
+        "MongoDB",
+        "SQL / PostgreSQL",
+        "Git",
+        "Linux CLI",
+        "OOP",
+        "MVC Pattern",
+        "DSA",
+      ],
+    },
+  ];
   return (
-    <div className="screenshot-frame">
-      {err || !src
-        ? <ScreenshotPlaceholder title={title} />
-        : <img src={src} alt={alt} onError={() => setErr(true)} />
-      }
-    </div>
-  );
-};
-
-const Work = () => {
-  const ref = useFadeIn();
-  return (
-    <section id="work" style={{ padding: "7rem 2.5rem" }}>
-      <div ref={ref} className="fade-in" style={{ maxWidth: "860px", margin: "0 auto" }}>
-
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "4rem" }}>
-          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.14em", color: "#1a1a1850" }}>
-            01 / SELECTED WORK
-          </span>
-          <a
-            href="https://github.com/Brice-art"
-            target="_blank" rel="noopener noreferrer"
-            style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.63rem", letterSpacing: "0.05em", color: "#1a1a1860", textDecoration: "none", borderBottom: "1px solid #1a1a1830", paddingBottom: "2px", transition: "color 0.15s" }}
-            onMouseEnter={e => e.currentTarget.style.color = "#1a1a18"}
-            onMouseLeave={e => e.currentTarget.style.color = "#1a1a1860"}
+    <section
+      id="skills"
+      style={{ padding: "6rem 2rem", background: "var(--bg)" }}
+    >
+      <div
+        ref={ref}
+        className="reveal"
+        style={{ maxWidth: 1100, margin: "0 auto" }}
+      >
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <div
+            style={{
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              color: "var(--green)",
+              textTransform: "uppercase",
+              marginBottom: "0.5rem",
+            }}
           >
-            All on GitHub ↗
-          </a>
+            {t.skillsLabel}
+          </div>
+          <h2
+            style={{
+              fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.025em",
+              color: "var(--text)",
+              marginBottom: "0.75rem",
+            }}
+          >
+            {t.skillsHeadline}
+          </h2>
+          <p
+            style={{
+              fontSize: "0.95rem",
+              color: "var(--text3)",
+              maxWidth: 480,
+              margin: "0 auto",
+            }}
+          >
+            {t.skillsSub}
+          </p>
         </div>
-
-        <div>
-          {projects.map((p, i) => (
-            <div key={p.index} className={`project-row${i % 2 === 1 ? " reverse" : ""}`}>
-              <ProjectImage src={p.screenshot} alt={p.title} title={p.title} />
-              <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "1.25rem" }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: "1rem" }}>
-                  <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.08em", color: "#1a1a1838" }}>{p.index}</span>
-                  <h3 style={{ fontFamily: "'Syne',sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "#1a1a18", letterSpacing: "-0.01em" }}>
-                    {p.title}
-                  </h3>
-                </div>
-                <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.72rem", lineHeight: 1.9, color: "#1a1a1877" }}>
-                  {p.description}
-                </p>
-                <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.62rem", letterSpacing: "0.04em", color: "#1a1a1850" }}>
-                  Focus: {p.focus}
-                </p>
-                <div style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap" }}>
-                  {p.stack.map(t => <span key={t} className="tag">{t}</span>)}
-                </div>
-                <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", paddingTop: "0.25rem" }}>
-                  {p.url && (
-                    <a href={p.url} target="_blank" rel="noopener noreferrer" className="btn-solid">Live ↗</a>
-                  )}
-                  {p.github && (
-                    <a href={p.github} target="_blank" rel="noopener noreferrer" className="btn-outline">GitHub ↗</a>
-                  )}
-                </div>
+        <div
+          className="skills-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "1.25rem",
+          }}
+        >
+          {groups.map(({ title, items }) => (
+            <div key={title} className="skill-card">
+              <h3
+                style={{
+                  fontSize: "0.9rem",
+                  fontWeight: 700,
+                  color: "var(--text)",
+                  marginBottom: "1rem",
+                }}
+              >
+                {title}
+              </h3>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                {items.map((s) => (
+                  <span key={s} className="skill-tag">
+                    {s}
+                  </span>
+                ))}
               </div>
             </div>
           ))}
@@ -471,109 +1333,2087 @@ const Work = () => {
   );
 };
 
-const Resume = () => {
-  const ref = useFadeIn();
-  return (
-    <section id="resume" style={{ padding: "7rem 2.5rem", background: "#eeecea" }}>
-      <div ref={ref} className="fade-in" style={{ maxWidth: "860px", margin: "0 auto" }}>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "clamp(90px,18%,160px) 1fr",
-          gap: "clamp(2rem,6vw,5rem)",
-          alignItems: "start"
-        }}>
-          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.14em", color: "#1a1a1850", paddingTop: "0.35rem" }}>
-            02 / RESUME
-          </span>
-          <div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "clamp(1.8rem,4vw,2.65rem)", fontWeight: 300, lineHeight: 1.3, color: "#1a1a18", marginBottom: "2rem" }}>
-              Qualifications &<br /><em>background.</em>
-            </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: "2.5rem" }}>
-              {[
-                ["Languages", "EN · JP · RW"],
-                ["Certifications", "TOEIC 930 · BJT 430"],
-                ["Background", "Associate's in Civil Engineering, Japan"],
-                ["Location", "Kigali, Rwanda ・ Tokyo, Japan"]
-              ].map(([label, val]) => (
-                <div key={label}>
-                  <div style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.1em", color: "#1a1a1850", marginBottom: "0.3rem" }}>{label}</div>
-                  <div style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.73rem", color: "#1a1a18" }}>{val}</div>
-                </div>
-              ))}
-            </div>
-            <div style={{ border: "1px solid #1a1a1815", marginBottom: "1.5rem", background: "#f0ede8" }}>
-              <object data="/Brice-Resume.pdf" type="application/pdf" width="100%" height="520">
-                <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.72rem", color: "#1a1a1866", padding: "2rem" }}>
-                  PDF preview unavailable.{" "}
-                  <a href="/Brice-Resume.pdf" style={{ color: "#1a1a18", textDecoration: "underline" }}>Download directly.</a>
-                </p>
-              </object>
-            </div>
-            <a href="/Brice-Resume.pdf" download className="btn-solid">Download CV</a>
+/* ─────────────────────────────────────────────
+   PROJECT MOCKUP SCREENS (unchanged)
+───────────────────────────────────────────── */
+const ProjectMockup = ({
+  screenBg = "#0f172a",
+  children,
+  hasPhone = false,
+  phoneChildren,
+}) => (
+  <div style={{ position: "relative", padding: "1.5rem 1.5rem 0" }}>
+    <div
+      style={{
+        background: "#1e293b",
+        borderRadius: "10px 10px 0 0",
+        padding: "10px",
+        boxShadow: "0 20px 50px rgba(0,0,0,0.15)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "5px",
+          marginBottom: "8px",
+        }}
+      >
+        <div
+          style={{
+            width: 9,
+            height: 9,
+            borderRadius: "50%",
+            background: "#ff5f57",
+          }}
+        />
+        <div
+          style={{
+            width: 9,
+            height: 9,
+            borderRadius: "50%",
+            background: "#febc2e",
+          }}
+        />
+        <div
+          style={{
+            width: 9,
+            height: 9,
+            borderRadius: "50%",
+            background: "#28c840",
+          }}
+        />
+        <div
+          style={{
+            flex: 1,
+            background: "#334155",
+            borderRadius: 4,
+            height: 16,
+            marginLeft: 6,
+            display: "flex",
+            alignItems: "center",
+            padding: "0 8px",
+          }}
+        >
+          <div
+            style={{
+              height: 4,
+              width: "60%",
+              background: "#475569",
+              borderRadius: 2,
+            }}
+          />
+        </div>
+      </div>
+      <div
+        style={{
+          background: screenBg,
+          borderRadius: 4,
+          overflow: "hidden",
+          aspectRatio: "16/9",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+    <div
+      style={{
+        height: 10,
+        background: "linear-gradient(180deg,#cbd5e1,#94a3b8)",
+        borderRadius: "0 0 4px 4px",
+      }}
+    />
+    <div
+      style={{
+        height: 5,
+        width: "45%",
+        background: "#94a3b8",
+        margin: "0 auto",
+        borderRadius: "0 0 6px 6px",
+      }}
+    />
+    {hasPhone && (
+      <div
+        style={{
+          position: "absolute",
+          bottom: -10,
+          right: 10,
+          width: "22%",
+          zIndex: 10,
+        }}
+      >
+        <div
+          style={{
+            background: "#1e293b",
+            borderRadius: 14,
+            padding: "6px",
+            boxShadow: "0 16px 36px rgba(0,0,0,0.25)",
+          }}
+        >
+          <div
+            style={{
+              width: "40%",
+              height: 5,
+              background: "#0f172a",
+              borderRadius: 3,
+              margin: "0 auto 5px",
+            }}
+          />
+          <div
+            style={{
+              background: "#0f172a",
+              borderRadius: 10,
+              overflow: "hidden",
+              aspectRatio: "9/19",
+            }}
+          >
+            {phoneChildren}
           </div>
         </div>
       </div>
-    </section>
+    )}
+  </div>
+);
+
+// Accurate replica of Huye Finds desktop — warm gradient hero + nav + phone
+const HuyeScreen = () => (
+  <div
+    style={{
+      background: "linear-gradient(135deg,#f5ede0 0%,#e8d5c0 40%,#d4b896 100%)",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      overflow: "hidden",
+      fontFamily: "Inter,sans-serif",
+    }}
+  >
+    {/* Nav */}
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 6,
+        padding: "7px 10px",
+        background: "rgba(255,255,255,0.55)",
+        backdropFilter: "blur(6px)",
+        borderBottom: "1px solid rgba(255,255,255,0.4)",
+        flexShrink: 0,
+      }}
+    >
+      <div
+        style={{
+          width: 14,
+          height: 14,
+          borderRadius: 3,
+          background: "#1a4a2e",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <span style={{ fontSize: "0.45rem", color: "#fff", fontWeight: 900 }}>
+          H
+        </span>
+      </div>
+      <span style={{ fontSize: "0.52rem", fontWeight: 700, color: "#1a4a2e" }}>
+        Huye Finds
+      </span>
+      <div style={{ flex: 1 }} />
+      {["Food & Drinks", "Shopping", "Services", "Accommodation"].map((l) => (
+        <span
+          key={l}
+          style={{ fontSize: "0.42rem", color: "#374151", fontWeight: 500 }}
+        >
+          {l}
+        </span>
+      ))}
+      <div
+        style={{
+          width: 32,
+          height: 12,
+          background: "#1a4a2e",
+          borderRadius: 6,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginLeft: 4,
+        }}
+      >
+        <span style={{ fontSize: "0.42rem", color: "#fff", fontWeight: 600 }}>
+          Sign in
+        </span>
+      </div>
+    </div>
+    {/* Hero body */}
+    <div
+      style={{
+        flex: 1,
+        display: "flex",
+        alignItems: "center",
+        padding: "10px 14px",
+        gap: 10,
+        overflow: "hidden",
+      }}
+    >
+      {/* Left text */}
+      <div style={{ flex: "0 0 48%" }}>
+        <div style={{ fontSize: "0.42rem", color: "#1a4a2e", marginBottom: 4 }}>
+          ✦
+        </div>
+        <div
+          style={{
+            fontSize: "0.78rem",
+            fontWeight: 800,
+            color: "#111",
+            lineHeight: 1.2,
+            marginBottom: 4,
+          }}
+        >
+          Find everything
+          <br />
+          you need in
+          <br />
+          <span style={{ color: "#1a4a2e" }}>Huye.</span>
+        </div>
+        <div
+          style={{
+            fontSize: "0.42rem",
+            color: "#555",
+            lineHeight: 1.5,
+            marginBottom: 8,
+          }}
+        >
+          Discover the best places around UR Huye.
+          <br />
+          Restaurants, shops, services and more.
+        </div>
+        <div style={{ display: "flex", gap: 5 }}>
+          <div
+            style={{
+              background: "#1a4a2e",
+              borderRadius: 10,
+              padding: "3px 8px",
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <span
+              style={{ fontSize: "0.4rem", color: "#fff", fontWeight: 600 }}
+            >
+              ⊙ Explore Places
+            </span>
+          </div>
+          <div
+            style={{
+              border: "1px solid #1a4a2e",
+              borderRadius: 10,
+              padding: "3px 8px",
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <span
+              style={{ fontSize: "0.4rem", color: "#1a4a2e", fontWeight: 600 }}
+            >
+              ♡ Save Favorites
+            </span>
+          </div>
+        </div>
+        {/* Feature icons row */}
+        <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+          {[
+            "🔍 Easy to find",
+            "✏ See details",
+            "♡ Save & Rate",
+            "👥 For Students",
+          ].map((f) => (
+            <div key={f} style={{ fontSize: "0.38rem", color: "#555" }}>
+              {f}
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Right — phone mockup */}
+      <div
+        style={{
+          flex: "0 0 42%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-end",
+        }}
+      >
+        <div
+          style={{
+            width: "72%",
+            background: "#f0f0f0",
+            borderRadius: 14,
+            padding: "5px 4px 8px",
+            boxShadow: "0 12px 32px rgba(0,0,0,0.18)",
+            border: "2px solid #ddd",
+          }}
+        >
+          {/* Status bar */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: "2px 6px 4px",
+              alignItems: "center",
+            }}
+          >
+            <span
+              style={{ fontSize: "0.4rem", fontWeight: 600, color: "#111" }}
+            >
+              14:37
+            </span>
+            <div
+              style={{
+                width: 18,
+                height: 5,
+                background: "#1a4a2e",
+                borderRadius: 3,
+              }}
+            />
+            <span style={{ fontSize: "0.38rem", color: "#555" }}>4G 🔋</span>
+          </div>
+          {/* Screen */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 10,
+              overflow: "hidden",
+              padding: "6px",
+            }}
+          >
+            <div
+              style={{ fontSize: "0.38rem", color: "#888", marginBottom: 1 }}
+            >
+              Hello, Customer 👋
+            </div>
+            <div
+              style={{
+                fontSize: "0.52rem",
+                fontWeight: 700,
+                color: "#111",
+                marginBottom: 5,
+                lineHeight: 1.2,
+              }}
+            >
+              What are you looking for today?
+            </div>
+            <div
+              style={{
+                background: "#f5f5f5",
+                borderRadius: 5,
+                padding: "3px 5px",
+                display: "flex",
+                alignItems: "center",
+                gap: 3,
+                marginBottom: 6,
+              }}
+            >
+              <span style={{ fontSize: "0.38rem", color: "#aaa" }}>
+                🔍 Search for places...
+              </span>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 4,
+              }}
+            >
+              <span
+                style={{ fontSize: "0.42rem", fontWeight: 600, color: "#111" }}
+              >
+                Categories
+              </span>
+              <span style={{ fontSize: "0.38rem", color: "#1a4a2e" }}>
+                View all
+              </span>
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 3,
+                marginBottom: 6,
+              }}
+            >
+              {[
+                ["🍔", "Food & Drinks", "34 places"],
+                ["🛍", "Shopping", "41 places"],
+                ["✏", "Services", "27 places"],
+                ["🏠", "Accommodation", "15 places"],
+              ].map(([ic, name, count]) => (
+                <div
+                  key={name}
+                  style={{
+                    background: "#f9f9f9",
+                    borderRadius: 5,
+                    padding: "4px",
+                    textAlign: "center",
+                  }}
+                >
+                  <div style={{ fontSize: "0.6rem" }}>{ic}</div>
+                  <div
+                    style={{
+                      fontSize: "0.38rem",
+                      fontWeight: 600,
+                      color: "#111",
+                      marginTop: 1,
+                    }}
+                  >
+                    {name}
+                  </div>
+                  <div style={{ fontSize: "0.34rem", color: "#888" }}>
+                    {count}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 3,
+              }}
+            >
+              <span
+                style={{ fontSize: "0.42rem", fontWeight: 600, color: "#111" }}
+              >
+                Popular Near You
+              </span>
+              <span style={{ fontSize: "0.38rem", color: "#1a4a2e" }}>
+                View all
+              </span>
+            </div>
+            {[
+              ["Inzora Restaurant", "⭐ 4.5 (32)", "Rwandan · $$"],
+              ["Petro Huye Superma...", "⭐ 4.0 (18)", "Shop · $"],
+            ].map(([name, rating, tag]) => (
+              <div
+                key={name}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  padding: "3px 0",
+                  borderBottom: "1px solid #f0f0f0",
+                }}
+              >
+                <div
+                  style={{
+                    width: 16,
+                    height: 16,
+                    background: "#e8d5c0",
+                    borderRadius: 4,
+                    flexShrink: 0,
+                  }}
+                />
+                <div style={{ flex: 1 }}>
+                  <div
+                    style={{
+                      fontSize: "0.38rem",
+                      fontWeight: 600,
+                      color: "#111",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {name}
+                  </div>
+                  <div style={{ fontSize: "0.34rem", color: "#888" }}>
+                    {rating} · {tag}
+                  </div>
+                </div>
+                <div
+                  style={{
+                    width: 14,
+                    height: 14,
+                    background: "#1a4a2e",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "0.38rem", color: "#fff" }}>📞</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+// Accurate Huye Finds mobile screen
+const HuyePhoneScreen = () => (
+  <div
+    style={{
+      background: "#faf7f2",
+      height: "100%",
+      overflow: "hidden",
+      fontFamily: "Inter,sans-serif",
+    }}
+  >
+    {/* Top strip */}
+    <div
+      style={{
+        background: "linear-gradient(180deg,#e8d5c0,#f5ede0)",
+        padding: "5px 6px 8px",
+      }}
+    >
+      {/* <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: 3,
+        }}
+      >
+        <span
+          style={{ fontSize: "0.38rem", color: "#1a4a2e", fontWeight: 600 }}
+        >
+          Browse by category
+        </span>
+        <span style={{ fontSize: "0.34rem", color: "#888" }}>
+          Photos, prices, contacts
+        </span>
+      </div> */}
+      {/* <div style={{ display: "flex", gap: 4 }}>
+        {[
+          ["♡", "Save & Rate"],
+          ["👥", "For Students"],
+        ].map(([ic, l]) => (
+          <div
+            key={l}
+            style={{
+              background: "rgba(255,255,255,0.7)",
+              borderRadius: 4,
+              padding: "3px 5px",
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              flex: 1,
+            }}
+          >
+            <span style={{ fontSize: "0.5rem" }}>{ic}</span>
+            <div>
+              <div
+                style={{ fontSize: "0.36rem", fontWeight: 600, color: "#111" }}
+              >
+                {l}
+              </div>
+              <div style={{ fontSize: "0.32rem", color: "#888" }}>
+                {l === "Save & Rate"
+                  ? "Save favorites and share your review"
+                  : "Built for UR Huye students"}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div> */}
+    </div>
+    {/* Body */}
+    <div style={{ padding: "5px 6px" }}>
+      {/* New in Huye banner */}
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 5,
+          padding: "4px 5px",
+          marginBottom: 5,
+          border: "1px solid #e8e0d5",
+          display: "flex",
+          alignItems: "center",
+          gap: 3,
+        }}
+      >
+        <span style={{ fontSize: "0.6rem" }}>🎓</span>
+        <div>
+          <div style={{ fontSize: "0.38rem", fontWeight: 700, color: "#111" }}>
+            New in Huye? We've got you.
+          </div>
+          <div style={{ fontSize: "0.34rem", color: "#1a4a2e" }}>
+            Explore trusted places and make your student life easier.
+          </div>
+        </div>
+      </div>
+      {/* Categories */}
+      <div
+        style={{
+          fontSize: "0.4rem",
+          fontWeight: 700,
+          color: "#111",
+          marginBottom: 4,
+        }}
+      >
+        Browse by category
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 3,
+          marginBottom: 5,
+          width: "100%",
+        }}
+      >
+        {[
+          ["🍔", "Food & Drinks", "4 places"],
+          ["🛍", "Shopping", "3 places"],
+          ["✏", "Services", "3 places"],
+          ["🏠", "Accommodation", "2 places"],
+        ].map(([ic, name, count]) => (
+          <div
+            key={name}
+            style={{
+              background: "#fff",
+              border: "1px solid #ede5dc",
+              borderRadius: 5,
+              padding: "4px",
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              gap: 3,
+            }}
+          >
+            <div
+              style={{
+                width: 16,
+                height: 16,
+                borderRadius: 4,
+                background: "#f5ede0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "0.5rem",
+                flexShrink: 0,
+              }}
+            >
+              {ic}
+            </div>
+            <div>
+              <div
+                style={{ fontSize: "0.38rem", fontWeight: 600, color: "#111" }}
+              >
+                {name}
+              </div>
+              <div style={{ fontSize: "0.32rem", color: "#888" }}>{count}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* Popular */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: 3,
+        }}
+      >
+        <span style={{ fontSize: "0.4rem", fontWeight: 700, color: "#111" }}>
+          Popular places
+        </span>
+        <span style={{ fontSize: "0.36rem", color: "#1a4a2e" }}>See all →</span>
+      </div>
+      <div
+        style={{
+          background: "#fff",
+          border: "1px solid #ede5dc",
+          borderRadius: 6,
+          padding: "4px",
+          display: "flex",
+          gap: 4,
+        }}
+      >
+        <div
+          style={{
+            width: 28,
+            height: 28,
+            background: "linear-gradient(135deg,#8b5e3c,#c8956a)",
+            borderRadius: 5,
+            flexShrink: 0,
+          }}
+        />
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: "0.4rem", fontWeight: 700, color: "#111" }}>
+            Amahoro Canteen
+          </div>
+          <div style={{ fontSize: "0.36rem", color: "#888" }}>
+            ⭐⭐⭐⭐ 4.0 (1) · Tumba Center
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: 2,
+            }}
+          >
+            <div
+              style={{
+                background: "#fff3e0",
+                borderRadius: 3,
+                padding: "1px 4px",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "0.34rem",
+                  color: "#d97706",
+                  fontWeight: 600,
+                }}
+              >
+                1000
+              </span>
+            </div>
+            <div
+              style={{
+                background: "#1a4a2e",
+                borderRadius: 3,
+                padding: "2px 5px",
+              }}
+            >
+              <span
+                style={{ fontSize: "0.34rem", color: "#fff", fontWeight: 600 }}
+              >
+                View Details
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {/* Bottom nav */}
+    <div
+      style={{
+        position: "absolute",
+        bottom: 6.8,
+        left: 6,
+        right: 6,
+        background: "#fff",
+        borderTop: "1px solid #ede5dc",
+        borderRadius: "0 0 5px 5px",
+        display: "flex",
+        justifyContent: "space-around",
+        padding: "4px 0",
+      }}
+    >
+      {["🏠 Home", "♡ Favorites", "🔍 Search", "🎓 Hub"].map((l) => (
+        <div
+          key={l}
+          style={{
+            fontSize: "0.34rem",
+            color: l.includes("Home") ? "#1a4a2e" : "#888",
+            textAlign: "center",
+            fontWeight: l.includes("Home") ? 700 : 400,
+          }}
+        >
+          {l}
+        </div>
+      ))}
+    </div>
+  </div>
+);
+// Accurate replica of Agakayi Notes desktop UI (grid layout, white theme, blue accent)
+const AgakayiScreen = () => {
+  const notes = [
+    {
+      title: "Study plan",
+      body: "Review algorithms, practice daily coding.",
+      tag: "Learning",
+      date: "May 12, 2026",
+      pinned: true,
+      border: "#4ade80",
+    },
+    {
+      title: "Motivation",
+      body: "Consistency beats talent. Show up every day.",
+      tag: "Motivation",
+      date: "Jan 20, 2026",
+      pinned: true,
+      border: "#facc15",
+    },
+    {
+      title: "Project idea",
+      body: "Build a habit tracker with streak counter and weekly analytics.",
+      tag: "Business",
+      date: "Jan 20, 2026",
+      pinned: true,
+      border: "#fb923c",
+    },
+    {
+      title: "API Integration",
+      body: "Explore Alpha Vantage for financial data. Record key safely.",
+      tag: "Software Dev",
+      date: "Jun 16, 2026",
+      pinned: false,
+      border: "#4ade80",
+    },
+    {
+      title: "AI Note",
+      body: "Build an agent that monitors logs of a running app continuously.",
+      tag: "Tech",
+      date: "Jun 9, 2026",
+      pinned: false,
+      border: "#facc15",
+    },
+    {
+      title: "Mindset",
+      body: "Nobody invests in you more than your own consistent effort.",
+      tag: "Motivation",
+      date: "Apr 9, 2026",
+      pinned: false,
+      border: "#fb923c",
+    },
+  ];
+  return (
+    <div
+      style={{
+        background: "#f4f4f6",
+        height: "100%",
+        overflow: "hidden",
+        fontFamily: "Inter,sans-serif",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          background: "#fff",
+          padding: "6px 10px",
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          borderBottom: "1px solid #e5e7eb",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            width: 14,
+            height: 14,
+            background: "#3b5bdb",
+            borderRadius: 3,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <span style={{ fontSize: "0.45rem", color: "#fff" }}>✎</span>
+        </div>
+        <span style={{ fontSize: "0.52rem", fontWeight: 700, color: "#111" }}>
+          Agakayi
+        </span>
+        <div style={{ flex: 1 }} />
+        <span style={{ fontSize: "0.42rem", color: "#555" }}>👤 Brice</span>
+        <span style={{ fontSize: "0.42rem", color: "#555", marginLeft: 6 }}>
+          [→
+        </span>
+      </div>
+      {/* Toolbar */}
+      <div
+        style={{
+          background: "#fff",
+          padding: "4px 10px",
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          borderBottom: "1px solid #f0f0f0",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            background: "#f4f4f6",
+            border: "1px solid #e5e7eb",
+            borderRadius: 4,
+            padding: "2px 8px",
+            display: "flex",
+            alignItems: "center",
+            gap: 3,
+            flex: 1,
+          }}
+        >
+          <span style={{ fontSize: "0.38rem", color: "#aaa" }}>
+            🔍 Search notes...
+          </span>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 3,
+            border: "1px solid #e5e7eb",
+            borderRadius: 4,
+            padding: "2px 5px",
+          }}
+        >
+          <span style={{ fontSize: "0.4rem", color: "#555" }}>🗑 Archive</span>
+        </div>
+        <div style={{ display: "flex", gap: 1 }}>
+          <div
+            style={{
+              width: 14,
+              height: 14,
+              border: "1px solid #e5e7eb",
+              borderRadius: "3px 0 0 3px",
+              background: "#f4f4f6",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span style={{ fontSize: "0.4rem" }}>⊞</span>
+          </div>
+          <div
+            style={{
+              width: 14,
+              height: 14,
+              border: "1px solid #e5e7eb",
+              borderRadius: "0 3px 3px 0",
+              background: "#fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span style={{ fontSize: "0.4rem" }}>≡</span>
+          </div>
+        </div>
+        <div
+          style={{
+            background: "#3b5bdb",
+            borderRadius: 5,
+            padding: "2px 7px",
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <span style={{ fontSize: "0.42rem", color: "#fff", fontWeight: 700 }}>
+            + New Note
+          </span>
+        </div>
+      </div>
+      {/* Body */}
+      <div style={{ flex: 1, overflow: "hidden", padding: "6px 8px" }}>
+        {/* Pinned */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 3,
+            marginBottom: 4,
+          }}
+        >
+          <span style={{ fontSize: "0.4rem" }}>📌</span>
+          <span style={{ fontSize: "0.42rem", fontWeight: 700, color: "#111" }}>
+            Pinned Notes
+          </span>
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            gap: 4,
+            marginBottom: 6,
+          }}
+        >
+          {notes
+            .filter((n) => n.pinned)
+            .map((n) => (
+              <div
+                key={n.title}
+                style={{
+                  background: "#fff",
+                  borderRadius: 5,
+                  padding: "5px 6px",
+                  border: `1px solid #e5e7eb`,
+                  borderLeft: `3px solid ${n.border}`,
+                  position: "relative",
+                }}
+              >
+                <span
+                  style={{
+                    position: "absolute",
+                    top: 4,
+                    right: 5,
+                    fontSize: "0.4rem",
+                    color: "#3b5bdb",
+                  }}
+                >
+                  📌
+                </span>
+                <div
+                  style={{
+                    fontSize: "0.42rem",
+                    fontWeight: 700,
+                    color: "#111",
+                    marginBottom: 2,
+                    paddingRight: 10,
+                  }}
+                >
+                  {n.title}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.36rem",
+                    color: "#555",
+                    lineHeight: 1.4,
+                    marginBottom: 4,
+                  }}
+                >
+                  {n.body}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "0.32rem",
+                      background: "#f0f0f0",
+                      borderRadius: 3,
+                      padding: "1px 4px",
+                      color: "#555",
+                    }}
+                  >
+                    {n.tag}
+                  </span>
+                  <span style={{ fontSize: "0.32rem", color: "#aaa" }}>
+                    {n.date}
+                  </span>
+                </div>
+              </div>
+            ))}
+        </div>
+        {/* All Notes */}
+        <div
+          style={{
+            fontSize: "0.42rem",
+            fontWeight: 700,
+            color: "#111",
+            marginBottom: 4,
+          }}
+        >
+          All Notes
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            gap: 4,
+          }}
+        >
+          {notes
+            .filter((n) => !n.pinned)
+            .map((n) => (
+              <div
+                key={n.title}
+                style={{
+                  background: "#fff",
+                  borderRadius: 5,
+                  padding: "5px 6px",
+                  border: "1px solid #e5e7eb",
+                  borderLeft: `3px solid ${n.border}`,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.42rem",
+                    fontWeight: 700,
+                    color: "#111",
+                    marginBottom: 2,
+                  }}
+                >
+                  {n.title}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.36rem",
+                    color: "#555",
+                    lineHeight: 1.4,
+                    marginBottom: 4,
+                  }}
+                >
+                  {n.body}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "0.32rem",
+                      background: "#f0f0f0",
+                      borderRadius: 3,
+                      padding: "1px 4px",
+                      color: "#555",
+                    }}
+                  >
+                    {n.tag}
+                  </span>
+                  <span style={{ fontSize: "0.32rem", color: "#aaa" }}>
+                    {n.date}
+                  </span>
+                </div>
+              </div>
+            ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+// Agakayi mobile — list view
+const AgakayiPhoneScreen = () => {
+  const items = [
+    {
+      title: "Study plan",
+      tag: "Learning",
+      date: "May 12, 2026",
+      border: "#4ade80",
+      pinned: true,
+    },
+    {
+      title: "Motivation",
+      tag: "Motivation",
+      date: "Jan 20, 2026",
+      border: "#facc15",
+      pinned: true,
+    },
+    {
+      title: "Project idea",
+      tag: "Business",
+      date: "Jan 20, 2026",
+      border: "#fb923c",
+      pinned: true,
+    },
+    {
+      title: "API Integration",
+      tag: "Software Dev",
+      date: "Jun 16, 2026",
+      border: "#4ade80",
+      pinned: false,
+    },
+    {
+      title: "AI Note",
+      tag: "Tech",
+      date: "Jun 9, 2026",
+      border: "#facc15",
+      pinned: false,
+    },
+  ];
+  return (
+    <div
+      style={{
+        background: "#f4f4f6",
+        height: "100%",
+        fontFamily: "Inter,sans-serif",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          background: "#fff",
+          padding: "5px 6px",
+          display: "flex",
+          alignItems: "center",
+          gap: 4,
+          borderBottom: "1px solid #e5e7eb",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            width: 12,
+            height: 12,
+            background: "#3b5bdb",
+            borderRadius: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <span style={{ fontSize: "0.38rem", color: "#fff" }}>✎</span>
+        </div>
+        <span style={{ fontSize: "0.48rem", fontWeight: 700, color: "#111" }}>
+          Agakayi
+        </span>
+        <div style={{ flex: 1 }} />
+        <span style={{ fontSize: "0.38rem", color: "#555" }}>👤 Brice</span>
+        <span style={{ fontSize: "0.38rem", color: "#555", marginLeft: 4 }}>
+          [→
+        </span>
+      </div>
+      {/* Search */}
+      <div
+        style={{
+          padding: "4px 6px",
+          background: "#fff",
+          borderBottom: "1px solid #f0f0f0",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            background: "#f4f4f6",
+            borderRadius: 4,
+            padding: "3px 6px",
+            display: "flex",
+          }}
+        >
+          <span style={{ fontSize: "0.36rem", color: "#aaa" }}>
+            🔍 Search notes...
+          </span>
+        </div>
+      </div>
+      {/* Toolbar */}
+      <div
+        style={{
+          background: "#fff",
+          padding: "3px 6px",
+          display: "flex",
+          alignItems: "center",
+          gap: 4,
+          borderBottom: "1px solid #f0f0f0",
+          flexShrink: 0,
+        }}
+      >
+        <span
+          style={{
+            fontSize: "0.36rem",
+            color: "#555",
+            border: "1px solid #e5e7eb",
+            borderRadius: 3,
+            padding: "1px 4px",
+          }}
+        >
+          🗑 Archive
+        </span>
+        <div style={{ flex: 1 }} />
+        <span style={{ fontSize: "0.5rem" }}>⊞</span>
+        <span style={{ fontSize: "0.5rem", color: "#555" }}>≡</span>
+        <div
+          style={{ background: "#3b5bdb", borderRadius: 2, padding: "2px 5px" }}
+        >
+          <span
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: "0.36rem",
+              color: "#fff",
+              fontWeight: 700,
+              textAlign: "center",
+            }}
+          >
+            + New
+          </span>
+        </div>
+      </div>
+      {/* Notes */}
+      <div style={{ flex: 1, overflow: "hidden", padding: "5px 6px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            marginBottom: 3,
+          }}
+        >
+          <span style={{ fontSize: "0.38rem" }}>📌</span>
+          <span style={{ fontSize: "0.4rem", fontWeight: 700, color: "#111" }}>
+            Pinned Notes
+          </span>
+        </div>
+        {items.map((n) => (
+          <div
+            key={n.title}
+            style={{
+              background: "#fff",
+              borderRadius: 5,
+              padding: "4px 5px",
+              marginBottom: 3,
+              borderLeft: `3px solid ${n.border}`,
+              position: "relative",
+            }}
+          >
+            {n.pinned && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: 3,
+                  right: 4,
+                  fontSize: "0.36rem",
+                  color: "#3b5bdb",
+                }}
+              >
+                📌
+              </span>
+            )}
+            <div
+              style={{
+                fontSize: "0.42rem",
+                fontWeight: 700,
+                color: "#111",
+                paddingRight: 12,
+              }}
+            >
+              {n.title}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: 2,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "0.32rem",
+                  background: "#f0f0f0",
+                  borderRadius: 2,
+                  padding: "1px 3px",
+                  color: "#555",
+                }}
+              >
+                {n.tag}
+              </span>
+              <span style={{ fontSize: "0.3rem", color: "#aaa" }}>
+                {n.date}
+              </span>
+            </div>
+          </div>
+        ))}
+        <div
+          style={{
+            fontSize: "0.4rem",
+            fontWeight: 700,
+            color: "#111",
+            marginTop: 3,
+          }}
+        >
+          All Notes
+        </div>
+      </div>
+    </div>
+  );
+};
+const RshiftScreen = () => (
+  <div
+    style={{
+      background: "#1e1e2e",
+      height: "100%",
+      padding: "10px",
+      fontFamily: "monospace",
+    }}
+  >
+    <div
+      style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}
+    >
+      <div
+        style={{
+          width: 18,
+          height: 18,
+          borderRadius: 4,
+          background: "#22c55e22",
+          border: "1px solid #22c55e44",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <span style={{ fontSize: "0.55rem", color: "#22c55e" }}>⇌</span>
+      </div>
+      <div
+        style={{ height: 5, width: 80, background: "#f8fafc", borderRadius: 3 }}
+      />
+      <div style={{ flex: 1 }} />
+      <div
+        style={{
+          height: 16,
+          width: 50,
+          background: "#22c55e",
+          borderRadius: 4,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <span style={{ fontSize: "0.45rem", color: "#fff", fontWeight: 700 }}>
+          Export →
+        </span>
+      </div>
+    </div>
+    <div
+      style={{
+        background: "#12121f",
+        borderRadius: 6,
+        padding: "8px",
+        marginBottom: 8,
+      }}
+    >
+      <div
+        style={{
+          fontSize: "0.55rem",
+          color: "#22c55e",
+          fontWeight: 700,
+          marginBottom: 6,
+        }}
+      >
+        Detected Shifts
+      </div>
+      {[
+        { date: "Mon 7/21", time: "09:00–17:00" },
+        { date: "Wed 7/23", time: "10:00–19:00" },
+        { date: "Fri 7/25", time: "08:00–16:00" },
+      ].map((s) => (
+        <div
+          key={s.date}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "3px 0",
+            borderBottom: "1px solid #1e3a2f",
+          }}
+        >
+          <span style={{ fontSize: "0.5rem", color: "#94a3b8" }}>{s.date}</span>
+          <span style={{ fontSize: "0.5rem", color: "#22c55e" }}>{s.time}</span>
+        </div>
+      ))}
+    </div>
+    <div
+      style={{
+        height: 18,
+        background: "#22c55e",
+        borderRadius: 5,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <span style={{ fontSize: "0.5rem", color: "#fff", fontWeight: 700 }}>
+        Add to Calendar
+      </span>
+    </div>
+  </div>
+);
+const EcomScreen = () => (
+  <div style={{ background: "#f9fafb", height: "100%", overflow: "hidden" }}>
+    <div
+      style={{
+        background: "#fff",
+        padding: "8px 10px",
+        borderBottom: "1px solid #e5e7eb",
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+      }}
+    >
+      <div
+        style={{ height: 5, width: 50, background: "#22c55e", borderRadius: 3 }}
+      />
+      <div style={{ flex: 1 }} />
+      <div
+        style={{ height: 5, width: 30, background: "#e5e7eb", borderRadius: 3 }}
+      />
+      <div
+        style={{ height: 5, width: 30, background: "#e5e7eb", borderRadius: 3 }}
+      />
+    </div>
+    <div style={{ padding: "8px 10px" }}>
+      <div
+        style={{ display: "flex", gap: 6, marginBottom: 8, overflow: "hidden" }}
+      >
+        {["All", "Electronics", "Clothing", "Books"].map((c) => (
+          <div
+            key={c}
+            style={{
+              padding: "2px 6px",
+              background: c === "All" ? "#22c55e22" : "#f3f4f6",
+              border: `1px solid ${c === "All" ? "#22c55e44" : "#e5e7eb"}`,
+              borderRadius: 3,
+            }}
+          >
+            <div
+              style={{
+                height: 3,
+                width: 20,
+                background: c === "All" ? "#22c55e" : "#9ca3af",
+                borderRadius: 2,
+              }}
+            />
+          </div>
+        ))}
+      </div>
+      <div
+        style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}
+      >
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            style={{
+              background: "#fff",
+              borderRadius: 5,
+              padding: "6px",
+              border: "1px solid #f3f4f6",
+            }}
+          >
+            <div
+              style={{
+                height: 30,
+                background: "#f3f4f6",
+                borderRadius: 3,
+                marginBottom: 4,
+              }}
+            />
+            <div
+              style={{
+                height: 3,
+                background: "#111827",
+                borderRadius: 2,
+                width: "80%",
+                marginBottom: 3,
+              }}
+            />
+            <div
+              style={{
+                height: 3,
+                background: "#22c55e",
+                borderRadius: 2,
+                width: "50%",
+                marginBottom: 4,
+              }}
+            />
+            <div
+              style={{
+                height: 12,
+                background: "#22c55e",
+                borderRadius: 3,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  height: 2.5,
+                  width: "60%",
+                  background: "#fff",
+                  borderRadius: 2,
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+const EcomPhoneScreen = () => (
+  <div style={{ background: "#f9fafb", height: "100%", padding: "6px" }}>
+    <div
+      style={{
+        height: 14,
+        background: "#22c55e",
+        borderRadius: 4,
+        marginBottom: 5,
+        display: "flex",
+        alignItems: "center",
+        padding: "0 5px",
+      }}
+    >
+      <div
+        style={{
+          height: 3,
+          width: "50%",
+          background: "rgba(255,255,255,0.8)",
+          borderRadius: 2,
+        }}
+      />
+    </div>
+    {[...Array(5)].map((_, i) => (
+      <div
+        key={i}
+        style={{
+          background: "#fff",
+          borderRadius: 4,
+          padding: "5px",
+          marginBottom: 3,
+          display: "flex",
+          gap: 4,
+          border: "1px solid #f3f4f6",
+        }}
+      >
+        <div
+          style={{
+            width: 20,
+            height: 20,
+            background: "#f3f4f6",
+            borderRadius: 3,
+            flexShrink: 0,
+          }}
+        />
+        <div style={{ flex: 1 }}>
+          <div
+            style={{
+              height: 3,
+              background: "#111827",
+              borderRadius: 2,
+              width: "75%",
+              marginBottom: 2,
+            }}
+          />
+          <div
+            style={{
+              height: 2.5,
+              background: "#22c55e",
+              borderRadius: 2,
+              width: "40%",
+            }}
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+/* ─────────────────────────────────────────────
+   PROJECTS
+───────────────────────────────────────────── */
+const PROJECT_META = [
+  {
+    id: "huye",
+    live: true,
+    liveUrl: "https://huyefinds.vercel.app",
+    githubUrl: "https://github.com/Brice-art",
+    stack: ["React", "Node.js", "PostgreSQL", "Express"],
+    screen: <HuyeScreen />,
+    hasPhone: true,
+    phoneScreen: <HuyePhoneScreen />,
+  },
+  {
+    id: "agakayi",
+    live: true,
+    liveUrl: "https://agakayi.xyz",
+    githubUrl: "https://github.com/Brice-art/Agakayi",
+    stack: ["React", "Node.js", "Express.js", "MongoDB", "JWT"],
+    screen: <AgakayiScreen />,
+    hasPhone: true,
+    phoneScreen: <AgakayiPhoneScreen />,
+  },
+  {
+    id: "rshift",
+    live: false,
+    githubUrl: "https://github.com/Brice-art",
+    stack: [
+      "JavaScript",
+      "DOM API",
+      "Google Calendar API",
+      "OAuth 2.0",
+      "Chrome Extensions",
+    ],
+    screen: <RshiftScreen />,
+    hasPhone: false,
+  },
+  {
+    id: "ecom",
+    live: false,
+    githubUrl: "https://github.com/Brice-art",
+    stack: ["PHP", "MySQL", "MVC Pattern", "OOP", "SQL"],
+    screen: <EcomScreen />,
+    hasPhone: true,
+    phoneScreen: <EcomPhoneScreen />,
+  },
+];
+
+const ProjectCard = ({ meta, copy, reverse }) => {
+  const { t } = useLang();
+  const ref = useReveal();
+  return (
+    <div
+      ref={ref}
+      className="reveal project-section"
+      style={{ marginBottom: "2rem" }}
+    >
+      <div
+        className="project-grid"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          direction: reverse ? "rtl" : "ltr",
+        }}
+      >
+        <div
+          style={{
+            direction: "ltr",
+            background: "var(--bg3)",
+            borderRight: reverse ? "none" : "1px solid var(--border)",
+            borderLeft: reverse ? "1px solid var(--border)" : "none",
+          }}
+        >
+          <ProjectMockup
+            hasPhone={meta.hasPhone}
+            phoneChildren={meta.phoneScreen}
+          >
+            {meta.screen}
+          </ProjectMockup>
+        </div>
+        <div
+          style={{
+            direction: "ltr",
+            padding: "2.5rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              marginBottom: "1rem",
+            }}
+          >
+            {meta.live ? (
+              <>
+                <div className="live-dot" />
+                <span
+                  style={{
+                    fontSize: "0.75rem",
+                    fontWeight: 600,
+                    color: "var(--green)",
+                  }}
+                >
+                  {t.projLive}
+                </span>
+              </>
+            ) : (
+              <span
+                style={{
+                  fontSize: "0.75rem",
+                  fontWeight: 600,
+                  color: "var(--text4)",
+                  background: "var(--bg3)",
+                  padding: "0.1rem 0.5rem",
+                  borderRadius: 4,
+                }}
+              >
+                {t.projInProgress}
+              </span>
+            )}
+            <span
+              style={{
+                fontSize: "0.7rem",
+                color: "var(--text4)",
+                marginLeft: 4,
+              }}
+            >
+              {copy.highlight}
+            </span>
+          </div>
+          <h3
+            style={{
+              fontSize: "1.5rem",
+              fontWeight: 800,
+              letterSpacing: "-0.02em",
+              color: "var(--text)",
+              marginBottom: "0.4rem",
+            }}
+          >
+            {copy.title}
+          </h3>
+          <p
+            style={{
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              color: "var(--green)",
+              marginBottom: "1rem",
+            }}
+          >
+            {copy.subtitle}
+          </p>
+          <p
+            style={{
+              fontSize: "0.875rem",
+              color: "var(--text3)",
+              lineHeight: 1.75,
+              marginBottom: "1.5rem",
+            }}
+          >
+            {copy.description}
+          </p>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "0.4rem",
+              marginBottom: "1.75rem",
+            }}
+          >
+            {meta.stack.map((t) => (
+              <span key={t} className="skill-tag">
+                {t}
+              </span>
+            ))}
+          </div>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            {meta.live && (
+              <a
+                href={meta.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-live"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+                {t.projLiveDemo}
+              </a>
+            )}
+            <a
+              href={meta.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost"
+            >
+              <svg
+                width="14"
+                height="14"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
+              </svg>
+              {t.projSource}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
-const Contact = () => {
-  const ref = useFadeIn();
+const Projects = () => {
+  const { t } = useLang();
+  const ref = useReveal();
   return (
-    <section id="contact" style={{ padding: "8rem 2.5rem 6rem", background: "#1a1a18" }}>
-      <div ref={ref} className="fade-in" style={{ maxWidth: "860px", margin: "0 auto" }}>
-        <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.14em", color: "#f5f4f038", marginBottom: "3rem" }}>
-          03 / CONTACT
-        </p>
-        <h2 style={{
-          fontFamily: "'Cormorant Garamond',serif",
-          fontSize: "clamp(2.5rem,6vw,4.5rem)",
-          fontWeight: 300, lineHeight: 1.1,
-          color: "#f5f4f0", marginBottom: "1.5rem"
-        }}>
-          Still learning.<br />
-          <em>Still building.</em>
-        </h2>
-        <p style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.73rem", lineHeight: 2, color: "#f5f4f060", maxWidth: "400px", marginBottom: "3.5rem" }}>
-          Open to conversations about backend development, learning, or anything interesting.
-        </p>
-        <div style={{ display: "flex", gap: "0.9rem", flexWrap: "wrap", marginBottom: "5.5rem" }}>
-          <a href="mailto:bricealibyilingiro@gmail.com" className="contact-link">Email ↗</a>
-          <a href="https://github.com/Brice-art" target="_blank" rel="noopener noreferrer" className="contact-link">GitHub ↗</a>
-          <a href="https://www.linkedin.com/in/briceali/" target="_blank" rel="noopener noreferrer" className="contact-link">LinkedIn ↗</a>
+    <section
+      id="projects"
+      style={{ padding: "6rem 2rem", background: "var(--bg2)" }}
+    >
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div
+          ref={ref}
+          className="reveal"
+          style={{ textAlign: "center", marginBottom: "3rem" }}
+        >
+          <div
+            style={{
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              color: "var(--green)",
+              textTransform: "uppercase",
+              marginBottom: "0.5rem",
+            }}
+          >
+            {t.projLabel}
+          </div>
+          <h2
+            style={{
+              fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.025em",
+              color: "var(--text)",
+              marginBottom: "0.75rem",
+            }}
+          >
+            {t.projHeadline}
+          </h2>
+          <p
+            style={{
+              fontSize: "0.95rem",
+              color: "var(--text3)",
+              maxWidth: 440,
+              margin: "0 auto",
+            }}
+          >
+            {t.projSub}
+          </p>
         </div>
-        <div style={{
-          borderTop: "1px solid #f5f4f012",
-          paddingTop: "2rem",
-          display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem"
-        }}>
-          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.1em", color: "#f5f4f030" }}>
-            BYIRINGIRO BRICE ALI — KIGALI, RWANDA
-          </span>
-          <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.1em", color: "#f5f4f030" }}>
-            © 2026
-          </span>
+        {PROJECT_META.map((meta, i) => (
+          <ProjectCard
+            key={meta.id}
+            meta={meta}
+            copy={t.proj[i]}
+            reverse={i % 2 === 1}
+          />
+        ))}
+        <div style={{ textAlign: "center", paddingTop: "1rem" }}>
+          <a
+            href="https://github.com/Brice-art"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-secondary"
+          >
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
+            </svg>
+            {t.projMoreGH}
+          </a>
         </div>
       </div>
     </section>
   );
 };
 
-export default function Portfolio() {
+/* ─────────────────────────────────────────────
+   CONTACT
+───────────────────────────────────────────── */
+const Contact = () => {
+  const { t } = useLang();
+  const ref = useReveal();
   return (
-    <>
+    <section
+      id="contact"
+      style={{ padding: "6rem 2rem", background: "#0f172a" }}
+    >
+      <div
+        ref={ref}
+        className="reveal"
+        style={{ maxWidth: 680, margin: "0 auto", textAlign: "center" }}
+      >
+        <div
+          style={{
+            fontSize: "0.75rem",
+            fontWeight: 700,
+            letterSpacing: "0.1em",
+            color: "var(--green)",
+            textTransform: "uppercase",
+            marginBottom: "1rem",
+          }}
+        >
+          {t.contactLabel}
+        </div>
+        <h2
+          style={{
+            fontSize: "clamp(2rem, 5vw, 3.5rem)",
+            fontWeight: 800,
+            letterSpacing: "-0.03em",
+            color: "#f8fafc",
+            marginBottom: "1rem",
+            lineHeight: 1.1,
+          }}
+        >
+          {t.contactHeadline}
+        </h2>
+        <p
+          style={{
+            fontSize: "1rem",
+            color: "#94a3b8",
+            lineHeight: 1.7,
+            maxWidth: 480,
+            margin: "0 auto 2.5rem",
+          }}
+        >
+          {t.contactSub}
+        </p>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            marginBottom: "3rem",
+          }}
+        >
+          <a
+            href="mailto:bricealibyilingiro@gmail.com"
+            className="contact-btn primary"
+          >
+            {t.contactEmail}
+          </a>
+          <a
+            href="https://www.linkedin.com/in/brice-ali-byiringiro-ab1182254/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-btn"
+          >
+            LinkedIn
+          </a>
+          <a
+            href="https://github.com/Brice-art"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-btn"
+          >
+            GitHub
+          </a>
+        </div>
+        <div
+          style={{
+            borderTop: "1px solid rgba(255,255,255,0.08)",
+            paddingTop: "2rem",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "0.75rem",
+          }}
+        >
+          <span style={{ fontSize: "0.8rem", color: "#475569" }}>
+            {t.contactFooter}
+          </span>
+          <span style={{ fontSize: "0.8rem", color: "#475569" }}>© 2026</span>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─────────────────────────────────────────────
+   ROOT — lang state lives here, passed down
+───────────────────────────────────────────── */
+export default function Portfolio() {
+  const [lang, setLang] = useState("en");
+  const t = COPY[lang];
+
+  return (
+    <LangCtx.Provider value={{ lang, t }}>
       <GlobalStyles />
-      <Nav />
-      <main>
-        <Hero />
-        <Currently />
-        <About />
-        <Skills />
-        <Work />
-        <Resume />
-        <Contact />
-      </main>
-    </>
+      <Nav lang={lang} setLang={setLang} />
+      <Hero />
+      <Stats />
+      <About />
+      <Skills />
+      <Projects />
+      <Contact />
+    </LangCtx.Provider>
   );
 }
