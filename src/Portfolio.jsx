@@ -424,11 +424,79 @@ const GlobalStyles = () => (
     .contact-btn.primary { background: var(--green); border-color: var(--green); color: #fff; font-weight: 600; }
     .contact-btn.primary:hover { background: #15803d; border-color: #15803d; }
 
+    .site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between;
+      background: transparent; border-bottom: 1px solid transparent; transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+    }
+    .site-nav.scrolled {
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+      border-bottom-color: rgba(229,231,235,0.8);
+    }
+    .site-nav .nav-links, .site-nav .nav-actions { display: flex; align-items: center; }
+    .site-nav .nav-links { gap: 2rem; }
+    .site-nav .nav-actions { gap: 0.75rem; }
+    .mobile-menu-toggle {
+      display: none; align-items: center; justify-content: center; width: 40px; height: 40px;
+      border: 1px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--text2); cursor: pointer;
+    }
+    .mobile-menu-toggle span {
+      display: block; width: 18px; height: 2px; background: currentColor; border-radius: 999px; margin: 2px 0;
+    }
+    .mobile-menu {
+      display: none; position: fixed; top: 64px; left: 0; right: 0; z-index: 999;
+      background: rgba(255,255,255,0.96); border-bottom: 1px solid var(--border); padding: 1rem 1.25rem 1.25rem;
+      box-shadow: 0 16px 40px rgba(15,23,42,0.06);
+      flex-direction: column; gap: 0.8rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu .nav-link { font-size: 0.95rem; }
+
+    @media (max-width: 960px) {
+      .site-nav { padding: 0 1.25rem; }
+      .site-nav .nav-links, .site-nav .nav-actions { display: none; }
+      .mobile-menu-toggle { display: inline-flex; flex-direction: column; }
+      .hero-grid, .about-grid, .project-grid { grid-template-columns: 1fr !important; }
+      .hero-grid { gap: 2.5rem; }
+      .about-grid { gap: 2rem; }
+      .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+      .hero-section { padding: 96px 1.25rem 0 !important; }
+      .about-section, .skills-section, .projects-section, .contact-section {
+        padding: 4.5rem 1.25rem !important;
+      }
+    }
+
     @media (max-width: 768px) {
       .phone-wrap { display: none; }
-      .hero-grid, .project-grid, .about-grid { grid-template-columns: 1fr !important; }
       .stats-grid { grid-template-columns: 1fr 1fr !important; }
+      .project-content { padding: 1.5rem !important; }
+      .project-visual { padding: 1rem 1rem 0 !important; }
+      .hero-actions, .hero-social-row { gap: 0.75rem; }
+      .contact-actions { flex-direction: column; align-items: stretch; }
+      .hero-social-row { flex-wrap: wrap; }
+    }
+
+    @media (max-width: 560px) {
+      .site-nav { padding: 0 1rem; height: 60px; }
+      .mobile-menu { top: 60px; }
+      .hero-section { padding: 88px 1rem 0 !important; }
+      .about-section, .skills-section, .projects-section, .contact-section {
+        padding: 4rem 1rem !important;
+      }
+      .stats-grid { grid-template-columns: 1fr !important; }
       .skills-grid { grid-template-columns: 1fr !important; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .hero-actions .btn-primary, .hero-actions .btn-secondary,
+      .hero-actions .btn-live, .hero-actions .btn-ghost,
+      .contact-actions .contact-btn {
+        width: 100%; justify-content: center;
+      }
+      .hero-social-row { justify-content: flex-start; flex-wrap: wrap; }
+      .project-content { padding: 1.25rem !important; }
+      .project-visual { padding: 0.75rem 0.75rem 0 !important; }
+      .project-content h3 { font-size: 1.2rem !important; }
+      .project-content p { font-size: 0.82rem !important; }
+      .project-content .skill-tag { font-size: 0.72rem !important; }
     }
   `}</style>
 );
@@ -479,6 +547,7 @@ function useCountUp(target, duration = 1800, start = false) {
 const Nav = ({ lang, setLang }) => {
   const { t } = useLang();
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", fn, { passive: true });
@@ -494,62 +563,89 @@ const Nav = ({ lang, setLang }) => {
   ];
 
   return (
-    <nav
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 1000,
-        padding: "0 2rem",
-        height: "64px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        background: scrolled ? "rgba(255,255,255,0.92)" : "transparent",
-        backdropFilter: scrolled ? "blur(16px)" : "none",
-        borderBottom: scrolled
-          ? "1px solid rgba(229,231,235,0.8)"
-          : "1px solid transparent",
-        transition: "background 0.3s, border-color 0.3s, backdrop-filter 0.3s",
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-        <div
-          style={{
-            width: 34,
-            height: 34,
-            background: "var(--green)",
-            borderRadius: 8,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: 800,
-            fontSize: "0.9rem",
-            color: "#fff",
-            fontFamily: "'Inter', sans-serif",
-          }}
-        >
-          B
+    <>
+      <nav className={`site-nav${scrolled ? " scrolled" : ""}`}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+          <div
+            style={{
+              width: 34,
+              height: 34,
+              background: "var(--green)",
+              borderRadius: 8,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: 800,
+              fontSize: "0.9rem",
+              color: "#fff",
+              fontFamily: "'Inter', sans-serif",
+            }}
+          >
+            B
+          </div>
+          <span
+            style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text)" }}
+          >
+            Brice
+          </span>
         </div>
-        <span
-          style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text)" }}
-        >
-          Brice
-        </span>
-      </div>
 
-      <div style={{ display: "flex", gap: "2rem" }}>
+        <div className="nav-links">
+          {links.map(([label, href]) => (
+            <a key={href} href={href} className="nav-link">
+              {label}
+            </a>
+          ))}
+        </div>
+
+        <div className="nav-actions">
+          <div className="lang-toggle">
+            <button
+              className={`lang-btn${lang === "en" ? " active" : ""}`}
+              onClick={() => setLang("en")}
+            >
+              EN
+            </button>
+            <button
+              className={`lang-btn${lang === "jp" ? " active" : ""}`}
+              onClick={() => setLang("jp")}
+            >
+              JP
+            </button>
+          </div>
+          <a
+            href="/Resume-Brice.pdf"
+            download
+            className="btn-primary"
+            style={{ padding: "0.5rem 1rem", fontSize: "0.8rem" }}
+          >
+            <TbDownload /> {t.downloadCV}
+          </a>
+        </div>
+
+        <button
+          className="mobile-menu-toggle"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label="Toggle navigation"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </nav>
+
+      <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
         {links.map(([label, href]) => (
-          <a key={href} href={href} className="nav-link">
+          <a
+            key={href}
+            href={href}
+            className="nav-link"
+            onClick={() => setMenuOpen(false)}
+          >
             {label}
           </a>
         ))}
-      </div>
-
-      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-        {/* Real working language toggle */}
-        <div className="lang-toggle">
+        <div className="lang-toggle" style={{ alignSelf: "flex-start" }}>
           <button
             className={`lang-btn${lang === "en" ? " active" : ""}`}
             onClick={() => setLang("en")}
@@ -567,12 +663,12 @@ const Nav = ({ lang, setLang }) => {
           href="/Resume-Brice.pdf"
           download
           className="btn-primary"
-          style={{ padding: "0.5rem 1rem", fontSize: "0.8rem" }}
+          style={{ padding: "0.55rem 0.95rem", fontSize: "0.8rem", alignSelf: "flex-start" }}
         >
           <TbDownload /> {t.downloadCV}
         </a>
       </div>
-    </nav>
+    </>
   );
 };
 
@@ -630,6 +726,7 @@ const Hero = () => {
   return (
     <section
       id="home"
+      className="hero-section"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -682,7 +779,7 @@ const Hero = () => {
             <p
               style={{
                 ...fadeStyle(0.32),
-                fontSize: "1.05rem",
+                fontSize: "clamp(0.95rem, 1.7vw, 1.05rem)",
                 color: "var(--text3)",
                 lineHeight: 1.7,
                 maxWidth: 420,
@@ -693,6 +790,7 @@ const Hero = () => {
             </p>
 
             <div
+              className="hero-actions"
               style={{
                 ...fadeStyle(0.42),
                 display: "flex",
@@ -710,6 +808,7 @@ const Hero = () => {
             </div>
 
             <div
+              className="hero-social-row"
               style={{
                 ...fadeStyle(0.52),
                 display: "flex",
@@ -719,7 +818,7 @@ const Hero = () => {
             >
               <span
                 style={{
-                  fontSize: "0.8rem",
+                  fontSize: "clamp(0.75rem, 1.3vw, 0.8rem)",
                   color: "var(--text4)",
                   fontWeight: 500,
                 }}
@@ -776,8 +875,8 @@ const Hero = () => {
           </div>
 
           {/* Right — CSS Laptop */}
-          <div style={{ ...fadeStyle(0.35), position: "relative" }}>
-            <div className="laptop-wrap">
+          <div style={{ ...fadeStyle(0.35), position: "relative", width: "100%" }}>
+            <div className="laptop-wrap" style={{ margin: "0 auto" }}>
               <div className="laptop-body">
                 <div className="laptop-notch" />
                 <div className="laptop-screen">
@@ -998,7 +1097,7 @@ const StatItem = ({ value, suffix, label, started }) => {
     <div className="stat-card">
       <div
         style={{
-          fontSize: "2.25rem",
+          fontSize: "clamp(1.7rem, 3vw, 2.25rem)",
           fontWeight: 800,
           color: "var(--text)",
           letterSpacing: "-0.03em",
@@ -1010,7 +1109,7 @@ const StatItem = ({ value, suffix, label, started }) => {
       </div>
       <div
         style={{
-          fontSize: "0.8rem",
+          fontSize: "clamp(0.75rem, 1.4vw, 0.8rem)",
           color: "var(--text3)",
           marginTop: "0.4rem",
           fontWeight: 500,
@@ -1098,6 +1197,7 @@ const About = () => {
   return (
     <section
       id="about"
+      className="about-section"
       style={{ padding: "6rem 2rem", background: "var(--bg2)" }}
     >
       <div
@@ -1192,7 +1292,7 @@ const About = () => {
                 </div>
                 <div
                   style={{
-                    fontSize: "0.85rem",
+                    fontSize: "clamp(0.8rem, 1.3vw, 0.85rem)",
                     fontWeight: 700,
                     color: "var(--text)",
                     marginBottom: "0.4rem",
@@ -1202,7 +1302,7 @@ const About = () => {
                 </div>
                 <div
                   style={{
-                    fontSize: "0.8rem",
+                    fontSize: "clamp(0.74rem, 1.3vw, 0.8rem)",
                     color: "var(--text3)",
                     lineHeight: 1.6,
                   }}
@@ -1256,6 +1356,7 @@ const Skills = () => {
   return (
     <section
       id="skills"
+      className="skills-section"
       style={{ padding: "6rem 2rem", background: "var(--bg)" }}
     >
       <div
@@ -1310,7 +1411,7 @@ const Skills = () => {
             <div key={title} className="skill-card">
               <h3
                 style={{
-                  fontSize: "0.9rem",
+                  fontSize: "clamp(0.85rem, 1.4vw, 0.9rem)",
                   fontWeight: 700,
                   color: "var(--text)",
                   marginBottom: "1rem",
@@ -3000,9 +3101,9 @@ const PROJECT_META = [
   {
     id: "huye",
     live: true,
-    liveUrl: "https://huyefinds.vercel.app",
-    githubUrl: "https://github.com/Brice-art",
-    stack: ["React", "Node.js", "PostgreSQL", "Express"],
+    liveUrl: "https://huye-finds.vercel.app",
+    githubUrl: "https://github.com/Brice-art/HuyeFinds-frontend",
+    stack: ["Typescript", "Node.js", "PostgreSQL", "Express"],
     screen: <HuyeScreen />,
     hasPhone: true,
     phoneScreen: <HuyePhoneScreen />,
@@ -3020,7 +3121,7 @@ const PROJECT_META = [
   {
     id: "rshift",
     live: false,
-    githubUrl: "https://github.com/Brice-art",
+    githubUrl: "https://github.com/Brice-art/Rshift-extraction-chrome-extension",
     stack: [
       "JavaScript",
       "DOM API",
@@ -3034,7 +3135,7 @@ const PROJECT_META = [
   {
     id: "ecom",
     live: false,
-    githubUrl: "https://github.com/Brice-art",
+    githubUrl: "https://github.com/Brice-art/ecommerce-site-php-mysql",
     stack: ["PHP", "MySQL", "MVC Pattern", "OOP", "SQL"],
     screen: <EcomScreen />,
     hasPhone: true,
@@ -3060,6 +3161,7 @@ const ProjectCard = ({ meta, copy, reverse }) => {
         }}
       >
         <div
+          className="project-visual"
           style={{
             direction: "ltr",
             background: "var(--bg3)",
@@ -3075,6 +3177,7 @@ const ProjectCard = ({ meta, copy, reverse }) => {
           </ProjectMockup>
         </div>
         <div
+          className="project-content"
           style={{
             direction: "ltr",
             padding: "2.5rem",
@@ -3089,6 +3192,7 @@ const ProjectCard = ({ meta, copy, reverse }) => {
               alignItems: "center",
               gap: "0.5rem",
               marginBottom: "1rem",
+              flexWrap: "wrap",
             }}
           >
             {meta.live ? (
@@ -3130,7 +3234,7 @@ const ProjectCard = ({ meta, copy, reverse }) => {
           </div>
           <h3
             style={{
-              fontSize: "1.5rem",
+              fontSize: "clamp(1.2rem, 2.2vw, 1.5rem)",
               fontWeight: 800,
               letterSpacing: "-0.02em",
               color: "var(--text)",
@@ -3141,7 +3245,7 @@ const ProjectCard = ({ meta, copy, reverse }) => {
           </h3>
           <p
             style={{
-              fontSize: "0.875rem",
+              fontSize: "clamp(0.8rem, 1.4vw, 0.875rem)",
               fontWeight: 500,
               color: "var(--green)",
               marginBottom: "1rem",
@@ -3151,7 +3255,7 @@ const ProjectCard = ({ meta, copy, reverse }) => {
           </p>
           <p
             style={{
-              fontSize: "0.875rem",
+              fontSize: "clamp(0.8rem, 1.4vw, 0.875rem)",
               color: "var(--text3)",
               lineHeight: 1.75,
               marginBottom: "1.5rem",
@@ -3225,6 +3329,7 @@ const Projects = () => {
   return (
     <section
       id="projects"
+      className="projects-section"
       style={{ padding: "6rem 2rem", background: "var(--bg2)" }}
     >
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -3302,6 +3407,7 @@ const Contact = () => {
   return (
     <section
       id="contact"
+      className="contact-section"
       style={{ padding: "6rem 2rem", background: "#0f172a" }}
     >
       <div
@@ -3345,6 +3451,7 @@ const Contact = () => {
           {t.contactSub}
         </p>
         <div
+          className="contact-actions"
           style={{
             display: "flex",
             gap: "1rem",
