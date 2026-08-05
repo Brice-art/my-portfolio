@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, createContext, useContext } from "react";
+import AnimatedBackground from "./AnimatedBackground";
 import { TbSchoolFilled } from "react-icons/tb";
 import { TbBriefcaseFilled } from "react-icons/tb";
 import { TbCode } from "react-icons/tb";
@@ -21,98 +22,225 @@ const COPY = {
     navProjects: "Projects",
     navSkills: "Skills",
     navContact: "Contact",
+
     downloadCV: "Download CV",
+
     heroGreeting: "Hello, I'm Brice Ali",
+
     heroHeadline: "I'm",
-    heroWords: ["Byiringiro.", "a developer."],
-    heroSub: "I solve the problem first.\nThen I vibe code the solution.",
-    heroCTA: "View My Work →",
+
+    heroWords: ["Brice Byiringiro", "a Full-Stack Developer"],
+
+    heroSub:
+      "Full-stack developer who enjoys understanding complex systems, solving difficult problems, and building software people can rely on.",
+
+    heroRecentLabel: "Latest Project",
+
+    heroRecentText:
+      "Recovered and improved a production Laravel booking platform by restoring Stripe payments, email delivery, real-time updates with Laravel Reverb, and deployment workflows on Laravel Cloud.",
+
+    heroCTA: "Explore My Work →",
+
     heroContact: "Contact Me",
-    heroConnect: "Let's connect",
-    stat1v: "7",
+
+    heroConnect: "Let's Connect",
+
+    stat1v: "8",
     stat1s: "+",
-    stat1l: "Years in Japan",
-    stat2v: "3",
+    stat1l: "Projects Built",
+
+    stat2v: "1",
     stat2s: "",
-    stat2l: "Languages Spoken",
-    stat3v: "930",
+    stat2l: "Production System",
+
+    stat3v: "3",
     stat3s: "",
-    stat3l: "TOEIC Score",
-    stat4v: "430",
-    stat4s: "",
-    stat4l: "BJT Japanese Score",
+    stat3l: "Languages",
+
+    stat4v: "7",
+    stat4s: "+",
+    stat4l: "Years in Japan",
+
     aboutLabel: "About Me",
-    aboutHeadline: "A problem solver\nwho loves",
-    aboutAccent: "building.",
+
+    aboutHeadline: "I build software\nthat solves real problems.",
+
+    aboutAccent: "Reliable. Practical. Maintainable.",
+
     aboutP1:
-      "Studied civil engineering in Japan, then got more interested in how software systems are designed than how bridges are. I've been building my way in with JavaScript, React, Node.js, Python, and databases.",
+      "My journey into software started with a background in civil engineering, where I learned to approach complex problems with structure and precision. Today I apply that same mindset to designing and building full-stack web applications.",
+
     aboutP2:
-      "Most of my learning comes from shipping real projects and understanding why they break.",
-    aboutCTA: "See My Projects →",
+      "I've developed applications from scratch, maintained production systems, integrated third-party services like Stripe, diagnosed challenging bugs, and delivered solutions directly to clients. I enjoy understanding how systems work and making them better.",
+
+    aboutCTA: "Explore My Projects →",
+
     infoEduTitle: "Education",
+
     infoEduBody:
-      "Associate's in Civil Engineering, Japan. Transitioning into software through consistent building.",
+      "Associate's degree in Civil Engineering from Japan. Now focused on professional full-stack software development through continuous learning and real-world projects.",
+
     infoLangTitle: "Languages",
+
     infoLangBody:
-      "English (Fluent) · Japanese (Fluent, BJT 430) · Kinyarwanda (Native)",
+      "English (Fluent) • Japanese (Fluent, BJT 430) • Kinyarwanda (Native)",
+
     infoFocusTitle: "Focus",
+
     infoFocusBody:
-      "Backend APIs, databases, OOP patterns, and efficient full-stack web applications.",
+      "Laravel, PHP, JavaScript, React, Node.js, REST APIs, SQL databases, authentication, backend architecture, and scalable web applications.",
+
     infoBgTitle: "Background",
+
     infoBgBody:
-      "Originally from Rwanda. Lived and studied in Japan for 7+ years.",
-    skillsLabel: "SKILLS",
-    skillsHeadline: "What I work with",
-    skillsSub:
-      "Stack I use to ship full-stack apps — from APIs and auth to clean UI.",
-    skillFrontend: "Frontend",
-    skillBackend: "Backend",
-    skillData: "Data & Tools",
-    projLabel: "FEATURED PROJECTS",
-    projHeadline: "Things I've built",
-    projSub:
-      "Real projects — APIs, auth, browser extensions, and full-stack apps.",
-    projMoreGH: "More on GitHub",
-    projLive: "Live",
-    projInProgress: "In Progress",
-    projLiveDemo: "Live Demo",
-    projSource: "Source Code",
-    proj: [
+      "Originally from Rwanda. Lived and studied in Japan for more than seven years, developing both technical skills and cross-cultural communication.",
+
+    coreHeadline: "Core Expertise",
+    coreItems: [
+      "Laravel Development",
+      "REST API Design",
+      "Authentication & Authorization",
+      "Payment Integrations",
+      "Database Design",
+      "Backend Architecture",
+      "Production Debugging",
+      "System Maintenance",
+      "Full-Stack Development",
+      "Cloud Deployment",
+      "Git Workflow",
+      "Problem Solving",
+    ],
+
+    philosophyLabel: "My Philosophy",
+    philosophyText:
+      "Good software isn't just about writing code. It's about understanding the problem, communicating clearly, and building solutions people can trust.",
+
+    experienceLabel: "Experience",
+    experienceTimeline: [
       {
-        title: "Huye Finds",
-        subtitle: "Discover the best places around UR Huye",
+        year: "2026",
+        title: "Full-Stack Developer",
         description:
-          "A platform that helps students find affordable local spots, restaurants, and services near Huye University. Mobile-first design with real-time search, location filtering, and student-focused UX.",
-        highlight: "Built for a real community",
+          "Worked with a client to maintain and improve a production Laravel booking platform hosted on Laravel Cloud.",
       },
       {
-        title: "Agakayi Notes",
-        subtitle: "Full-stack note management on the MERN stack.",
-        description:
-          "JWT auth, RESTful routing, CRUD via MongoDB, clean API layer, and no page reloads. Inspired by the traditional Rwandan agakayi notebook. Emphasis on backend architecture and secure session handling.",
-        highlight: "Production · live at agakayi.xyz",
+        year: "2025",
+        title: "Built MERN Applications",
       },
       {
-        title: "Rshift Chrome Extension",
-        subtitle: "Shift scheduling → Google Calendar. One click.",
-        description:
-          "Extracts shift data from a scheduling page via DOM manipulation, then exports to Google Calendar with OAuth. One-click, zero manual entry. Handles auth, API communication, and event creation end to end.",
-        highlight: "Solves a real daily workflow problem",
+        year: "2025",
+        title: "Developed Browser Extensions",
       },
       {
-        title: "MyStore E-Commerce",
-        subtitle: "E-commerce built with raw PHP, no framework on purpose.",
-        description:
-          "Admin dashboard, cart, user/admin auth, and product search. The constraint forces deep understanding of MVC, OOP, and SQL without abstraction layers. Every routing, DB query, and auth check written by hand.",
-        highlight: "MVC and OOP from scratch",
+        year: "2024",
+        title: "Started Full-Stack Development",
       },
     ],
+
+    openSourceLabel: "Open Source",
+    openSourceText:
+      "I enjoy building software publicly and continuously improving my projects.",
+    openSourceCTA: "View my repositories →",
+
+    skillsLabel: "SKILLS",
+
+    skillsHeadline: "Technologies & Tools",
+
+    skillsSub:
+      "Technologies I use to build, deploy, and maintain modern web applications.",
+
+    skillFrontend: "Frontend",
+
+    skillBackend: "Backend",
+
+    skillData: "Data & Tools",
+
+    projLabel: "FEATURED PROJECTS",
+
+    projHeadline: "Projects",
+
+    projSub:
+      "Production systems, full-stack applications, browser extensions, and software built to solve real-world problems.",
+
+    projMoreGH: "View More on GitHub",
+
+    projLive: "Live",
+
+    projInProgress: "In Progress",
+
+    projLiveDemo: "Live Demo",
+
+    projSource: "Source Code",
+
+    proj: [
+      {
+        title: "Production Laravel Booking Platform",
+
+        subtitle: "Production booking system hosted on Laravel Cloud.",
+
+        description:
+          "Inherited an existing Laravel booking platform and became responsible for improving its reliability. Restored email functionality, repaired Laravel Reverb real-time updates, strengthened Stripe payment verification to prevent duplicate charges, improved deployment workflows on Laravel Cloud, and added production testing. Collaborated directly with the client throughout diagnosis, implementation, and delivery.",
+
+        highlight: "Production Recovery",
+      },
+
+      {
+        title: "Huye Finds",
+
+        subtitle:
+          "Helping students discover the best places around the University of Rwanda.",
+
+        description:
+          "A location-based platform that helps students find affordable restaurants, accommodation, and essential services around Huye. Built with a mobile-first experience, real-time search, location filtering, and an interface designed specifically for student life.",
+
+        highlight: "Built to solve a real community problem",
+      },
+
+      {
+        title: "Agakayi Notes",
+
+        subtitle: "A modern note-taking application built with the MERN stack.",
+
+        description:
+          "Designed a full-stack MERN application with secure JWT authentication, REST APIs, MongoDB data storage, and a responsive React frontend. Focused on clean backend architecture, reusable components, and efficient data flow.",
+
+        highlight: "Full-stack architecture and secure auth",
+      },
+
+      {
+        title: "RShift Chrome Extension",
+
+        subtitle:
+          "Turn work schedules into Google Calendar events with one click.",
+
+        description:
+          "Built while working part-time in Japan to eliminate repetitive manual scheduling. The extension extracts shift information from a scheduling website, authenticates with Google using OAuth, and automatically creates Calendar events. Demonstrates DOM manipulation, browser APIs, OAuth authentication, and third-party API integration.",
+
+        highlight: "Automates a real daily workflow",
+      },
+
+      {
+        title: "MyStore E-Commerce",
+
+        subtitle: "An e-commerce platform built entirely with core PHP.",
+
+        description:
+          "Built entirely with core PHP to strengthen my understanding of MVC architecture, object-oriented programming, routing, authentication, SQL, and backend fundamentals without relying on frameworks.",
+
+        highlight: "Core PHP and MVC fundamentals",
+      },
+    ],
+
     contactLabel: "CONTACT",
-    contactHeadline: "Let's build something.",
+
+    contactHeadline: "Let's solve something together.",
+
     contactSub:
-      "Open to conversations about backend development, full-stack work, or anything interesting.",
+      "Whether you need a Laravel developer, a full-stack engineer, or someone who enjoys tackling difficult technical challenges, I'd love to hear from you.",
+
     contactEmail: "✉ Email Me",
-    contactFooter: "Byiringiro Brice — KIGALI · TOKYO",
+
+    contactFooter: "Brice Byiringiro • Kigali, Rwanda • Tokyo, Japan",
   },
   jp: {
     navHome: "ホーム",
@@ -123,9 +251,12 @@ const COPY = {
     downloadCV: "履歴書",
     heroGreeting: "こんにちは、ブリスです",
     heroHeadline: "I'm",
-    heroWords: ["Brice Byiringiro.", "a Software Engineer."],
+    heroWords: ["Brice Byiringiro", "a Software Engineer"],
     heroSub:
       "土木工学のバックグラウンドを持ち、バックエンドAPI・データベース・フルスタックプロジェクトを実際に構築しながら学んでいます。",
+    heroRecentLabel: "最近の制作",
+    heroRecentText:
+      "Laravel Cloud上のクライアント予約システムを復旧し、メール・リアルタイム・Stripe決済を修復、実運用テストを追加しました。",
     heroCTA: "制作物を見る →",
     heroContact: "連絡する",
     heroConnect: "つながりましょう",
@@ -159,6 +290,49 @@ const COPY = {
       "バックエンドAPI・データベース・OOPパターン・効率的なフルスタックWebアプリ。",
     infoBgTitle: "バックグラウンド",
     infoBgBody: "ルワンダ出身。7年以上日本で生活・学習。",
+    coreHeadline: "コアエキスパート",
+    coreItems: [
+      "Laravel開発",
+      "REST API設計",
+      "認証と認可",
+      "決済統合",
+      "データベース設計",
+      "バックエンドアーキテクチャ",
+      "本番デバッグ",
+      "システム保守",
+      "フルスタック開発",
+      "クラウドデプロイ",
+      "Gitワークフロー",
+      "問題解決",
+    ],
+    philosophyLabel: "私の哲学",
+    philosophyText:
+      "良いソフトウェアはコードを書くことだけではありません。問題を理解し、明確に伝え、人々が信頼できる解決策を作ることです。",
+    experienceLabel: "経験",
+    experienceTimeline: [
+      {
+        year: "2026",
+        title: "フルスタック開発者",
+        description:
+          "Laravel Cloudでホストされた本番予約プラットフォームの保守・改善をクライアントとともに行いました。",
+      },
+      {
+        year: "2025",
+        title: "MERNアプリを構築",
+      },
+      {
+        year: "2025",
+        title: "ブラウザ拡張機能を開発",
+      },
+      {
+        year: "2024",
+        title: "フルスタック開発を開始",
+      },
+    ],
+    openSourceLabel: "オープンソース",
+    openSourceText:
+      "公開でソフトウェアを構築し、プロジェクトを継続的に改善することを楽しんでいます。",
+    openSourceCTA: "リポジトリを見る →",
     skillsLabel: "スキル",
     skillsHeadline: "使用技術",
     skillsSub:
@@ -176,6 +350,13 @@ const COPY = {
     projLiveDemo: "デモを見る",
     projSource: "ソースコード",
     proj: [
+      {
+        title: "Laravel Cloud BnB",
+        subtitle: "Laravel Cloud上で運用される予約システム。",
+        description:
+          "クライアントの本番Laravelアプリを引き継ぎ、メール通知とLaravel Cloud内蔵Reverbを使ったリアルタイム更新を復旧。Stripe決済検証を強化し、画面更新による二重課金を防止しました。問題の特定と解決を重視し、クライアントには丁寧に報告・連携しました。",
+        highlight: "クライアント本番復旧",
+      },
       {
         title: "Huye Finds",
         subtitle: "Discover the best places around UR Huye",
@@ -231,10 +412,11 @@ const GlobalStyles = () => (
     html { scroll-behavior: smooth; }
 
     :root {
-      --green:       #16a34a;
-      --green-light: #22c55e;
-      --green-dim:   #dcfce7;
-      --green-mid:   #bbf7d0;
+      --primary:       #3B5FFB;
+      --primary-light: #5B7BFF;
+      --primary-dim:   #E8EDFF;
+      --primary-mid:   #C2CFFF;
+      --primary-dark:  #2E4BD1;
       --bg:          #ffffff;
       --bg2:         #f9fafb;
       --bg3:         #f3f4f6;
@@ -253,7 +435,7 @@ const GlobalStyles = () => (
       overflow-x: hidden;
     }
 
-    ::selection { background: var(--green-dim); color: var(--green); }
+    ::selection { background: var(--primary-dim); color: var(--primary); }
 
     .nav-link {
       font-size: 0.875rem; font-weight: 500;
@@ -265,7 +447,7 @@ const GlobalStyles = () => (
     .nav-link.active::after {
       content: ''; position: absolute;
       bottom: -4px; left: 0; right: 0;
-      height: 2px; background: var(--green); border-radius: 1px;
+      height: 2px; background: var(--primary); border-radius: 1px;
     }
 
     /* Language toggle */
@@ -283,17 +465,17 @@ const GlobalStyles = () => (
       background: transparent; color: var(--text3);
     }
     .lang-btn.active {
-      background: var(--green); color: #fff;
+      background: var(--primary); color: #fff;
     }
 
     .btn-primary {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.75rem 1.5rem; background: var(--green); color: #fff;
+      padding: 0.75rem 1.5rem; background: var(--primary); color: #fff;
       font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600;
       text-decoration: none; border: none; border-radius: 8px; cursor: pointer;
       transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
     }
-    .btn-primary:hover { background: #15803d; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(22,163,74,0.3); }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(59,95,251,0.3); }
     .btn-primary:active { transform: translateY(0); }
 
     .btn-secondary {
@@ -307,12 +489,12 @@ const GlobalStyles = () => (
 
     .btn-live {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.7rem 1.4rem; background: var(--green); color: #fff;
+      padding: 0.7rem 1.4rem; background: var(--primary); color: #fff;
       font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600;
       text-decoration: none; border-radius: 8px; cursor: pointer;
       transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
     }
-    .btn-live:hover { background: #15803d; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(22,163,74,0.35); }
+    .btn-live:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(59,95,251,0.35); }
 
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 0.5rem;
@@ -329,16 +511,16 @@ const GlobalStyles = () => (
       font-size: 0.78rem; font-weight: 500; color: var(--text2);
       transition: border-color 0.15s, color 0.15s, background 0.15s;
     }
-    .skill-tag:hover { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+    .skill-tag:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-dim); }
 
     .live-dot {
       display: inline-block; width: 8px; height: 8px;
-      background: var(--green-light); border-radius: 50%;
+      background: var(--primary-light); border-radius: 50%;
       animation: pulse-dot 2s ease-in-out infinite;
     }
     @keyframes pulse-dot {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
-      50%       { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(91,123,255,0.5); }
+      50%       { box-shadow: 0 0 0 5px rgba(91,123,255,0); }
     }
 
     .reveal {
@@ -349,7 +531,7 @@ const GlobalStyles = () => (
 
     .cursor {
       display: inline-block; width: 3px; height: 0.85em;
-      background: var(--green); margin-left: 2px; vertical-align: middle;
+      background: var(--primary); margin-left: 2px; vertical-align: middle;
       animation: blink 1.1s step-end infinite;
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
@@ -390,13 +572,13 @@ const GlobalStyles = () => (
       background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
       padding: 1.25rem 1.5rem; transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .info-card:hover { border-color: var(--green-mid); box-shadow: 0 4px 16px rgba(22,163,74,0.08); }
+    .info-card:hover { border-color: var(--primary-mid); box-shadow: 0 4px 16px rgba(59,95,251,0.08); }
 
     .skill-card {
       background: var(--bg); border: 1px solid var(--border); border-radius: 14px;
       padding: 1.75rem; transition: box-shadow 0.2s, border-color 0.2s;
     }
-    .skill-card:hover { border-color: var(--green-mid); box-shadow: 0 8px 24px rgba(22,163,74,0.09); }
+    .skill-card:hover { border-color: var(--primary-mid); box-shadow: 0 8px 24px rgba(59,95,251,0.09); }
 
     .project-section {
       background: var(--bg2); border: 1px solid var(--border);
@@ -411,7 +593,7 @@ const GlobalStyles = () => (
       border-radius: 50%; text-decoration: none; color: var(--text3);
       transition: border-color 0.15s, color 0.15s, background 0.15s; font-size: 1rem;
     }
-    .social-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+    .social-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-dim); }
 
     .contact-btn {
       display: inline-flex; align-items: center; gap: 0.5rem;
@@ -421,8 +603,8 @@ const GlobalStyles = () => (
       transition: background 0.15s, border-color 0.15s;
     }
     .contact-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
-    .contact-btn.primary { background: var(--green); border-color: var(--green); color: #fff; font-weight: 600; }
-    .contact-btn.primary:hover { background: #15803d; border-color: #15803d; }
+    .contact-btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; }
+    .contact-btn.primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
 
     .site-nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -464,10 +646,11 @@ const GlobalStyles = () => (
       .about-section, .skills-section, .projects-section, .contact-section {
         padding: 4.5rem 1.25rem !important;
       }
+      .laptop-wrap, .phone-wrap { display: none; }
     }
 
     @media (max-width: 768px) {
-      .phone-wrap { display: none; }
+      .laptop-wrap, .phone-wrap { display: none; }
       .stats-grid { grid-template-columns: 1fr 1fr !important; }
       .project-content { padding: 1.5rem !important; }
       .project-visual { padding: 1rem 1rem 0 !important; }
@@ -570,7 +753,7 @@ const Nav = ({ lang, setLang }) => {
             style={{
               width: 34,
               height: 34,
-              background: "var(--green)",
+              background: "var(--primary)",
               borderRadius: 8,
               display: "flex",
               alignItems: "center",
@@ -583,11 +766,9 @@ const Nav = ({ lang, setLang }) => {
           >
             B
           </div>
-          <span
-            style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text)" }}
-          >
+          <div style={{ fontSize: "0.95rem", fontWeight: 800, paddingRight: 12 }}>
             Brice
-          </span>
+          </div>
         </div>
 
         <div className="nav-links">
@@ -663,7 +844,11 @@ const Nav = ({ lang, setLang }) => {
           href="/Resume-Brice.pdf"
           download
           className="btn-primary"
-          style={{ padding: "0.55rem 0.95rem", fontSize: "0.8rem", alignSelf: "flex-start" }}
+          style={{
+            padding: "0.55rem 0.95rem",
+            fontSize: "0.8rem",
+            alignSelf: "flex-start",
+          }}
         >
           <TbDownload /> {t.downloadCV}
         </a>
@@ -733,7 +918,7 @@ const Hero = () => {
         alignItems: "center",
         padding: "80px 2rem 0",
         background:
-          "linear-gradient(160deg, #ffffff 0%, #f0fdf4 50%, #ffffff 100%)",
+          "linear-gradient(160deg, rgba(255,255,255,0.4) 0%, rgba(240,253,244,0.25) 50%, rgba(255,255,255,0.4) 100%)",
       }}
     >
       <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%" }}>
@@ -741,7 +926,7 @@ const Hero = () => {
           className="hero-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "1.2fr 0.8fr",
             gap: "4rem",
             alignItems: "center",
           }}
@@ -767,7 +952,7 @@ const Hero = () => {
               ))}{" "}
               <span
                 style={{
-                  color: "var(--green)",
+                  color: "var(--primary)",
                   whiteSpace: "pre-line",
                 }}
               >
@@ -783,11 +968,45 @@ const Hero = () => {
                 color: "var(--text3)",
                 lineHeight: 1.7,
                 maxWidth: 420,
-                marginBottom: "2.25rem",
+                marginBottom: "1.5rem",
               }}
             >
               {t.heroSub}
             </p>
+
+            <div
+              style={{
+                ...fadeStyle(0.4),
+                maxWidth: 540,
+                marginBottom: "1.75rem",
+                padding: "1rem 1.2rem",
+                borderRadius: 18,
+                background: "rgba(59,95,251,0.08)",
+                border: "1px solid rgba(59,95,251,0.14)",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  color: "var(--primary)",
+                  marginBottom: "0.35rem",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                }}
+              >
+                {t.heroRecentLabel}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.95rem",
+                  color: "var(--text2)",
+                  lineHeight: 1.6,
+                }}
+              >
+                {t.heroRecentText}
+              </div>
+            </div>
 
             <div
               className="hero-actions"
@@ -796,7 +1015,7 @@ const Hero = () => {
                 display: "flex",
                 gap: "0.75rem",
                 flexWrap: "wrap",
-                marginBottom: "2.5rem",
+                marginBottom: "1.5rem",
               }}
             >
               <a href="#projects" className="btn-primary">
@@ -806,6 +1025,46 @@ const Hero = () => {
                 {t.heroContact}
               </a>
             </div>
+
+            {/* <div
+              style={{
+                ...fadeStyle(0.44),
+                maxWidth: 520,
+                borderRadius: 18,
+                padding: "1rem 1rem",
+                background: "rgba(59,95,251,0.08)",
+                border: "1px solid rgba(59,95,251,0.16)",
+                marginBottom: "2rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  marginBottom: "0.75rem",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  color: "var(--primary)",
+                }}
+              >
+                <span>🟢</span>
+                <span>Currently</span>
+              </div> 
+              <div
+                style={{
+                  display: "grid",
+                  gap: "0.45rem",
+                  fontSize: "0.88rem",
+                  color: "var(--text2)",
+                  lineHeight: 1.6,
+                }}
+              >
+                <span>Building Laravel applications</span>
+                <span>Learning system design</span>
+                <span>Open to Full-Stack opportunities</span>
+              </div>
+            </div> */}
 
             <div
               className="hero-social-row"
@@ -875,7 +1134,9 @@ const Hero = () => {
           </div>
 
           {/* Right — CSS Laptop */}
-          <div style={{ ...fadeStyle(0.35), position: "relative", width: "100%" }}>
+          <div
+            style={{ ...fadeStyle(0.35), position: "relative", width: "100%" }}
+          >
             <div className="laptop-wrap" style={{ margin: "0 auto" }}>
               <div className="laptop-body">
                 <div className="laptop-notch" />
@@ -1141,7 +1402,7 @@ const Stats = () => {
     return () => obs.disconnect();
   }, []);
   return (
-    <div ref={ref} style={{ padding: "4rem 2rem", background: "var(--bg)" }}>
+    <div ref={ref} style={{ padding: "4rem 2rem", background: "transparent" }}>
       <div
         className="stats-grid"
         style={{
@@ -1198,7 +1459,7 @@ const About = () => {
     <section
       id="about"
       className="about-section"
-      style={{ padding: "6rem 2rem", background: "var(--bg2)" }}
+      style={{ padding: "6rem 2rem", background: "transparent" }}
     >
       <div
         ref={ref}
@@ -1213,13 +1474,13 @@ const About = () => {
             marginBottom: "0.75rem",
           }}
         >
-          <div className="live-dot" style={{ background: "var(--green)" }} />
+          <div className="live-dot" style={{ background: "var(--primary)" }} />
           <span
             style={{
               fontSize: "0.75rem",
               fontWeight: 700,
               letterSpacing: "0.1em",
-              color: "var(--green)",
+              color: "var(--primary)",
               textTransform: "uppercase",
             }}
           >
@@ -1252,7 +1513,7 @@ const About = () => {
                   {i < headlineParts.length - 1 && <br />}
                 </span>
               ))}{" "}
-              <span style={{ color: "var(--green)" }}>{t.aboutAccent}</span>
+              <span style={{ color: "var(--primary)" }}>{t.aboutAccent}</span>
             </h2>
             <p
               style={{
@@ -1319,6 +1580,178 @@ const About = () => {
 };
 
 /* ─────────────────────────────────────────────
+   CORE EXPERTISE
+───────────────────────────────────────────── */
+const CoreExpertise = () => {
+  const { t } = useLang();
+  const ref = useReveal();
+  return (
+    <section
+      id="expertise"
+      className="expertise-section"
+      style={{ padding: "6rem 2rem", background: "transparent" }}
+    >
+      <div ref={ref} className="reveal" style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.2fr 0.8fr",
+            gap: "3rem",
+            alignItems: "start",
+          }}
+        >
+          <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                marginBottom: "0.75rem",
+              }}
+            >
+              <div
+                className="live-dot"
+                style={{ background: "var(--primary)" }}
+              />
+              <span
+                style={{
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                  color: "var(--primary)",
+                  textTransform: "uppercase",
+                }}
+              >
+                {t.coreHeadline}
+              </span>
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gap: "1rem",
+                marginBottom: "2rem",
+              }}
+            >
+              {t.coreItems.map((item) => (
+                <div
+                  key={item}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.6rem",
+                    padding: "0.9rem 1rem",
+                    background: "var(--bg3)",
+                    borderRadius: 14,
+                    border: "1px solid var(--border)",
+                    color: "var(--text2)",
+                    fontSize: "0.9rem",
+                    fontWeight: 500,
+                  }}
+                >
+                  <span style={{ color: "var(--primary)" }}>✔</span>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+            <div
+              style={{
+                background: "rgba(59,95,251,0.08)",
+                borderRadius: 18,
+                border: "1px solid rgba(59,95,251,0.16)",
+                padding: "1.5rem",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "0.9rem",
+                  fontWeight: 700,
+                  color: "var(--text)",
+                  marginBottom: "0.75rem",
+                }}
+              >
+                {t.philosophyLabel}
+              </div>
+              <p
+                style={{
+                  fontSize: "0.95rem",
+                  color: "var(--text2)",
+                  lineHeight: 1.8,
+                  margin: 0,
+                }}
+              >
+                {t.philosophyText}
+              </p>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gap: "1rem",
+              borderRadius: 20,
+              background: "var(--bg3)",
+              padding: "1.5rem",
+              border: "1px solid var(--border)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "0.95rem",
+                fontWeight: 700,
+                color: "var(--text)",
+                marginBottom: "0.75rem",
+              }}
+            >
+              {t.experienceLabel}
+            </div>
+            {t.experienceTimeline.map((item) => (
+              <div
+                key={item.year + item.title}
+                style={{ display: "flex", gap: "1rem", alignItems: "flex-start" }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.95rem",
+                    fontWeight: 700,
+                    color: "var(--primary)",
+                    minWidth: 52,
+                  }}
+                >
+                  {item.year}
+                </div>
+                <div>
+                  <div
+                    style={{
+                      fontSize: "0.95rem",
+                      fontWeight: 700,
+                      color: "var(--text)",
+                    }}
+                  >
+                    {item.title}
+                  </div>
+                  {item.description && (
+                    <div
+                      style={{
+                        fontSize: "0.88rem",
+                        color: "var(--text2)",
+                        marginTop: "0.25rem",
+                        lineHeight: 1.7,
+                      }}
+                    >
+                      {item.description}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─────────────────────────────────────────────
    SKILLS
 ───────────────────────────────────────────── */
 const Skills = () => {
@@ -1357,7 +1790,7 @@ const Skills = () => {
     <section
       id="skills"
       className="skills-section"
-      style={{ padding: "6rem 2rem", background: "var(--bg)" }}
+      style={{ padding: "6rem 2rem", background: "transparent" }}
     >
       <div
         ref={ref}
@@ -1370,7 +1803,7 @@ const Skills = () => {
               fontSize: "0.75rem",
               fontWeight: 700,
               letterSpacing: "0.1em",
-              color: "var(--green)",
+              color: "var(--primary)",
               textTransform: "uppercase",
               marginBottom: "0.5rem",
             }}
@@ -1428,6 +1861,75 @@ const Skills = () => {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─────────────────────────────────────────────
+   OPEN SOURCE
+───────────────────────────────────────────── */
+const OpenSource = () => {
+  const { t } = useLang();
+  const ref = useReveal();
+  return (
+    <section
+      id="open-source"
+      className="open-source-section"
+      style={{ padding: "6rem 2rem", background: "transparent" }}
+    >
+      <div ref={ref} className="reveal" style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr",
+            gap: "1.25rem",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              color: "var(--primary)",
+              textTransform: "uppercase",
+            }}
+          >
+            {t.openSourceLabel}
+          </div>
+          <h2
+            style={{
+              fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.025em",
+              color: "var(--text)",
+              marginBottom: "0.75rem",
+            }}
+          >
+            {t.openSourceLabel}
+          </h2>
+          <p
+            style={{
+              fontSize: "0.95rem",
+              color: "var(--text3)",
+              maxWidth: 560,
+              margin: "0 auto",
+              lineHeight: 1.8,
+            }}
+          >
+            {t.openSourceText}
+          </p>
+          <a
+            href="https://github.com/Brice-art"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
+            style={{ maxWidth: 220, margin: "0 auto" }}
+          >
+            {t.openSourceCTA}
+          </a>
         </div>
       </div>
     </section>
@@ -1577,6 +2079,296 @@ const ProjectMockup = ({
 );
 
 // Accurate replica of Huye Finds desktop — warm gradient hero + nav + phone
+const BookingScreen = () => (
+  <div
+    style={{
+      background: "linear-gradient(135deg,#eef2ff 0%,#f8fafc 100%)",
+      height: "100%",
+      fontFamily: "Inter,sans-serif",
+      display: "flex",
+      flexDirection: "column",
+      overflow: "hidden",
+    }}
+  >
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "10px 12px",
+        background: "rgba(255,255,255,0.85)",
+        borderBottom: "1px solid rgba(148,163,184,0.2)",
+      }}
+    >
+      <div
+        style={{
+          width: 20,
+          height: 20,
+          borderRadius: 4,
+          background: "#3b82f6",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          color: "#fff",
+          fontWeight: 700,
+          fontSize: "0.75rem",
+        }}
+      >
+        B
+      </div>
+      <div>
+        <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "#0f172a" }}>
+          BnB Booking
+        </div>
+        <div style={{ fontSize: "0.44rem", color: "#475569" }}>
+          Laravel Cloud workflow
+        </div>
+      </div>
+      <div style={{ flex: 1 }} />
+      <div
+        style={{
+          fontSize: "0.48rem",
+          color: "#2563eb",
+          background: "#dbeafe",
+          borderRadius: 999,
+          padding: "4px 8px",
+          fontWeight: 700,
+        }}
+      >
+        Live support
+      </div>
+    </div>
+    <div
+      style={{
+        padding: "14px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: 10,
+          alignItems: "center",
+        }}
+      >
+        <div>
+          <div
+            style={{ fontSize: "0.7rem", color: "#0f172a", fontWeight: 700 }}
+          >
+            Booking flow
+          </div>
+          <div style={{ fontSize: "0.95rem", color: "#475569" }}>
+            Secure payment, email alerts, and reservations.
+          </div>
+        </div>
+        <div
+          style={{
+            background: "#ecfdf5",
+            color: "#16a34a",
+            borderRadius: 8,
+            padding: "4px 8px",
+            fontSize: "0.6rem",
+            fontWeight: 700,
+          }}
+        >
+          Stripe guarded
+        </div>
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 8,
+        }}
+      >
+        {[
+          ["Check-in", "Jun 15"],
+          ["Check-out", "Jun 18"],
+          ["Guests", "2 adults"],
+          ["Room", "Studio Suite"],
+        ].map(([label, value]) => (
+          <div
+            key={label}
+            style={{
+              background: "#fff",
+              borderRadius: 14,
+              padding: "10px 12px",
+              border: "1px solid rgba(148,163,184,0.18)",
+            }}
+          >
+            <div
+              style={{ fontSize: "0.55rem", color: "#64748b", marginBottom: 4 }}
+            >
+              {label}
+            </div>
+            <div
+              style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a" }}
+            >
+              {value}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 18,
+          padding: "14px",
+          border: "1px solid rgba(148,163,184,0.18)",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "0.7rem",
+            color: "#0f172a",
+            fontWeight: 700,
+            marginBottom: 8,
+          }}
+        >
+          Payment status
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div
+            style={{
+              width: 22,
+              height: 22,
+              borderRadius: 999,
+              background: "#dbeafe",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#2563eb",
+              fontSize: "0.85rem",
+            }}
+          >
+            ✓
+          </div>
+          <div>
+            <div
+              style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a" }}
+            >
+              Payment verified
+            </div>
+            <div style={{ fontSize: "0.65rem", color: "#64748b" }}>
+              Webhook validation prevents duplicate charges on refresh.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const BookingPhoneScreen = () => (
+  <div
+    style={{
+      background: "#f8fafc",
+      height: "100%",
+      overflow: "hidden",
+      fontFamily: "Inter,sans-serif",
+      display: "flex",
+      flexDirection: "column",
+    }}
+  >
+    <div
+      style={{
+        background: "#fff",
+        borderBottom: "1px solid rgba(148,163,184,0.18)",
+        padding: "8px 10px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <span style={{ fontSize: "0.6rem", color: "#0f172a", fontWeight: 700 }}>
+        Booking verified
+      </span>
+      <span style={{ fontSize: "0.6rem", color: "#2563eb", fontWeight: 700 }}>
+        Refund ready
+      </span>
+    </div>
+    <div
+      style={{
+        padding: "10px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+      }}
+    >
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 16,
+          padding: "12px",
+          border: "1px solid rgba(148,163,184,0.18)",
+        }}
+      >
+        <div style={{ fontSize: "0.75rem", color: "#475569", marginBottom: 6 }}>
+          Reserved room
+        </div>
+        <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f172a" }}>
+          Studio Suite
+        </div>
+        <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: 6 }}>
+          Jun 15 - Jun 18 · 2 guests
+        </div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: 8,
+        }}
+      >
+        {[
+          ["Email", "Sent"],
+          ["Reverb", "Connected"],
+        ].map(([label, value]) => (
+          <div
+            key={label}
+            style={{
+              background: "#fff",
+              borderRadius: 16,
+              padding: "10px",
+              flex: 1,
+              border: "1px solid rgba(148,163,184,0.18)",
+            }}
+          >
+            <div
+              style={{ fontSize: "0.65rem", color: "#64748b", marginBottom: 4 }}
+            >
+              {label}
+            </div>
+            <div
+              style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a" }}
+            >
+              {value}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 16,
+          padding: "12px",
+          border: "1px solid rgba(148,163,184,0.18)",
+        }}
+      >
+        <div style={{ fontSize: "0.72rem", color: "#475569", marginBottom: 4 }}>
+          Testing workflow
+        </div>
+        <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a" }}>
+          Production smoke test + refund passed
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const HuyeScreen = () => (
   <div
     style={{
@@ -1967,57 +2759,7 @@ const HuyePhoneScreen = () => (
         background: "linear-gradient(180deg,#e8d5c0,#f5ede0)",
         padding: "5px 6px 8px",
       }}
-    >
-      {/* <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: 3,
-        }}
-      >
-        <span
-          style={{ fontSize: "0.38rem", color: "#1a4a2e", fontWeight: 600 }}
-        >
-          Browse by category
-        </span>
-        <span style={{ fontSize: "0.34rem", color: "#888" }}>
-          Photos, prices, contacts
-        </span>
-      </div> */}
-      {/* <div style={{ display: "flex", gap: 4 }}>
-        {[
-          ["♡", "Save & Rate"],
-          ["👥", "For Students"],
-        ].map(([ic, l]) => (
-          <div
-            key={l}
-            style={{
-              background: "rgba(255,255,255,0.7)",
-              borderRadius: 4,
-              padding: "3px 5px",
-              display: "flex",
-              alignItems: "center",
-              gap: 2,
-              flex: 1,
-            }}
-          >
-            <span style={{ fontSize: "0.5rem" }}>{ic}</span>
-            <div>
-              <div
-                style={{ fontSize: "0.36rem", fontWeight: 600, color: "#111" }}
-              >
-                {l}
-              </div>
-              <div style={{ fontSize: "0.32rem", color: "#888" }}>
-                {l === "Save & Rate"
-                  ? "Save favorites and share your review"
-                  : "Built for UR Huye students"}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div> */}
-    </div>
+    />
     {/* Body */}
     <div style={{ padding: "5px 6px" }}>
       {/* New in Huye banner */}
@@ -3099,6 +3841,14 @@ const EcomPhoneScreen = () => (
 ───────────────────────────────────────────── */
 const PROJECT_META = [
   {
+    id: "bnb",
+    live: false,
+    githubUrl: "https://github.com/Brice-art",
+    stack: ["Laravel", "Stripe", "Reverb", "Email Automation", "PHPUnit"],
+    screen: <BookingScreen />,
+    hasPhone: false,
+  },
+  {
     id: "huye",
     live: true,
     liveUrl: "https://huye-finds.vercel.app",
@@ -3121,7 +3871,8 @@ const PROJECT_META = [
   {
     id: "rshift",
     live: false,
-    githubUrl: "https://github.com/Brice-art/Rshift-extraction-chrome-extension",
+    githubUrl:
+      "https://github.com/Brice-art/Rshift-extraction-chrome-extension",
     stack: [
       "JavaScript",
       "DOM API",
@@ -3202,7 +3953,7 @@ const ProjectCard = ({ meta, copy, reverse }) => {
                   style={{
                     fontSize: "0.75rem",
                     fontWeight: 600,
-                    color: "var(--green)",
+                    color: "var(--primary)",
                   }}
                 >
                   {t.projLive}
@@ -3247,7 +3998,7 @@ const ProjectCard = ({ meta, copy, reverse }) => {
             style={{
               fontSize: "clamp(0.8rem, 1.4vw, 0.875rem)",
               fontWeight: 500,
-              color: "var(--green)",
+              color: "var(--primary)",
               marginBottom: "1rem",
             }}
           >
@@ -3330,7 +4081,7 @@ const Projects = () => {
     <section
       id="projects"
       className="projects-section"
-      style={{ padding: "6rem 2rem", background: "var(--bg2)" }}
+      style={{ padding: "6rem 2rem", background: "transparent" }}
     >
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div
@@ -3343,7 +4094,7 @@ const Projects = () => {
               fontSize: "0.75rem",
               fontWeight: 700,
               letterSpacing: "0.1em",
-              color: "var(--green)",
+              color: "var(--primary)",
               textTransform: "uppercase",
               marginBottom: "0.5rem",
             }}
@@ -3420,7 +4171,7 @@ const Contact = () => {
             fontSize: "0.75rem",
             fontWeight: 700,
             letterSpacing: "0.1em",
-            color: "var(--green)",
+            color: "var(--primary)",
             textTransform: "uppercase",
             marginBottom: "1rem",
           }}
@@ -3514,13 +4265,18 @@ export default function Portfolio() {
   return (
     <LangCtx.Provider value={{ lang, t }}>
       <GlobalStyles />
-      <Nav lang={lang} setLang={setLang} />
-      <Hero />
-      <Stats />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
+      <AnimatedBackground />
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <Nav lang={lang} setLang={setLang} />
+        <Hero />
+        <Stats />
+        <About />
+        <CoreExpertise />
+        <Skills />
+        <Projects />
+        <Contact />
+        <OpenSource />
+      </div>
     </LangCtx.Provider>
   );
 }
