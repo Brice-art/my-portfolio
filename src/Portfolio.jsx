@@ -1050,7 +1050,7 @@ const Hero = () => {
               >
                 <span>🟢</span>
                 <span>Currently</span>
-              </div> 
+              </div>
               <div
                 style={{
                   display: "grid",
