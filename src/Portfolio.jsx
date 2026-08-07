@@ -4131,7 +4131,7 @@ const Projects = () => {
             reverse={i % 2 === 1}
           />
         ))}
-        <div style={{ textAlign: "center", paddingTop: "1rem" }}>
+        {/* <div style={{ textAlign: "center", paddingTop: "1rem" }}>
           <a
             href="https://github.com/Brice-art"
             target="_blank"
@@ -4143,7 +4143,7 @@ const Projects = () => {
             </svg>
             {t.projMoreGH}
           </a>
-        </div>
+        </div> */}
       </div>
     </section>
   );
@@ -4274,8 +4274,8 @@ export default function Portfolio() {
         <CoreExpertise />
         <Skills />
         <Projects />
-        <Contact />
         <OpenSource />
+        <Contact />
       </div>
     </LangCtx.Provider>
   );
