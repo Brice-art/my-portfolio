@@ -43,8 +43,8 @@ export default function About() {
               <Link to="/projects" className="btn-primary">
                 See my work <ArrowRight />
               </Link>
-              <a href="/Brice-Resume.pdf" download className="btn-outline">
-                Download CV
+              <a href="/Brice-Resume.pdf" target="_blank" rel="noreferrer" className="btn-outline">
+                View resume
               </a>
             </div>
           </div>
