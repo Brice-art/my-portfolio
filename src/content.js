@@ -6,8 +6,8 @@ export const projects = [
     description:
       "Took over an existing booking platform and made it reliable again. Restored email delivery, fixed real-time updates with Laravel Reverb, hardened Stripe verification against duplicate charges, improved deployment on Laravel Cloud, and added production smoke tests.",
     stack: ["Laravel", "Stripe", "Reverb", "PHPUnit", "Laravel Cloud"],
-    liveUrl: null,
-    sourceUrl: "https://github.com/Brice-art",
+    liveUrl: "https://www.kornialle.com/",
+    sourceUrl: null,
     label: "Production",
   },
   {

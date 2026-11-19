@@ -23,7 +23,7 @@ export default function Home() {
       <section className="container-page flex min-h-[72vh] flex-col justify-center py-20 sm:py-28">
         <p className="eyebrow mb-6">Full-stack developer</p>
         <h1 className="max-w-4xl text-[clamp(2.5rem,7vw,4.75rem)] font-bold leading-[1.06] tracking-[-0.045em]">
-          I build software that <span className="text-accent">solves real problems.</span>
+          I build systems that <span className="text-accent">solve real problems.</span>
         </h1>
         <p className="body-text mt-6 max-w-xl text-lg">
           I'm Brice Byiringiro, a developer working with Laravel, React, and APIs. I care about systems that are reliable, practical, and easy to maintain.
@@ -37,7 +37,7 @@ export default function Home() {
           </Link>
         </div>
         <div className="mt-14 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted">
-          <span>Based in Kigali, with seven years in Japan</span>
+          <span>Started my career in Tokyo, Japan, now based in Kigali, Rwanda</span>
           <span className="hidden h-1 w-1 rounded-full bg-line sm:block" />
           {socials.map(({ label, href }) => (
             <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className="text-muted no-underline transition-colors hover:text-accent">

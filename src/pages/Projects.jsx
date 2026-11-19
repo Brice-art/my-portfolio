@@ -8,7 +8,7 @@ export default function Projects() {
       <PageHeader
         eyebrow="Projects"
         title="Selected work."
-        intro="A small set of projects I'm happy to stand behind — a production recovery, a community tool, and an extension built to solve my own problem."
+        intro="A small set of projects I'm happy to stand behind : a production recovery, a community tool, and an extension built to solve my own problem."
       />
 
       <section className="py-16 sm:py-20">
